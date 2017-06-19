@@ -12,10 +12,16 @@
 #define GAIN_I() 0
 #define GAIN_D() 8
 
-// tape sensor
-#define THRESHOLD() 100
+// thresholds
+#define TAPE_IR_STRENGTH_THRESHOLD() 100
+#define GATE_IR_STRENGTH_THRESHOLD() 100
 
 // velocity
 #define VELOCITY() 400
+
+#define R_MOTOR() 0
+#define L_MOTOR() 1
+#define L_SENSOR() 2
+#define R_SENSOR() 0
 
 #endif  // WALKERVILL_ROBOT_CONFIGS_H

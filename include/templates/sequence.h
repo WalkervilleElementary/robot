@@ -1,0 +1,25 @@
+#ifndef WALKERVILLE_ROBOT_TEMPLATES_SQUENCE_H
+#define WALKERVILLE_ROBOT_TEMPLATES_SQUENCE_H
+
+#include "configs/configs.h"
+
+
+namespace templates 
+{
+
+class Sequence
+{
+public:
+  inline bool start() 
+  {
+    while(loop());
+  }
+  bool loop();
+#if USE_UPDATE()
+  bool update();
+#endif  // USE_UPDATE();
+};  // class Sequence
+
+}  // namespace templates
+
+#endif  // WALKERVILLE_ROBOT_TEMPLATES_SQUENCE_H
