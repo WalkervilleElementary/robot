@@ -1,9 +1,13 @@
-#include "sequences/tape.h"
+#include "configs.h"
 
 #if DEVICE()
+#include "tape.h"
+
 #include <phys253.h>
 #include <LiquidCrystal.h>
-#endif  // marco DEVICE()
+#else  // end DEVICE(); start !DEVICE()
+#include "sequences/tape.h"
+#endif  // end !DEVICE()
 
 namespace sequences
 {
@@ -19,7 +23,7 @@ Tape::Tape()
 #endif  // USE_UPDATE()
 }
 
-void Tape::setup (hardware::Ir ir, hardware::Driver motor)
+void Tape::setup (const hardware::Ir& ir, const hardware::Driver& motor)
 {
   ir_ = ir;
   motor_ = motor;
@@ -29,16 +33,19 @@ bool Tape::loop()
 {
   error_ = ir_.getTapeError();
   command_ = computeCommand(error_, 100);
-#if DEBUG() 
+#if DEBUG()
 #if DEVICE()
   LCD.clear();  LCD.home() ;
-  LCD.setCursor(0,0); LCD.print("motor commands");
-  LCD.setCursor(0,1); LCD.print(velocity - command_);  
-  LCD.setCursor(7,1); LCD.print( -(velocity + command_));
-  LCD.setCursor(15,1); LCD.print(error_);
-#endif  // marco DEVICE()
-#endif  // marco DEBUG()
+  LCD.setCursor(0,1); LCD.print(velocity_ - command_);
+  LCD.setCursor(7,1); LCD.print(velocity_ + command_);
+#endif  // DEVICE()
+#endif  // DEBUG()
   motor_.sendMotorCommand(velocity_, command_);
+}
+
+void Tape::stop()
+{
+  motor_.stop();
 }
 
 int Tape::computeCommand(int error, int dt)
@@ -53,47 +60,48 @@ int Tape::computeCommand(int error, int dt)
 }
 
 #if USE_UPDATE()
-void update()
+void Tape::update()
 {
+  stop();
 #if DEVICE()
   while (!startbutton())
-    {
-      if (stopbutton()) state_ += 1;
-      if (state_ > 4) state_ = 0;
-      int start_val = knob(6);
-      delay(100);
-      int end_val = knob(6);
+  {
+    if (stopbutton()) state_ += 1;
+    if (state_ > 4) state_ = 0;
+    int start_val = knob(6);
+    delay(100);
+    int end_val = knob(6);
 
-      int change = (start_val - end_val)/4 ;
-      LCD.clear();  LCD.home() ;
-          
-      switch (state_)
-      {
-      case 0:
-          gain_t_ += change;
-          LCD.setCursor(0,0); LCD.print("gain_tot");
-          LCD.setCursor(0,1); LCD.print(gain_t_);
-          break;
-      case 1:
-          gain_p_ += change;
-          LCD.setCursor(0,0); LCD.print("gain_p");
-          LCD.setCursor(0,1); LCD.print(gain_p_);
-          break;
-      case 2:
-          gain_i_ += change;
-          LCD.setCursor(0,0); LCD.print("gain_i");
-          LCD.setCursor(0,1); LCD.print(gain_i_);
-          break;
-      case 3:
-          gain_d_ += end_val - start_val;
-          LCD.setCursor(0,0); LCD.print("gain_d");
-          LCD.setCursor(0,1); LCD.print(gain_d_);
-          break;
-      case 4:
-          velocity_ += change;
-          LCD.setCursor(0,0); LCD.print("velocity");
-          LCD.setCursor(0,1); LCD.print(velocity_);
-      }
+    int change = (start_val - end_val)/4 ;
+    LCD.clear();  LCD.home() ;
+
+    switch (state_)
+    {
+    case 0:
+        gain_t_ += change;
+        LCD.setCursor(0,0); LCD.print("gain_tot");
+        LCD.setCursor(0,1); LCD.print(gain_t_);
+        break;
+    case 1:
+        gain_p_ += change;
+        LCD.setCursor(0,0); LCD.print("gain_p");
+        LCD.setCursor(0,1); LCD.print(gain_p_);
+        break;
+    case 2:
+        gain_i_ += change;
+        LCD.setCursor(0,0); LCD.print("gain_i");
+        LCD.setCursor(0,1); LCD.print(gain_i_);
+        break;
+    case 3:
+        gain_d_ += end_val - start_val;
+        LCD.setCursor(0,0); LCD.print("gain_d");
+        LCD.setCursor(0,1); LCD.print(gain_d_);
+        break;
+    case 4:
+        velocity_ += change;
+        LCD.setCursor(0,0); LCD.print("velocity");
+        LCD.setCursor(0,1); LCD.print(velocity_);
+        break;
     }
   }
 #endif  // DEVICE()

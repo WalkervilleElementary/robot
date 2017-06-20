@@ -1,4 +1,12 @@
+#include "configs.h"
+
+#if DEVICE()
+#include "ir.h"
+
+#include <phys253.h>
+#else  // end DEVICE(); start !DEVICE()
 #include "hardware/ir.h"
+#endif  // end !DEVICE()
 
 namespace hardware
 {
@@ -10,14 +18,21 @@ Ir::Ir()
 
 int Ir::getTapeError()
 {
-#if DEVICE() 
+#if DEVICE()
   l_val_ = analogRead(L_SENSOR_);
   r_val_ = analogRead(R_SENSOR_);
-#else 
+#else
   l_val_ = 800;
   r_val_ = 800;
 #endif  // DEVICE
 
+#if DEBUG()
+#if DEVICE()
+  LCD.home();
+  LCD.setCursor(0,0); LCD.print(l_val_);
+  LCD.setCursor(7,0); LCD.print(r_val_);
+#endif  // DEVICE()
+#endif  // DEBUG()
   l_on_ = l_val_ > tape_threshold_;
   r_on_ = r_val_ > tape_threshold_;
 

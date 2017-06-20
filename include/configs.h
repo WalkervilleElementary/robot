@@ -1,5 +1,5 @@
 #ifndef WALKERVILLE_ROBOT_CONFIGS_H
-#define WALKERVILLE_ROBOT_CONFIGs_H
+#define WALKERVILLE_ROBOT_CONFIGS_H
 
 // debug and generation use
 #define USE_UPDATE() 1

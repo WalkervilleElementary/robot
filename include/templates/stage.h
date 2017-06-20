@@ -1,7 +1,7 @@
 #ifndef WALKERVILLE_ROBOT_TEMPLATES_STAGE_H
 #define WALKERVILLE_ROBOT_TEMPLATES_STAGE_H
 
-#include "configs/configs.h"
+#include "configs.h"
 
 
 namespace templates 

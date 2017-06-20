@@ -1,22 +1,22 @@
 #ifndef WALKERVILLE_ROBOT_TEMPLATES_SQUENCE_H
 #define WALKERVILLE_ROBOT_TEMPLATES_SQUENCE_H
 
-#include "configs/configs.h"
+#include "configs.h"
 
 
-namespace templates 
+namespace templates
 {
 
 class Sequence
 {
 public:
-  inline bool start() 
+  inline bool start()
   {
     while(loop());
   }
   bool loop();
 #if USE_UPDATE()
-  bool update();
+  void update();
 #endif  // USE_UPDATE();
 };  // class Sequence
 

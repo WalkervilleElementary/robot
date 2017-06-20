@@ -1,11 +1,17 @@
-#include "configs/configs.h"
+#include "configs.h"
+
+
+#if DEVICE()
+#include "driver.h"
+#include "ir.h"
+#include "tape.h"
+
+#include <phys253.h>
+#include <LiquidCrystal.h>
+#else  // end DEVICE(); start !DEVICE()
 #include "hardware/driver.h"
 #include "hardware/ir.h"
 #include "sequences/tape.h"
-
-#if DEVICE()
-#include <phys253.h>          
-#include <LiquidCrystal.h>     
 #endif  // DEVICE()
 
 hardware::Driver driver;
@@ -14,7 +20,7 @@ sequences::Tape tape;
 
 void setup()
 {
-#if DEVICE()  
+#if DEVICE()
   #include <phys253setup.txt>
   Serial.begin(9600) ;
 #endif  // DEVICE()
@@ -27,7 +33,7 @@ void loop()
 
 #if USE_UPDATE()
 #if DEVICE()
-  if (stoptbutton())
+  if (stopbutton())
   {
     tape.update();
   }

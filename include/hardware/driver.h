@@ -1,7 +1,7 @@
 #ifndef WALKERVILLE_ROBOT_HARDWARE_DRIVER_H
 #define WALKERVILLE_ROBOT_HARDWARE_DRIVER_H
 
-#include "configs/configs.h"
+#include "configs.h"
 
 namespace hardware
 {
@@ -15,6 +15,7 @@ public:
   inline Driver(){};
   inline ~Driver(){};
 
+  void stop();
   void sendMotorCommand(int velocity, int command);
 
 };  // class Driver

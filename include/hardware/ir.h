@@ -1,7 +1,7 @@
 #ifndef WALKERVILLE_ROBOT_HARDWARE_IR_H
 #define WALKERVILLE_ROBOT_HARDWARE_IR_H
 
-#include "configs/configs.h"
+#include "configs.h"
 
 namespace hardware
 {

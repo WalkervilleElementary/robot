@@ -1,10 +1,17 @@
 #ifndef WALKERVILLE_ROBOT_SEQUENCES_TAPE_H
 #define WALKERVILLE_ROBOT_SEQUENCES_TAPE_H
 
-#include "configs/configs.h"
+#include "configs.h"
+
+#if DEVICE()
+#include "sequence.h"
+#include "driver.h"
+#include "ir.h"
+#else  // end DEVICE(); start !DEVICE()
 #include "templates/sequence.h"
 #include "hardware/driver.h"
 #include "hardware/ir.h"
+#endif  // !DEVICE
 
 namespace sequences
 {
@@ -29,7 +36,7 @@ private:
   // general
   int error_;
   int command_;
-  int velocity_; 
+  int velocity_;
 
 #if USE_UPDATE()
   char state_;
@@ -44,10 +51,11 @@ private:
 public:
   Tape();
   inline ~Tape(){};
-  void setup(hardware::Ir ir, hardware::Driver motor);
+  void setup(const hardware::Ir& ir, const hardware::Driver& motor);
+  void stop();
   bool loop();
 #if USE_UPDATE()
-  bool update();
+  void update();
 #endif  // macro USE_UPDATE()
 };  // class tape
 
