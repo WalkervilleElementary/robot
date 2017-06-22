@@ -35,7 +35,7 @@ bool Tape::loop()
   command_ = computeCommand(error_, 100);
 #if DEBUG()
 #if DEVICE()
-  LCD.clear();  LCD.home() ;
+  LCD.home() ;
   LCD.setCursor(0,1); LCD.print(velocity_ - command_);
   LCD.setCursor(7,1); LCD.print(velocity_ + command_);
 #endif  // DEVICE()

@@ -21,7 +21,7 @@
 
 #define R_MOTOR() 0
 #define L_MOTOR() 1
-#define L_SENSOR() 2
 #define R_SENSOR() 0
+#define L_SENSOR() 2
 
 #endif  // WALKERVILL_ROBOT_CONFIGS_H

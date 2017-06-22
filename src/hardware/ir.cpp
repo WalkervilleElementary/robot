@@ -21,10 +21,10 @@ int Ir::getTapeError()
 #if DEVICE()
   l_val_ = analogRead(L_SENSOR_);
   r_val_ = analogRead(R_SENSOR_);
-#else
+#else  // end DEVICE(); start !DEVICE()
   l_val_ = 800;
   r_val_ = 800;
-#endif  // DEVICE
+#endif  // end !DEVICE()
 
 #if DEBUG()
 #if DEVICE()
@@ -53,5 +53,23 @@ int Ir::strength()
   // TODO
   return 1000;
 }
+
+#if USE_UPDATE()
+void Ir::update()
+{
+#if DEVICE()
+  while(!startbutton)
+  {
+    int start_val = knob(6);
+    delay(100);
+    int end_val = knob(6);
+    tape_threshold_ += (end_val - start_val)/4;
+    LCD.clear();  LCD.home() ;
+    LCD.setCursor(0,0); LCD.print("threshold");
+    LCD.setCursor(0,1); LCD.print(tape_threshold_);
+  }
+#endif  // DEVICE()
+}
+#endif  // USE_UPDATE()
 
 }  // namespace hardware

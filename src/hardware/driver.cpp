@@ -23,7 +23,7 @@ void Driver::stop()
   motor.stop(L_MOTOR_);
   motor.stop(R_MOTOR_);
 }
-#else  // macro !DEVICE()
+#else  // end DEVICE(); start !DEVICE()
 void Driver::sendMotorCommand(int velocity, int command)
 {
   std::cout << "l_motor: " <<  velocity - command << std::endl;
@@ -34,7 +34,7 @@ void Driver::stop()
 {
   std::cout << "motor is stopped" << std::endl;
 }
-#endif  // marco DEVICE()
+#endif  // end !DEVICE()
 }  // namespace hardware
 
 

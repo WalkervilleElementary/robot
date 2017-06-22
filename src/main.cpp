@@ -12,7 +12,7 @@
 #include "hardware/driver.h"
 #include "hardware/ir.h"
 #include "sequences/tape.h"
-#endif  // DEVICE()
+#endif  // end !DEVICE()
 
 hardware::Driver driver;
 hardware::Ir ir;
@@ -29,6 +29,12 @@ void setup()
 
 void loop()
 {
+#if DEBUG()
+#if DEVICE()
+  LCD.clear(); LCD.home();
+#endif  // DEVICE()
+#endif  // DEBUG()
+
   tape.loop();
 
 #if USE_UPDATE()
@@ -36,6 +42,7 @@ void loop()
   if (stopbutton())
   {
     tape.update();
+    ir.update();
   }
 #endif  // DEVICE()
 #endif  // USE_UPDATE()

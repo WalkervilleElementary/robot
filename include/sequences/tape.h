@@ -11,7 +11,7 @@
 #include "templates/sequence.h"
 #include "hardware/driver.h"
 #include "hardware/ir.h"
-#endif  // !DEVICE
+#endif  // end !DEVICE
 
 namespace sequences
 {
@@ -56,7 +56,7 @@ public:
   bool loop();
 #if USE_UPDATE()
   void update();
-#endif  // macro USE_UPDATE()
+#endif  // USE_UPDATE()
 };  // class tape
 
 }  // namespace tape

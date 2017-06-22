@@ -15,19 +15,21 @@ private:
   // getTapeError
   int l_val_;
   int r_val_;
-  int l_on_;
-  int r_on_;
+  bool l_on_;
+  bool r_on_;
   int error_;
-  int tape_threshold_; // configurable
+  int tape_threshold_;
 
 public:
   Ir();
   inline ~Ir(){};
-  
+
   int getTapeError();
   bool tenKHZ();
   int strength();
-
+#if USE_UPDATE()
+  void update();
+#endif  // USE_UPDATE()
 };  // class Ir
 
 }  // namespace hardware

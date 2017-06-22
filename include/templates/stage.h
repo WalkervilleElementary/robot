@@ -4,7 +4,7 @@
 #include "configs.h"
 
 
-namespace templates 
+namespace templates
 {
 
 class Stage
@@ -14,7 +14,7 @@ public:
 
 #if USE_UPDATE()
   bool update();
-#endif  // macro USE_UPDATE()
+#endif  // USE_UPDATE()
 
 };  // class Stage
 
