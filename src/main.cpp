@@ -48,7 +48,7 @@ void loop()
 #endif  // USE_UPDATE()
 
 #if DEVICE()
-  delay(10);
+  delay(50);
 #endif  // DEVICE()
 }
 

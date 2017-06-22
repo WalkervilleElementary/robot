@@ -7,17 +7,17 @@
 #define DEVICE() 0
 
 // PID initial values
-#define GAIN_T() 7
-#define GAIN_P() 8
+#define GAIN_T() -1
+#define GAIN_P() 14
 #define GAIN_I() 0
-#define GAIN_D() 8
+#define GAIN_D() 5
 
 // thresholds
 #define TAPE_IR_STRENGTH_THRESHOLD() 100
 #define GATE_IR_STRENGTH_THRESHOLD() 100
 
 // velocity
-#define VELOCITY() 400
+#define VELOCITY() 90 // 80 to 100
 
 #define R_MOTOR() 0
 #define L_MOTOR() 1
