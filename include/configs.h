@@ -14,6 +14,7 @@
 // thresholds
 #define TAPE_IR_STRENGTH_THRESHOLD() 100
 #define GATE_IR_STRENGTH_THRESHOLD() 100
+#define ENCODER_WAIT_TIME() 4
 
 // velocity
 #define VELOCITY() 90 // 80 to 100
