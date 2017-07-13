@@ -10,10 +10,6 @@ namespace templates
 class Sequence
 {
 public:
-  inline bool start()
-  {
-    while(loop());
-  }
   bool loop();
 #if USE_UPDATE()
   void update();
