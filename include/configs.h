@@ -4,7 +4,7 @@
 // debug and generation use
 #define USE_UPDATE() 1
 #define DEBUG() 1
-#define DEVICE() 0
+#define DEVICE() 1
 
 // PID initial values
 #define GAIN_T() -1
