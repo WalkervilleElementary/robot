@@ -11,7 +11,6 @@
 
 namespace sequences
 {
-    ROS_INFO("[Tracker Node] we are not publishing");
 Tape::Tape()
 {
   gain_t_ = GAIN_T();
