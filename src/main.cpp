@@ -9,6 +9,7 @@
 hardware::Driver driver;
 hardware::Ir ir;
 sequences::Tape tape;
+sequences::Zipline zipline;
 
 void setup()
 {
