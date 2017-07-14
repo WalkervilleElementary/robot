@@ -27,7 +27,7 @@ public:
     void write(uint16_t);
     uint16_t read(void);
 private:
-    uint8_t channel = 0;
+    uint8_t channel;
     static uint8_t timerRunning;
     static uint8_t channelsUsed;
 };

@@ -8,7 +8,6 @@
 #include "sequences/zipline.h"
 #include "stages/gate.h"
 
-
 hardware::Driver driver;
 hardware::Ir ir;
 sequences::Tape tape;

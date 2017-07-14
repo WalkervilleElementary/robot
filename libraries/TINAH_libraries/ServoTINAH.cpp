@@ -70,6 +70,7 @@ void initializeTimer2()
 
 ServoTINAH::ServoTINAH()
 {
+    this->channel = 0;
     if (this->channelsUsed < MAX_SERVO_CHANNELS)
     {
         this->channel = this->channelsUsed;
