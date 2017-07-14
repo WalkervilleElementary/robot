@@ -4,7 +4,6 @@
 // debug and generation use
 #define USE_UPDATE() 1
 #define DEBUG() 1
-#define DEVICE() 1
 
 // PID initial values
 #define GAIN_T() -1
@@ -23,5 +22,7 @@
 #define L_MOTOR() 1
 #define R_SENSOR() 0
 #define L_SENSOR() 2
+
+#define ZIPLINE_MOTOR() 2
 
 #endif  // WALKERVILL_ROBOT_CONFIGS_H

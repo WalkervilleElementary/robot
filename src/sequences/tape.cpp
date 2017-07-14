@@ -1,13 +1,8 @@
 #include "configs.h"
 
-#if DEVICE()
-#include "tape.h"
-
 #include <phys253.h>
 #include <LiquidCrystal.h>
-#else  // end DEVICE(); start !DEVICE()
 #include "sequences/tape.h"
-#endif  // end !DEVICE()
 
 namespace sequences
 {
@@ -34,11 +29,9 @@ bool Tape::loop()
   error_ = ir_.getTapeError();
   command_ = computeCommand(error_, 100);
 #if DEBUG()
-#if DEVICE()
   LCD.home() ;
   LCD.setCursor(0,1); LCD.print(velocity_ - command_);
   LCD.setCursor(7,1); LCD.print(velocity_ + command_);
-#endif  // DEVICE()
 #endif  // DEBUG()
   motor_.sendMotorCommand(velocity_, command_);
 }
@@ -63,7 +56,6 @@ int Tape::computeCommand(int error, int dt)
 void Tape::update()
 {
   stop();
-#if DEVICE()
   while (!startbutton())
   {
     if (stopbutton()) state_ += 1;
@@ -104,7 +96,6 @@ void Tape::update()
         break;
     }
   }
-#endif  // DEVICE()
 }
 #endif  // USE_UPDATE()
 

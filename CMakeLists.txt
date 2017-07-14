@@ -87,11 +87,7 @@ file(GLOB_RECURSE MAIN_SRC  "${SRC_PATH}/*.cpp"
                     "${SRC_PATH}/*.c")
 file(GLOB_RECURSE MAIN_INC "${INC_PATH}/*.h")
                     
-
 include_directories(${INC_PATH})
-include_directories("${INC_PATH}/hardware")
-include_directories("${INC_PATH}/sequences")
-include_directories("${INC_PATH}/templates")
 
 add_executable(${PROJECT_NAME} ${MAIN_SRC})
 target_link_libraries(${PROJECT_NAME} ArduinoCore ArduinoLibraries)

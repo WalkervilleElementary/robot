@@ -3,15 +3,9 @@
 
 #include "configs.h"
 
-#if DEVICE()
-#include "sequence.h"
-#include "driver.h"
-#include "ir.h"
-#else  // end DEVICE(); start !DEVICE()
 #include "templates/sequence.h"
 #include "hardware/driver.h"
 #include "hardware/ir.h"
-#endif  // end !DEVICE
 
 namespace sequences
 {
