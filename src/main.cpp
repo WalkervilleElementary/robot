@@ -5,6 +5,7 @@
 #include "hardware/driver.h"
 #include "hardware/ir.h"
 #include "sequences/tape.h"
+#include "sequences/zipline.h"
 
 hardware::Driver driver;
 hardware::Ir ir;
