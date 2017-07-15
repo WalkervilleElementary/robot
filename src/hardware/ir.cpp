@@ -47,7 +47,9 @@ int Ir::strength()
 #if USE_UPDATE()
 void Ir::update()
 {
-  while(!startbutton)
+  delay(1000);
+  while(startbutton());
+  while(!startbutton())
   {
     int start_val = knob(6);
     delay(100);
