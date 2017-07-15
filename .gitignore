@@ -1,3 +1,4 @@
 build
 programmer_config.cmake
+*.swp
 

@@ -4,12 +4,14 @@
 namespace hardware
 {
 
-  volatile unsigned int counts[2];
-  volatile unsigned long prevTime[2];
+  volatile unsigned int counts[4];
+  volatile unsigned long prevTime[4];
   const unsigned long WAITTIME = ENCODER_WAIT_TIME();
 
 Encoder::Encoder()
 {
+  start(R_ENCODER_);
+  start(L_ENCODER_);
 }
 
 void Encoder::enableExternalInterrupt(unsigned int INTX, unsigned int mode)
@@ -68,3 +70,22 @@ ISR(INT1_vect)
     hardware::prevTime[1] = millis();
   }
 };
+
+ISR(INT2_vect)
+{
+  if (millis() > hardware::prevTime[2] + hardware::WAITTIME)
+  {
+    hardware::counts[2]++;
+    hardware::prevTime[2] = millis();
+  }
+};
+
+ISR(INT3_vect)
+{
+  if (millis() > hardware::prevTime[3] + hardware::WAITTIME)
+  {
+    hardware::counts[3]++;
+    hardware::prevTime[3] = millis();
+  }
+};
+
