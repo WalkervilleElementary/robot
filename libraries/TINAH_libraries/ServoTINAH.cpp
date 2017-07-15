@@ -132,20 +132,3 @@ uint16_t ServoTINAH::read(void)
 }
 
 
-volatile uint16_t encoder_counts = 0;
-volatile uint32_t last_encoder_interrupt_ms = 0;
-
-ISR(INT0_vect)
-{
-    if (millis() > last_encoder_interrupt_ms + 10)
-    {
-        uint8_t consistent_count = 0;
-        while (digitalRead(0) && consistent_count < 10) consistent_count++;
-
-        if (consistent_count == 10)
-        {
-            encoder_counts++;
-        }
-        last_encoder_interrupt_ms = millis();
-    }
-}
