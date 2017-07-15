@@ -6,8 +6,8 @@
 namespace hardware
 {
 
-const int L_SENSOR_ = L_SENSOR();
-const int R_SENSOR_ = R_SENSOR();
+const int L_QRD_SENSOR_ = L_QRD_SENSOR();
+const int R_QRD_SENSOR_ = R_QRD_SENSOR();
 
 class Ir
 {

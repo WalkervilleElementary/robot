@@ -5,11 +5,16 @@
 
 namespace hardware
 {
-    
+
+void Driver::sendWheelVelocities(int right, int left)
+{
+  motor.speed(L_MOTOR_, left);
+  motor.speed(R_MOTOR_, right);
+}
+
 void Driver::sendMotorCommand(int velocity, int command)
 {
-  motor.speed(L_MOTOR_, velocity - command);
-  motor.speed(R_MOTOR_, velocity + command);
+  sendWheelVelocities(velocity + command, velocity - command);
 }
 
 void Driver::stop()

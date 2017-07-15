@@ -14,16 +14,27 @@
 // thresholds
 #define TAPE_IR_STRENGTH_THRESHOLD() 100
 #define GATE_IR_STRENGTH_THRESHOLD() 100
-#define ENCODER_WAIT_TIME() 4
+#define ENCODER_WAIT_TIME() 3
 
 // velocity
 #define VELOCITY() 90 // 80 to 100
 
+// motor
 #define R_MOTOR() 0
 #define L_MOTOR() 1
-#define R_SENSOR() 1
-#define L_SENSOR() 2
-
 #define ZIPLINE_MOTOR() 2
 
-#endif  // WALKERVILL_ROBOT_CONFIGS_H
+// qrd sensors
+#define R_QRD_SENSOR() 1
+#define L_QRD_SENSOR() 2
+
+// encoder sensors
+#define R_ENCODER() 2
+#define L_ENCODER() 3
+
+// maneuver
+#define WHEEL_DIAMETER() 6.0 // cm
+#define GEAR_RATIO() 2.0
+#define AXLE_LENGTH() 21.59 // cm
+#define MANEUVER_GAIN() 2
+#endif  // WALKERVILLE_ROBOT_CONFIGS_H

@@ -16,6 +16,7 @@ public:
   inline ~Driver(){};
 
   void stop();
+  void sendWheelVelocities(int right, int left);
   void sendMotorCommand(int velocity, int command);
 
 };  // class Driver

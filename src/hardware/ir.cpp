@@ -13,8 +13,8 @@ Ir::Ir()
 
 int Ir::getTapeError()
 {
-  l_val_ = analogRead(L_SENSOR_);
-  r_val_ = analogRead(R_SENSOR_);
+  l_val_ = analogRead(L_QRD_SENSOR_);
+  r_val_ = analogRead(R_QRD_SENSOR_);
 
 #if DEBUG()
   LCD.home();

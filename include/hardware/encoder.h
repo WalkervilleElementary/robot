@@ -9,8 +9,11 @@
 
 namespace hardware
 {
-  extern volatile unsigned int counts[2];
-  extern volatile unsigned long prevTime[2];
+  const int R_ENCODER_ = R_ENCODER();
+  const int L_ENCODER_ = L_ENCODER();
+
+  extern volatile unsigned int counts[4];
+  extern volatile unsigned long prevTime[4];
 
 class Encoder
 {
