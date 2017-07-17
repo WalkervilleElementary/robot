@@ -35,6 +35,7 @@ bool Gate::loop()
         follower_.stop();
         state_ ++;
       }
+      break;
     case 1:  // waiting at the gate
       if (ir_.tenKHZ())
       {
@@ -45,6 +46,10 @@ bool Gate::loop()
       {
         follower_.stop();
       }
+      break;
+    default:
+      // TODO this should never happen
+      break;
   }
   return false;
 }
