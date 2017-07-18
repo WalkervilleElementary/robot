@@ -20,17 +20,17 @@
 #define VELOCITY() 90 // 80 to 100
 
 // motor
-#define R_MOTOR() 0
-#define L_MOTOR() 1
-#define ZIPLINE_MOTOR() 2
+#define R_MOTOR() 2
+#define L_MOTOR() 3 // going backwards
+#define ZIPLINE_MOTOR() 0
 
 // qrd sensors
 #define R_QRD_SENSOR() 1
 #define L_QRD_SENSOR() 2
 
 // encoder sensors
-#define R_ENCODER() 2
-#define L_ENCODER() 3
+#define R_ENCODER() 3
+#define L_ENCODER() 2
 
 // maneuver
 #define WHEEL_DIAMETER() 6.0 // cm

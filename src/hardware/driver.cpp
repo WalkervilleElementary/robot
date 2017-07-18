@@ -8,7 +8,7 @@ namespace hardware
 
 void Driver::sendWheelVelocities(int right, int left)
 {
-  motor.speed(L_MOTOR_, left);
+  motor.speed(L_MOTOR_, -left);
   motor.speed(R_MOTOR_, right);
 }
 
