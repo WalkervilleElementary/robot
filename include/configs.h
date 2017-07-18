@@ -34,6 +34,10 @@
 #define R_ENCODER() 3
 #define L_ENCODER() 2
 
+//10 KHz IR sensors
+#define L_BEACON_SENSOR() 0
+#define R_BEACON_SENSOR() 1
+
 // maneuver
 #define WHEEL_DIAMETER() 6.0 // cm
 #define GEAR_RATIO() 2.0

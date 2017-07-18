@@ -5,6 +5,7 @@
 #include "hardware/driver.h"
 #include "hardware/ir.h"
 #include "hardware/encoder.h"
+#include "hardware/beacon.h"
 #include "sequences/tape.h"
 #include "sequences/zipline.h"
 #include "sequences/maneuver.h"
@@ -13,6 +14,7 @@
 hardware::Driver driver;
 hardware::Ir ir;
 hardware::Encoder encoder;
+hardware::Beacon beacon;
 
 sequences::Tape tape;
 sequences::Zipline zipline;
