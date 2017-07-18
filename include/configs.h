@@ -6,8 +6,8 @@
 #define DEBUG() 1
 
 // PID initial values
-#define GAIN_T() -1
-#define GAIN_P() 14
+#define GAIN_T() 1
+#define GAIN_P() 8
 #define GAIN_I() 0
 #define GAIN_D() 5
 

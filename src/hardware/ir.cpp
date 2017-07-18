@@ -21,9 +21,9 @@ int Ir::getTapeError()
 #if DEBUG()
   LCD.home();
   LCD.setCursor(0,0);  LCD.print(ll_val);
-  LCD.setCursor(5,0);  LCD.print(lc_val);
-  LCD.setCursor(10,0); LCD.print(rc_val);
-  LCD.setCursor(15,0); LCD.print(rr_val);
+  LCD.setCursor(4,0);  LCD.print(lc_val);
+  LCD.setCursor(8,0); LCD.print(rc_val);
+  LCD.setCursor(12,0); LCD.print(rr_val);
 #endif  // DEBUG()
   const bool ll_on = ll_val > tape_threshold_;
   const bool lc_on = lc_val > tape_threshold_;
