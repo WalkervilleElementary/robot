@@ -40,6 +40,7 @@ void setup()
   pickup.setup(ir, claw, maneuver, tape);
 }
 
+// Tape follow loop
 
 void loop()
 {
@@ -53,14 +54,14 @@ void loop()
   {
     tape.update();
     ir.update();
+    driver.update();
   }
 
   delay(50);
 }
 
-/*
 // loop for testing pickup
-
+/*
 void loop()
 {
 #if DEBUG()
@@ -80,9 +81,8 @@ void loop()
 }
 */
 
-/*
 // loop for testing maneuver
-
+/*
 int distance = 0;
 
 void loop()

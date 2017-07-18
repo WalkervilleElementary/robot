@@ -11,13 +11,21 @@ const int L_MOTOR_ = L_MOTOR();
 
 class Driver
 {
+private:
+  int prev_right;
+  int prev_left;
+  int acceleration_limit;
 public:
-  inline Driver(){};
+  Driver();
   inline ~Driver(){};
 
   void stop();
   void sendWheelVelocities(int right, int left);
   void sendMotorCommand(int velocity, int command);
+
+#if USE_UPDATE()
+  void update();
+#endif  // USE_UPDATE()
 
 };  // class Driver
 

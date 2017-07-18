@@ -11,13 +11,14 @@
 #define GAIN_I() 0
 #define GAIN_D() 0
 
+// motor
+#define ACCEL_LIMIT() 50 // This is not the correct value
+#define VELOCITY() 90 // 80 to 100
+
 // thresholds
 #define TAPE_IR_STRENGTH_THRESHOLD() 100
 #define GATE_IR_STRENGTH_THRESHOLD() 100
 #define ENCODER_WAIT_TIME() 3
-
-// velocity
-#define VELOCITY() 90 // 80 to 100
 
 // motor
 #define R_MOTOR() 2
