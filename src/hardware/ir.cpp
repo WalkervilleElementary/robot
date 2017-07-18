@@ -13,21 +13,56 @@ Ir::Ir()
 
 int Ir::getTapeError()
 {
-  l_val_ = analogRead(L_QRD_SENSOR_);
-  r_val_ = analogRead(R_QRD_SENSOR_);
+  const int ll_val = analogRead(LL_QRD_SENSOR_);
+  const int lc_val = analogRead(LC_QRD_SENSOR_);
+  const int rc_val = analogRead(RC_QRD_SENSOR_);
+  const int rr_val = analogRead(RR_QRD_SENSOR_);
 
 #if DEBUG()
   LCD.home();
-  LCD.setCursor(0,0); LCD.print(l_val_);
-  LCD.setCursor(7,0); LCD.print(r_val_);
+  LCD.setCursor(0,0);  LCD.print(ll_val);
+  LCD.setCursor(5,0);  LCD.print(lc_val);
+  LCD.setCursor(10,0); LCD.print(rc_val);
+  LCD.setCursor(15,0); LCD.print(rr_val);
 #endif  // DEBUG()
-  l_on_ = l_val_ > tape_threshold_;
-  r_on_ = r_val_ > tape_threshold_;
+  const bool ll_on = ll_val > tape_threshold_;
+  const bool lc_on = lc_val > tape_threshold_;
+  const bool rc_on = rc_val > tape_threshold_;
+  const bool rr_on = rr_val > tape_threshold_;
 
-  if (l_on_ && r_on_) error_ = 0;
-  else if(l_on_ && !r_on_) error_ = 1;
-  else if(!l_on_ && r_on_) error_ = -1;
-  else error_ = (error_ > 0)? 5 : -5;
+  // ll lc rc rr val
+  // x  o  o  o   3
+  // x  x  o  o   2
+  // o  x  o  o   1
+  // o  x  x  o   0
+  // o  o  x  o  -1
+  // o  o  x  x  -2
+  // o  o  o  x  -3
+  // o  o  o  o  +/-5
+
+  if (lc_on)
+  {
+    if (rc_on) error_ = 0;
+    else if (ll_on) error_ = 2;
+    else error_ = 1;
+  }
+  else if (rc_on)
+  {
+    if (rr_on) error_ = -2;
+    else error_ = -1;
+  }
+  else if (ll_on)
+  {
+    error_ = 3;
+  }
+  else if (rr_on)
+  {
+    error_ = -3;
+  }
+  else
+  {
+    error_ = (error_ > 0)? 5 : -5;
+  }
 
   return error_;
 }

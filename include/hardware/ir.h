@@ -6,17 +6,16 @@
 namespace hardware
 {
 
-const int L_QRD_SENSOR_ = L_QRD_SENSOR();
-const int R_QRD_SENSOR_ = R_QRD_SENSOR();
+const int LL_QRD_SENSOR_ = LL_QRD_SENSOR();
+const int LC_QRD_SENSOR_ = LC_QRD_SENSOR();
+const int RC_QRD_SENSOR_ = RC_QRD_SENSOR();
+const int RR_QRD_SENSOR_ = RR_QRD_SENSOR();
+
 
 class Ir
 {
 private:
   // getTapeError
-  int l_val_;
-  int r_val_;
-  bool l_on_;
-  bool r_on_;
   int error_;
   int tape_threshold_;
 

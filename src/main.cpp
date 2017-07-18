@@ -77,30 +77,3 @@ void loop()
 */
 
 
-
-/* // loop for testing maneuver
-void loop()
-{
-  LCD.setCursor(0,0); LCD.print(encoder.get(hardware::R_ENCODER_));
-  LCD.setCursor(0,1); LCD.print(encoder.get(hardware::L_ENCODER_));
-  if (stopbutton())
-  {
-    driver.stop();
-    while (!startbutton())
-    {
-      distance = knob(6);
-      LCD.clear(); LCD.home();
-      LCD.setCursor(0,0); LCD.print(distance);
-      delay(50);
-    }
-    encoder.stop(hardware::R_ENCODER_);
-    encoder.stop(hardware::L_ENCODER_);
-    encoder.start(hardware::R_ENCODER_);
-    encoder.start(hardware::L_ENCODER_);
-    maneuver.straight(distance);
-  }
-  maneuver.loop();
-}
-*/
-
-

@@ -25,8 +25,10 @@
 #define ZIPLINE_MOTOR() 0
 
 // qrd sensors
-#define R_QRD_SENSOR() 1
-#define L_QRD_SENSOR() 2
+#define RR_QRD_SENSOR() 0
+#define RC_QRD_SENSOR() 1
+#define LC_QRD_SENSOR() 2
+#define LL_QRD_SENSOR() 3
 
 // encoder sensors
 #define R_ENCODER() 3
