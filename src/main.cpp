@@ -28,8 +28,7 @@ void setup()
   Serial.begin(9600) ;
   tape.setup(ir, driver);
   maneuver.setup(driver, encoder);
-
-  gate.setup(tape, ir);
+  gate.setup(tape, beacon, encoder);
 }
 
 int distance = 0;
@@ -40,7 +39,7 @@ void loop()
   LCD.clear(); LCD.home();
 #endif  // DEBUG()
 
-  tape.loop();
+  gate.loop();
 
   if (stopbutton())
   {

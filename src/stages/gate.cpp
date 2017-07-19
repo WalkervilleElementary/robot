@@ -8,25 +8,28 @@ namespace stages
 {
 Gate::Gate()
 {
-  threshold_ = GATE_IR_STRENGTH_THRESHOLD();
   state_ = 0;
 #if USE_UPDATE()
   update_state_ = 0;
 #endif  // USE_UPDATE()
 }
 
-void Gate::setup(sequences::Tape follower, hardware::Ir ir)
+void Gate::setup(const sequences::Tape& follower, const hardware::Beacon& beacon, const hardware::Encoder& encoder)
 {
-  ir_ = ir;
+  beacon_ = beacon;
   follower_ = follower;
+  encoder_ = encoder;
 }
 
 bool Gate::loop()
 {
   switch (state_)
   {
-    case 0:  // going towards gate
-      if (ir_.strength() < threshold_)
+    case 0:
+      encoder_start_ = encoder_.get(hardware::R_ENCODER_); 
+      state_++;
+    case 1:  // going towards gate
+      if (encoder_.get(hardware::R_ENCODER_) - encoder_start_ < distance_)
       {
         follower_.loop();
       }
@@ -35,9 +38,10 @@ bool Gate::loop()
         follower_.stop();
         state_ ++;
       }
+      LCD.println(encoder_.get(hardware::R_ENCODER_) - encoder_start_);
       break;
-    case 1:  // waiting at the gate
-      if (ir_.tenKHZ())
+    case 2:  // waiting at the gate
+      if (beacon_.leftIntensity() + beacon_.rightIntensity() > 150)
       {
         follower_.loop();
         return true;
@@ -68,14 +72,14 @@ bool Gate::update()
 
     change = (start_val - end_val)/4 ;
     LCD.clear();  LCD.home();
-    switch (state_)
+    switch (update_state_)
     {
-    case 0:
-      threshold_ += change;
-      LCD.setCursor(0,0); LCD.print("threshold");
-      LCD.setCursor(0,1); LCD.print(threshold_);
-      break;
-     }
+      case 0:
+        distance_ += change;
+        LCD.setCursor(0,0); LCD.print("distance");
+        LCD.setCursor(0,1); LCD.print(distance_);
+        break;
+    }
   }
 }
 #endif  // marco USE_UPDATE()
