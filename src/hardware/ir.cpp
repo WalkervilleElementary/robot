@@ -79,6 +79,22 @@ int Ir::strength()
   return 1000;
 }
 
+bool Ir::isIntersection()
+{
+  const int ll_val = analogRead(LL_QRD_SENSOR_);
+  const int lc_val = analogRead(LC_QRD_SENSOR_);
+  const int rc_val = analogRead(RC_QRD_SENSOR_);
+  const int rr_val = analogRead(RR_QRD_SENSOR_);
+
+  ll_val > tape_threshold_;
+  lc_val > tape_threshold_;
+  rc_val > tape_threshold_;
+  rr_val > tape_threshold_;
+
+  return ll_val > tape_threshold_ && lc_val > tape_threshold_ &&
+         rc_val > tape_threshold_ && rr_val > tape_threshold_;
+}
+
 #if USE_UPDATE()
 void Ir::update()
 {

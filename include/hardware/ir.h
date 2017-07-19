@@ -26,6 +26,7 @@ public:
   int getTapeError();
   bool tenKHZ();
   int strength();
+  bool isIntersection();
 #if USE_UPDATE()
   void update();
 #endif  // USE_UPDATE()

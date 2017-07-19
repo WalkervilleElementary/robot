@@ -3,10 +3,10 @@
 
 #include "configs.h"
 
-#include "templates/sequnce.h"
+#include "templates/sequence.h"
 #include "hardware/ir.h"
 #include "sequences/claw.h"
-#include "sequences/maneuver"
+#include "sequences/maneuver.h"
 #include "sequences/tape.h"
 
 namespace stages
@@ -17,14 +17,15 @@ class Pickup : public templates::Sequence
 private:
   hardware::Ir ir_;
   sequences::Claw claw_;
-  sequnces::Maneuver maneuver_;
-  sequnces::Tape follower_;
+  sequences::Maneuver maneuver_;
+  sequences::Tape follower_;
 
   char state_;
+  bool side_;
+  int agents_;
 
+  int turn_distance_;
   int drive_distance_;
-  int arm_degree_;
-  int claw_degree_;
 
 #if USE_UPDATE()
   char update_state_;
@@ -34,15 +35,15 @@ private:
 #endif  // USE_UPDATE()
 
 public:
-  Pickup()
+  Pickup();
   inline ~Pickup(){};
   void setup(hardware::Ir ir, sequences::Claw claw,
-              sequences::Maneuver maneuver, sequneces::Tape follower);
+              sequences::Maneuver maneuver, sequences::Tape follower);
 
   bool loop();
 
 #if USE_UPDATE()
-  bool update()
+  bool update();
 #endif  // USE_UPDATE()
 };  // class Pickup
 
