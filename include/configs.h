@@ -7,9 +7,9 @@
 
 // PID initial values
 #define GAIN_T() 1
-#define GAIN_P() 8
+#define GAIN_P() 12
 #define GAIN_I() 0
-#define GAIN_D() 5
+#define GAIN_D() 0
 
 // thresholds
 #define TAPE_IR_STRENGTH_THRESHOLD() 100
