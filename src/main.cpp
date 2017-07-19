@@ -2,25 +2,32 @@
 
 #include <phys253.h>
 #include <LiquidCrystal.h>
+
 #include "hardware/driver.h"
 #include "hardware/ir.h"
 #include "hardware/encoder.h"
 #include "hardware/beacon.h"
+
+#include "sequences/claw.h"
 #include "sequences/tape.h"
 #include "sequences/zipline.h"
 #include "sequences/maneuver.h"
+
 #include "stages/gate.h"
+#include "stages/pickup.h"
 
 hardware::Driver driver;
 hardware::Ir ir;
 hardware::Encoder encoder;
 hardware::Beacon beacon;
 
+sequences::Claw claw;
 sequences::Tape tape;
 sequences::Zipline zipline;
 sequences::Maneuver maneuver;
 
 stages::Gate gate;
+stages::Pickup pickup;
 
 void setup()
 {
@@ -30,9 +37,9 @@ void setup()
   maneuver.setup(driver, encoder);
 
   gate.setup(tape, ir);
+  pickup.setup(ir, claw, maneuver, tape);
 }
 
-int distance = 0;
 
 void loop()
 {
@@ -52,7 +59,32 @@ void loop()
 }
 
 /*
- // loop for testing maneuver
+// loop for testing pickup
+
+void loop()
+{
+#if DEBUG()
+  LCD.clear(); LCD.home();
+#endif  // DEBUG()
+
+  pickup.loop();
+
+  if (stopbutton())
+  {
+    pickup.update();
+    tape.update();
+    ir.update();
+  }
+
+  delay(50);
+}
+*/
+
+/*
+// loop for testing maneuver
+
+int distance = 0;
+
 void loop()
 {
   LCD.clear(); LCD.home();
