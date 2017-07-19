@@ -40,7 +40,6 @@ void setup()
 }
 
 int state = 0;
-
 void loop()
 {
 #if DEBUG()
@@ -63,7 +62,6 @@ void loop()
     case 1:
       tape.loop();
   }
-
   delay(50);
 }
 
@@ -83,8 +81,9 @@ void loop()
     pickup.update();
     tape.update();
     ir.update();
+    gate.update();
+    // ir.update();
   }
-
   delay(50);
 }
 */
