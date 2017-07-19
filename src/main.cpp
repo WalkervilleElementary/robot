@@ -54,6 +54,7 @@ void loop()
   if (stopbutton())
   {
 <<<<<<< HEAD
+<<<<<<< HEAD
     gate.update();
     // ir.update();
   }
@@ -68,6 +69,9 @@ void loop()
     case 1:
       tape.loop();
 =======
+=======
+    driver.stop();
+>>>>>>> 3d092c7... Stop motor before update
     tape.update();
     ir.update();
     driver.update();
@@ -96,6 +100,7 @@ void loop()
 
   if (stopbutton())
   {
+    driver.stop();
     pickup.update();
     tape.update();
     ir.update();
