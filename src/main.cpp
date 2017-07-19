@@ -52,6 +52,7 @@ void loop()
 
   if (stopbutton())
   {
+    driver.stop();
     tape.update();
     ir.update();
     driver.update();
@@ -72,6 +73,7 @@ void loop()
 
   if (stopbutton())
   {
+    driver.stop();
     pickup.update();
     tape.update();
     ir.update();
