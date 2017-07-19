@@ -61,6 +61,7 @@ void loop()
   delay(50);
 }
 
+
 // loop for testing pickup
 /*
 void loop()
@@ -86,6 +87,7 @@ void loop()
 // loop for testing maneuver
 /*
 int distance = 0;
+int mode = 0;
 
 void loop()
 {
@@ -98,16 +100,22 @@ void loop()
     driver.stop();
     while (!startbutton())
     {
+      if (stopbutton()) mode = (mode + 1) % 2;
       distance = knob(6);
       LCD.clear(); LCD.home();
-      LCD.setCursor(0,0); LCD.print(distance);
+      LCD.setCursor(0,0);
+      if (mode == 0) LCD.print("distance");
+      else LCD.print("degrees");
+      LCD.setCursor(0,1); LCD.print(distance);
       delay(50);
     }
     encoder.stop(hardware::R_ENCODER_);
     encoder.stop(hardware::L_ENCODER_);
     encoder.start(hardware::R_ENCODER_);
     encoder.start(hardware::L_ENCODER_);
-    maneuver.straight(distance);
+
+    if (mode == 0) maneuver.straight(distance);
+    else maneuver.turn(distance);
   }
   delay(50);
 }
