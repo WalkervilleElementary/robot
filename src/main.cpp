@@ -39,11 +39,7 @@ void setup()
   pickup.setup(ir, claw, maneuver, tape);
 }
 
-<<<<<<< HEAD
 int state = 0;
-=======
-// Tape follow loop
->>>>>>> 9da4755... Add acceleration limit
 
 void loop()
 {
@@ -53,8 +49,6 @@ void loop()
 
   if (stopbutton())
   {
-<<<<<<< HEAD
-<<<<<<< HEAD
     gate.update();
     // ir.update();
   }
@@ -68,28 +62,14 @@ void loop()
         break;
     case 1:
       tape.loop();
-=======
-=======
-    driver.stop();
->>>>>>> 3d092c7... Stop motor before update
-    tape.update();
-    ir.update();
-    driver.update();
->>>>>>> 9da4755... Add acceleration limit
   }
 
   delay(50);
 }
 
-<<<<<<< HEAD
 /*
-<<<<<<< HEAD
-// loop for testing gate
-=======
-=======
->>>>>>> 9da4755... Add acceleration limit
 // loop for testing pickup
-/*
+
 void loop()
 {
 #if DEBUG()
@@ -100,7 +80,6 @@ void loop()
 
   if (stopbutton())
   {
-    driver.stop();
     pickup.update();
     tape.update();
     ir.update();
@@ -110,11 +89,11 @@ void loop()
 }
 */
 
-// loop for testing maneuver
 /*
+// loop for testing maneuver
+
 int distance = 0;
 
->>>>>>> e2138ca... Proper implementation of pickup
 void loop()
 {
   LCD.clear(); LCD.home();
