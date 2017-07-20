@@ -1,4 +1,7 @@
 build
 programmer_config.cmake
 *.swp
+*.bak
+tools
+avrenv.bat
 

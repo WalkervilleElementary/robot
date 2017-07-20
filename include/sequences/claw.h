@@ -7,11 +7,31 @@
 
 namespace sequences
 {
+  const int LEFT_CLAW = 0;
+  const int RIGHT_CLAW = 1;
 
 class Claw : public templates::Sequence
 {
 private:
-  unsigned long start_time;
+  unsigned long delay_;
+  int state_;
+  int degree_;
+
+  int raise_pause;
+  int grab_pause;
+  int retrieve_pause;
+
+  int left_claw_extended;
+  int left_claw_rest;
+  int left_claw_vertical;
+  int left_open;
+  int left_close;
+  // Right values have not been tested
+  int right_claw_extended;
+  int right_claw_rest;
+  int right_claw_vertical;
+  int right_open;
+  int right_close;
 
 #if USE_UPDATE()
   char update_state_;
