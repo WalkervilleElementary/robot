@@ -86,7 +86,7 @@ set(SRC_PATH     "src")
 file(GLOB_RECURSE MAIN_SRC  "${SRC_PATH}/*.cpp"
                     "${SRC_PATH}/*.c")
 file(GLOB_RECURSE MAIN_INC "${INC_PATH}/*.h")
-                    
+
 include_directories(${INC_PATH})
 
 add_executable(${PROJECT_NAME} ${MAIN_SRC})
