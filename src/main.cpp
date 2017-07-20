@@ -57,6 +57,7 @@ void loop()
     platform.update();
     state = 0;  // restart routine after updating
   }
+<<<<<<< HEAD
 
   // run through raise/lower routine once
   switch (state)
@@ -96,6 +97,9 @@ void loop()
       // qrd.update();
     }
 
+=======
+
+>>>>>>> 51cfb3f... Implement claw
   // Tape follow loop
   switch (state)
   {
@@ -168,5 +172,40 @@ void loop()
     else maneuver.turn(distance);
   }
   delay(50);
+}
+*/
+
+// loop for claw testing
+/*
+void loop()
+{
+  int state = 0;
+  while (!startbutton())
+  {
+    if (stopbutton())
+      claw.update();
+    state = knob(6);
+    LCD.clear(); LCD.home();
+    LCD.setCursor(0,0); LCD.print(state);
+    delay(100);
+  }
+  LCD.clear(); LCD.home();
+  LCD.setCursor(0,1); LCD.print(state);
+  if (state < 300)
+  {
+    LCD.setCursor(0,0); LCD.print("raise");
+    claw.raise(sequences::LEFT_CLAW);
+  }
+  else if (state < 600)
+  {
+    LCD.setCursor(0,0); LCD.print("grab");
+    claw.grab(sequences::LEFT_CLAW);
+  }
+  else
+  {
+    LCD.setCursor(0,0); LCD.print("release");
+    claw.release(sequences::LEFT_CLAW);
+  }
+  while (!claw.loop());
 }
 */
