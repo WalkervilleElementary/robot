@@ -10,7 +10,7 @@
 
 #include "sequences/claw.h"
 #include "sequences/tape.h"
-#include "sequences/zipline.h"
+#include "sequences/platform.h"
 #include "sequences/maneuver.h"
 
 #include "stages/gate.h"
@@ -23,7 +23,7 @@ hardware::Beacon beacon;
 
 sequences::Claw claw;
 sequences::Tape tape;
-sequences::Zipline zipline;
+sequences::Platform platform;
 sequences::Maneuver maneuver;
 
 stages::Gate gate;
@@ -34,11 +34,104 @@ void setup()
   #include <phys253setup.txt>
   Serial.begin(9600) ;
   tape.setup(qrd, driver);
+  platform.setup(driver);
   maneuver.setup(driver, encoder);
   gate.setup(tape, beacon, encoder);
   pickup.setup(qrd, claw, maneuver, tape);
 }
 
+// loop for testing platform
+int state = 0;
+void loop()
+{
+#if DEBUG()
+  LCD.clear(); LCD.home();
+  LCD.setCursor(0,0);
+  LCD.print(digitalRead(PLATFORM_UPPER_SWITCH()));
+  LCD.print(digitalRead(PLATFORM_LOWER_SWITCH()));
+  LCD.setCursor(0, 1); LCD.print(state);
+#endif  // DEBUG()
+
+  if (stopbutton())
+  {
+    platform.update();
+    state = 0;  // restart routine after updating
+  }
+
+  // run through raise/lower routine once
+  switch (state)
+  {
+    case 0:  // starting state
+      platform.raise();
+      state++;
+    case 1:  // raising
+      if (platform.loop())
+        state++;
+      break;
+    case 2:
+      delay(1000);  // pause for breath?
+      platform.lower();
+      state++;
+    case 3:  // lowering
+      if (platform.loop())
+        state++;
+      break;
+  }
+  delay(LOOP_DELAY());
+}
+
+// loop for testing gate routine
+/*
+int state = 0;
+void loop()
+{
+#if DEBUG()
+  LCD.clear(); LCD.home();
+  LCD.setCursor(0,0);
+  LCD.print(digitalRead(PLATFORM_UPPER_SWITCH()));
+  LCD.print(digitalRead(PLATFORM_LOWER_SWITCH()));
+  LCD.setCursor(0, 1); LCD.print(state);
+#endif  // DEBUG()
+
+  if (stopbutton())
+<<<<<<< 51cfb3f2d5a969225682be39c51bdac9211338ac
+  {
+    platform.update();
+    state = 0;  // restart routine after updating
+  }
+<<<<<<< HEAD
+
+  // run through raise/lower routine once
+  switch (state)
+  {
+    case 0:  // starting state
+      platform.raise();
+      state++;
+    case 1:  // raising
+      if (platform.loop())
+        state++;
+      break;
+    case 2:
+      delay(1000);  // pause for breath?
+      platform.lower();
+      state++;
+    case 3:  // lowering
+      if (platform.loop())
+        state++;
+      break;
+  }
+=======
+    {
+      gate.update();
+      // qrd.update();
+    }
+>>>>>>> Platform raising and lowering
+
+  delay(LOOP_DELAY());
+}
+
+// loop for testing gate routine
+/*
 int state = 0;
 void loop()
 {
@@ -47,11 +140,15 @@ void loop()
 #endif  // DEBUG()
 
   if (stopbutton())
-  {
-    gate.update();
-    // qrd.update();
-  }
+    {
+      gate.update();
+      // qrd.update();
+    }
 
+=======
+
+>>>>>>> 51cfb3f... Implement claw
+>>>>>>> zipline-stuff
   // Tape follow loop
   switch (state)
   {
@@ -65,6 +162,7 @@ void loop()
   }
   delay(50);
 }
+*/
 
 // loop for testing pickup
 /*

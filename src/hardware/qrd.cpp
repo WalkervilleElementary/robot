@@ -67,18 +67,6 @@ int Qrd::getTapeError()
   return error_;
 }
 
-bool Qrd::tenKHZ()
-{
-  // TODO
-  return true;
-}
-
-int Qrd::strength()
-{
-  // TODO
-  return 1000;
-}
-
 bool Qrd::isIntersection()
 {
   const int ll_val = analogRead(LL_QRD_SENSOR_);
