@@ -1,5 +1,5 @@
-#ifndef WALKERVILLE_ROBOT_HARDWARE_IR_H
-#define WALKERVILLE_ROBOT_HARDWARE_IR_H
+#ifndef WALKERVILLE_ROBOT_HARDWARE_QRD_H
+#define WALKERVILLE_ROBOT_HARDWARE_QRD_H
 
 #include "configs.h"
 
@@ -12,7 +12,7 @@ const int RC_QRD_SENSOR_ = RC_QRD_SENSOR();
 const int RR_QRD_SENSOR_ = RR_QRD_SENSOR();
 
 
-class Ir
+class Qrd
 {
 private:
   // getTapeError
@@ -20,8 +20,8 @@ private:
   int tape_threshold_;
 
 public:
-  Ir();
-  inline ~Ir(){};
+  Qrd();
+  inline ~Qrd(){};
 
   int getTapeError();
   bool tenKHZ();
@@ -30,8 +30,8 @@ public:
 #if USE_UPDATE()
   void update();
 #endif  // USE_UPDATE()
-};  // class Ir
+};  // class Qrd
 
 }  // namespace hardware
 
-#endif  // WALKERVILLE_ROBOT_HARDWARE_IR_H
+#endif  // WALKERVILLE_ROBOT_HARDWARE_QRD_H

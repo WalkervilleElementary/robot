@@ -18,15 +18,15 @@ Tape::Tape()
 #endif  // USE_UPDATE()
 }
 
-void Tape::setup (const hardware::Ir& ir, const hardware::Driver& motor)
+void Tape::setup (const hardware::Qrd& qrd, const hardware::Driver& motor)
 {
-  ir_ = ir;
+  qrd_ = qrd;
   motor_ = motor;
 }
 
 bool Tape::loop()
 {
-  error_ = ir_.getTapeError();
+  error_ = qrd_.getTapeError();
   command_ = computeCommand(error_, 100);
 #if DEBUG()
   LCD.home() ;

@@ -4,7 +4,7 @@
 #include "configs.h"
 
 #include "templates/sequence.h"
-#include "hardware/ir.h"
+#include "hardware/qrd.h"
 #include "sequences/claw.h"
 #include "sequences/maneuver.h"
 #include "sequences/tape.h"
@@ -15,7 +15,7 @@ namespace stages
 class Pickup : public templates::Sequence
 {
 private:
-  hardware::Ir ir_;
+  hardware::Qrd qrd_;
   sequences::Claw claw_;
   sequences::Maneuver maneuver_;
   sequences::Tape follower_;
@@ -37,7 +37,7 @@ private:
 public:
   Pickup();
   inline ~Pickup(){};
-  void setup(hardware::Ir ir, sequences::Claw claw,
+  void setup(hardware::Qrd qrd, sequences::Claw claw,
               sequences::Maneuver maneuver, sequences::Tape follower);
 
   bool loop();

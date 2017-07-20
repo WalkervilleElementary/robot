@@ -12,13 +12,13 @@ Pickup::Pickup()
   agents_ = 0;
   drive_distance_ = 6;  // TODO make this configurable
   turn_distance_ = 90;  // TODO make this configurable
-  side_ = digitalRead(0);  // TODO set this up in ir
+  side_ = digitalRead(0);  // TODO set this up in qrd
 }
 
-void Pickup::setup(hardware::Ir ir, sequences::Claw claw,
+void Pickup::setup(hardware::Qrd qrd, sequences::Claw claw,
             sequences::Maneuver maneuver, sequences::Tape follower)
 {
-  ir_ = ir;
+  qrd_ = qrd;
   claw_ = claw;
   maneuver_ = maneuver;
   follower_ = follower;
@@ -41,7 +41,7 @@ bool Pickup::loop()
       claw_.raise(0);  // TODO change to values defined by claw
       claw_.raise(1);
     case 2:  // Travelling to next agent
-      if (ir_.isIntersection())
+      if (qrd_.isIntersection())
       {
         follower_.stop();
         state_++;
@@ -105,7 +105,7 @@ bool Pickup::loop()
       claw_.loop();
     case 0:  // right after the gate
     case 3:  // Just turn into the circle
-      if (ir_.isIntersection())
+      if  qrd_.isIntersection())
       {
         follower_.stop();
         state_++;
