@@ -1,7 +1,11 @@
 build
 programmer_config.cmake
 *.swp
+*.desktop
+*.directory
+*.kate-swp
 *.bak
 tools
 avrenv.bat
+.vscode
 
