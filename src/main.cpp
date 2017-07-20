@@ -32,6 +32,7 @@ void setup()
 }
 
 int distance = 0;
+int state = 0;
 
 void loop()
 {
@@ -39,25 +40,34 @@ void loop()
   LCD.clear(); LCD.home();
 #endif  // DEBUG()
 
-  gate.loop();
-
   if (stopbutton())
   {
-    tape.update();
-    ir.update();
+    gate.update();
+    // ir.update();
+  }
+
+  switch (state)
+  {
+    case 0:
+      if (gate.loop())
+        state++;
+      else
+        break;
+    case 1:
+      tape.loop();
   }
 
   delay(50);
 }
 
 /*
- // loop for testing maneuver
+// loop for testing gate
 void loop()
 {
   LCD.clear(); LCD.home();
   LCD.setCursor(0,0); LCD.print(encoder.get(hardware::R_ENCODER_));
   LCD.setCursor(0,1); LCD.print(encoder.get(hardware::L_ENCODER_));
-  maneuver.loop();
+  gate.loop();
   if (stopbutton())
   {
     driver.stop();
@@ -77,5 +87,3 @@ void loop()
   delay(50);
 }
 */
-
-

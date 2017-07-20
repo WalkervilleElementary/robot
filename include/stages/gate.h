@@ -20,13 +20,20 @@ private:
   unsigned int encoder_start_;
   int distance_;  // configurable
   char state_;
+  int threshold_;
 
 #if USE_UPDATE()
   int start_val;
   int end_val;
   int change;
-  char  update_state_;
-#endif  // USE_UPDATE
+  char update_state_;
+#endif  // USE_UPDATE()
+
+#if CAUTIOUS_GATE_ROUTINE()
+  /// gate state: 0 = unknown, 1 = closed
+  char gate_state_;
+#endif  // CAUTIOUS_GATE_ROUTINE()
+
 public:
   Gate();
   inline ~Gate(){};
