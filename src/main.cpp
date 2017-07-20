@@ -10,7 +10,7 @@
 
 #include "sequences/claw.h"
 #include "sequences/tape.h"
-#include "sequences/zipline.h"
+#include "sequences/platform.h"
 #include "sequences/maneuver.h"
 
 #include "stages/gate.h"
@@ -23,7 +23,7 @@ hardware::Beacon beacon;
 
 sequences::Claw claw;
 sequences::Tape tape;
-sequences::Zipline zipline;
+sequences::Platform platform;
 sequences::Maneuver maneuver;
 
 stages::Gate gate;
@@ -47,13 +47,12 @@ void loop()
 #endif  // DEBUG()
 
   if (stopbutton())
-  {
-    gate.update();
-    // qrd.update();
-  }
-}
+    {
+      gate.update();
+      // qrd.update();
+    }
 
-// Tape follow loop
+  // Tape follow loop
   switch (state)
   {
     case 0:

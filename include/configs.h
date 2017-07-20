@@ -14,6 +14,9 @@
 // motor
 #define ACCEL_LIMIT() 50 // This is not the correct value
 #define VELOCITY() 90 // 80 to 100
+#define PLATFORM_RAISE_SPEED() -120
+#define PLATFORM_LOWER_SPEED() 60
+#define BACKUP_SPEED() -40
 
 // thresholds
 #define TAPE_QRD_STRENGTH_THRESHOLD() 100
@@ -23,7 +26,7 @@
 // motor
 #define R_MOTOR() 2
 #define L_MOTOR() 3 // going backwards
-#define ZIPLINE_MOTOR() 0
+#define PLATFORM_MOTOR() 0
 
 // qrd sensors
 #define RR_QRD_SENSOR() 0
@@ -38,6 +41,10 @@
 // 10 KHz IR sensors
 #define L_BEACON_SENSOR() 4
 #define R_BEACON_SENSOR() 5
+
+// switches
+#define PLATFORM_UPPER_SWITCH() 7
+#define PLATFORM_LOWER_SWITCH() 6
 
 // maneuver
 #define WHEEL_DIAMETER() 6.0 // cm
