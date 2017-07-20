@@ -35,7 +35,11 @@ bool Platform::loop()
     case 2:  // lower just enough so switch is no longer active
       if (!digitalRead(PLATFORM_UPPER_SWITCH()))
       {
+<<<<<<< HEAD
+        motor.speed(PLATFORM_MOTOR(), (int)(lower_speed_ * 0.6));
+=======
         motor.speed(PLATFORM_MOTOR(), lower_speed_);
+>>>>>>> 3a60eb9... Platform logic completed and tested
         return false;
       }
       else

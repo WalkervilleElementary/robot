@@ -29,7 +29,7 @@
 #define ACCEL_LIMIT() 50 // This is not the correct value
 #define VELOCITY() 90 // 80 to 100
 #define PLATFORM_RAISE_SPEED() -110
-#define PLATFORM_LOWER_SPEED() 38
+#define PLATFORM_LOWER_SPEED() 40
 #define BACKUP_SPEED() -40  // for backing up after getting zipline
 
 // thresholds
