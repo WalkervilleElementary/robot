@@ -5,7 +5,7 @@
 
 #include "templates/sequence.h"
 #include "hardware/driver.h"
-#include "hardware/ir.h"
+#include "hardware/qrd.h"
 
 namespace sequences
 {
@@ -36,7 +36,7 @@ private:
   char state_;
 #endif  // USE_UPDATE()
 
-  hardware::Ir ir_;
+  hardware::Qrd qrd_;
   hardware::Driver motor_;
 #pragma endregion  // pragma region variables
 
@@ -45,7 +45,7 @@ private:
 public:
   Tape();
   inline ~Tape(){};
-  void setup(const hardware::Ir& ir, const hardware::Driver& motor);
+  void setup(const hardware::Qrd& qrd, const hardware::Driver& motor);
   void stop();
   bool loop();
 #if USE_UPDATE()

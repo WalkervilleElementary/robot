@@ -1,17 +1,17 @@
 #include "configs.h"
 
 #include <phys253.h>
-#include "hardware/ir.h"
+#include "hardware/qrd.h"
 
 namespace hardware
 {
 
-Ir::Ir()
+Qrd::Qrd()
 {
-  tape_threshold_ = TAPE_IR_STRENGTH_THRESHOLD();
+  tape_threshold_ = TAPE_QRD_STRENGTH_THRESHOLD();
 }
 
-int Ir::getTapeError()
+int Qrd::getTapeError()
 {
   const int ll_val = analogRead(LL_QRD_SENSOR_);
   const int lc_val = analogRead(LC_QRD_SENSOR_);
@@ -67,19 +67,19 @@ int Ir::getTapeError()
   return error_;
 }
 
-bool Ir::tenKHZ()
+bool Qrd::tenKHZ()
 {
   // TODO
   return true;
 }
 
-int Ir::strength()
+int Qrd::strength()
 {
   // TODO
   return 1000;
 }
 
-bool Ir::isIntersection()
+bool Qrd::isIntersection()
 {
   const int ll_val = analogRead(LL_QRD_SENSOR_);
   const int lc_val = analogRead(LC_QRD_SENSOR_);
@@ -96,7 +96,7 @@ bool Ir::isIntersection()
 }
 
 #if USE_UPDATE()
-void Ir::update()
+void Qrd::update()
 {
   delay(1000);
   while(startbutton());

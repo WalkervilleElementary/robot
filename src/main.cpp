@@ -4,7 +4,7 @@
 #include <LiquidCrystal.h>
 
 #include "hardware/driver.h"
-#include "hardware/ir.h"
+#include "hardware/qrd.h"
 #include "hardware/encoder.h"
 #include "hardware/beacon.h"
 
@@ -17,7 +17,7 @@
 #include "stages/pickup.h"
 
 hardware::Driver driver;
-hardware::Ir ir;
+hardware::Qrd qrd;
 hardware::Encoder encoder;
 hardware::Beacon beacon;
 
@@ -33,10 +33,10 @@ void setup()
 {
   #include <phys253setup.txt>
   Serial.begin(9600) ;
-  tape.setup(ir, driver);
+  tape.setup(qrd, driver);
   maneuver.setup(driver, encoder);
   gate.setup(tape, beacon, encoder);
-  pickup.setup(ir, claw, maneuver, tape);
+  pickup.setup(qrd, claw, maneuver, tape);
 }
 
 int state = 0;
@@ -49,7 +49,7 @@ void loop()
   if (stopbutton())
   {
     gate.update();
-    // ir.update();
+    // qrd.update();
   }
 
   switch (state)
@@ -80,9 +80,9 @@ void loop()
   {
     pickup.update();
     tape.update();
-    ir.update();
+    qrd.update();
     gate.update();
-    // ir.update();
+    // qrd.update();
   }
   delay(50);
 }
