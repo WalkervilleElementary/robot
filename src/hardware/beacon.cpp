@@ -20,25 +20,11 @@ Beacon::Beacon()
 }
 
 uint32_t Beacon::leftIntensity() const {
-  uint8_t samples[num_samples_];
-  uint8_t old_ADCSRA = ADCSRA;
-  ADCSRA &= ~PS_128;
-  ADCSRA |= PS_16;
-  sample_signal(L_BEACON_SENSOR_, num_samples_, samples);
-  uint32_t left_intensity = detect_frequency(10000, sample_rate_, num_samples_, samples);
-  ADCSRA = old_ADCSRA;
-  return left_intensity;
+  return detect_10khz(L_BEACON_SENSOR_);
 }
 
 uint32_t Beacon::rightIntensity() const {
-  uint8_t samples[num_samples_];
-  uint8_t old_ADCSRA = ADCSRA;
-  ADCSRA &= ~PS_128;
-  ADCSRA |= PS_16;
-  sample_signal(R_BEACON_SENSOR_, num_samples_, samples);
-  uint32_t right_intensity = detect_frequency(10000, sample_rate_, num_samples_, samples);
-  ADCSRA = old_ADCSRA;
-  return right_intensity;
+  return detect_10khz(R_BEACON_SENSOR_);
 }
 
 #if USE_UPDATE()
