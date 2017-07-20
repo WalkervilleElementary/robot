@@ -56,13 +56,9 @@ bool Maneuver::loop()
 {
   switch(state_)
   {
-    case 1:
-    case 2:
+    case 1:  // straight
+    case 2:  // turn
     {
-#if DEBUG()
-      LCD.setCursor(6,0); LCD.print(right_limit_);
-      LCD.setCursor(6,1); LCD.print(left_limit_);
-#endif  // DEBUG()
       const unsigned int right_encoder = encoder_.get(hardware::R_ENCODER_);
       const unsigned int left_encoder =  encoder_.get(hardware::L_ENCODER_);
       unsigned int right_velocity = 0;
@@ -72,12 +68,9 @@ bool Maneuver::loop()
       if (left_encoder < left_limit_)
         left_velocity = gain_ * (left_limit_ - left_encoder + 30);
 
-      if (right_velocity != 0 || left_velocity != 0)
+      if ((state_ = 2 && (right_velocity != 0 || left_velocity != 0)) ||
+          (state_ = 1 && right_velocity != 0 && left_velocity != 0))
       {
-#if DEBUG()
-        LCD.setCursor(11,0); LCD.print(right_velocity);
-        LCD.setCursor(11,1); LCD.print(left_velocity);
-#endif  // DEBUG()
         motor_.sendWheelVelocities(right_velocity, left_velocity);
         return false;
       }
@@ -91,8 +84,10 @@ bool Maneuver::loop()
       return true;
     default:
       // TODO throw error
+      motor_.stop();
       LCD.clear(); LCD.home();
       LCD.setCursor(0,0); LCD.print("MANUEVER ENTERED WEIRD STATE");
+      delay(1000);
   }
   return false;
 }

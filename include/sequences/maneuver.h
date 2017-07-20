@@ -14,7 +14,7 @@ namespace sequences
 class Maneuver : public templates::Sequence
 {
 private:
-  int8_t state_;
+  int state_;
   unsigned int right_limit_;
   unsigned int left_limit_;
 

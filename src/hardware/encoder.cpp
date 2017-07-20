@@ -1,5 +1,7 @@
 #include "hardware/encoder.h"
-#include "avr/interrupt.h"
+
+#include <phys253.h>
+#include <avr/interrupt.h>
 
 namespace hardware
 {

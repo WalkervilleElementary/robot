@@ -3,10 +3,6 @@
 
 #include "configs.h"
 
-#include <phys253.h>
-#include <avr/interrupt.h>
-#include <LiquidCrystal.h>
-
 namespace hardware
 {
   const int R_ENCODER_ = R_ENCODER();
@@ -20,13 +16,13 @@ class Encoder
 private:
   void enableExternalInterrupt(unsigned int INTX, unsigned int mode);
   void disableExternalInterrupt(unsigned int INTX);
+  void start(unsigned int INTX);
+  unsigned int stop(unsigned int INTX);
 
 public:
   Encoder();
   inline ~Encoder(){};
 
-  void start(unsigned int INTX);
-  unsigned int stop(unsigned int INTX);
   unsigned int get(unsigned int INTX);
 
   void loop();
