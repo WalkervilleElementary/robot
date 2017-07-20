@@ -1,5 +1,6 @@
 #include "utils/filter.h"
-#include <Arduino.h>
+#include <avr/io.h>
+#include <avr/interrupt.h>
 
 const int16_t fixed_sin_table[256] = {
     0,3,6,9,13,16,19,22,25,28,31,34,38,41,44,47,
@@ -59,43 +60,65 @@ uint32_t uint_sqrt(uint32_t n) {
     return res;
 }
 
-/**
- * Samples an analog signal from a pin into a buffer, at 8 bits resolution.
- * in: analog pin number (0-7 on TINAH)
- * num_samples: number of samples to take
- * out: pointer to memory of at least num_samples bytes
- */
 void sample_signal(uint8_t pin, size_t num_samples, uint8_t* out) {
     cli();
-    for(size_t i=0; i < num_samples; i++) {
-        out[i] = analogRead(pin) >> 2;
+    
+    //save ADCSRA to restore later
+    uint8_t old_ADCSRA = ADCSRA;
+    
+    //set input pin and use VCC as reference voltage
+    ADMUX = (pin & 0x07) | (1<<REFS0) | (1<<ADLAR);
+    //enable ADC, start conversion, enable free running, 1/16 clock prescaler
+    ADCSRA = (1<<ADEN) | (1<<ADSC) | (1<<ADFR) | (1<<ADPS2);
+    
+    for (size_t i = 0; i < num_samples; i++) {
+         //wait for conversion to complete
+        while ((ADCSRA & (1<<ADIF)) == 0);
+        //reset conversion complete flag
+        ADCSRA |= (1<<ADIF);    
+        //read converted value to buffer
+        out[i] = ADCH;                     
     }
+    
+    //restore previous state of ADCSRA
+    ADCSRA = old_ADCSRA;
     sei();
 }
 
-/**
- * Analyzes samples and returns the magnitude of a frequency component
- * detection_frequency: in Hz
- * sample_rate: in Hz
- * num_samples: number of samples to analyze.
- */
-uint32_t detect_frequency(uint32_t detection_frequency, uint32_t sample_rate, size_t num_samples, uint8_t* samples) {
+uint32_t detect_frequency(uint8_t* samples, size_t num_samples, uint32_t detection_frequency, uint32_t sample_rate) {
     uint16_t theta = 0;
     uint16_t d_theta = (detection_frequency << 16) / sample_rate;
     int32_t real = 0;
     int32_t cplx = 0;
     int32_t signal_sum = 0;
+    
     for (uint16_t n = 0; n < num_samples; n++) {
         signal_sum += samples[n];
     }
     int16_t signal_offset = signal_sum / num_samples;
+    
     for (uint16_t n = 0; n < num_samples; n++) {
         real += ((samples[n] - signal_offset) * fixed_cos(theta));
         cplx += ((samples[n] - signal_offset) * fixed_sin(theta));
         theta += d_theta;
     }
+    
     real = real >> 8;
     cplx = cplx >> 8;
     return uint_sqrt((real * real) + (cplx * cplx)); 
 }
 
+uint32_t detect_10khz(uint8_t analog_pin) {
+    const size_t num_samples = 77;
+    uint8_t samples[num_samples];
+    sample_signal(analog_pin, num_samples, samples);
+    //Multiplied by 2 to keep it at the same scale as the 1 kHz function.
+    return 2 * detect_frequency(samples, num_samples, 10000, 77000);
+}
+
+uint32_t detect_1khz(uint8_t analog_pin) {
+    const size_t num_samples = 154;
+    uint8_t samples[num_samples];
+    sample_signal(analog_pin, num_samples, samples);
+    return detect_frequency(samples, num_samples, 1000, 77000);
+}

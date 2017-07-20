@@ -12,8 +12,6 @@ static const int R_BEACON_SENSOR_ = R_BEACON_SENSOR();
 class Beacon
 {
 private:
-    static const size_t num_samples_ = 67;
-    static const uint32_t sample_rate_ = 61000;
 
 public:
   Beacon();
