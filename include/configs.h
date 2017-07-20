@@ -53,8 +53,8 @@
 #define L_ENCODER() 2
 
 // 10 KHz IR sensors
-#define L_BEACON_SENSOR() 6
-#define R_BEACON_SENSOR() 7
+#define L_BEACON_SENSOR() 4
+#define R_BEACON_SENSOR() 5
 
 // switches
 #define PLATFORM_UPPER_SWITCH() 7
