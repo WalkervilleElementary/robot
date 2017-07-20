@@ -83,7 +83,7 @@ void loop()
 */
 
 // loop for testing gate routine
-/*
+
 int state = 0;
 void loop()
 {
@@ -110,7 +110,7 @@ void loop()
   }
   delay(50);
 }
-*/
+
 
 // loop for testing pickup
 /*
@@ -209,5 +209,6 @@ void loop()
     else claw.release(sequences::RIGHT_CLAW);
   }
   while (!claw.loop());
+  delay(500);
 }
 */
