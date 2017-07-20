@@ -35,32 +35,37 @@ void setup()
   Serial.begin(9600) ;
   tape.setup(ir, driver);
   maneuver.setup(driver, encoder);
-
-  gate.setup(tape, ir);
+  gate.setup(tape, beacon, encoder);
   pickup.setup(ir, claw, maneuver, tape);
 }
 
-// Tape follow loop
-
+int state = 0;
 void loop()
 {
 #if DEBUG()
   LCD.clear(); LCD.home();
 #endif  // DEBUG()
 
-  tape.loop();
-
   if (stopbutton())
   {
-    driver.stop();
-    tape.update();
-    ir.update();
-    driver.update();
+    gate.update();
+    // ir.update();
   }
-
-  delay(50);
 }
 
+// Tape follow loop
+  switch (state)
+  {
+    case 0:
+      if (gate.loop())
+        state++;
+      else
+        break;
+    case 1:
+      tape.loop();
+  }
+  delay(50);
+}
 
 // loop for testing pickup
 /*
@@ -78,8 +83,9 @@ void loop()
     pickup.update();
     tape.update();
     ir.update();
+    gate.update();
+    // ir.update();
   }
-
   delay(50);
 }
 */
@@ -94,7 +100,7 @@ void loop()
   LCD.clear(); LCD.home();
   LCD.setCursor(0,0); LCD.print(encoder.get(hardware::R_ENCODER_));
   LCD.setCursor(0,1); LCD.print(encoder.get(hardware::L_ENCODER_));
-  maneuver.loop();
+  gate.loop();
   if (stopbutton())
   {
     driver.stop();
@@ -120,5 +126,3 @@ void loop()
   delay(50);
 }
 */
-
-
