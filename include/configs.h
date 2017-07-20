@@ -4,6 +4,7 @@
 // debug and generation use
 #define USE_UPDATE() 1
 #define DEBUG() 1
+#define LOOP_DELAY() 50
 
 // PID initial values
 #define GAIN_T() 1
@@ -14,9 +15,9 @@
 // motor
 #define ACCEL_LIMIT() 50 // This is not the correct value
 #define VELOCITY() 90 // 80 to 100
-#define PLATFORM_RAISE_SPEED() -120
-#define PLATFORM_LOWER_SPEED() 60
-#define BACKUP_SPEED() -40
+#define PLATFORM_RAISE_SPEED() -110
+#define PLATFORM_LOWER_SPEED() 38
+#define BACKUP_SPEED() -40  // for backing up after getting zipline
 
 // thresholds
 #define TAPE_QRD_STRENGTH_THRESHOLD() 100
@@ -39,8 +40,8 @@
 #define L_ENCODER() 2
 
 // 10 KHz IR sensors
-#define L_BEACON_SENSOR() 4
-#define R_BEACON_SENSOR() 5
+#define L_BEACON_SENSOR() 6
+#define R_BEACON_SENSOR() 7
 
 // switches
 #define PLATFORM_UPPER_SWITCH() 7
