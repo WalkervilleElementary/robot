@@ -41,10 +41,10 @@
 #define R_MOTOR() 2
 #define L_MOTOR() 3 // going backwards
 #define PLATFORM_MOTOR() 0
-#define SERVO_0() 8 //no longer using TINAH servo connectors
-#define SERVO_1() 9
-#define SERVO_2() 10
-#define SERVO_3() 11
+#define SERVO_0() 12 //no longer using TINAH servo connectors
+#define SERVO_1() 13
+#define SERVO_2() 14
+#define SERVO_3() 15
 
 
 // qrd sensors

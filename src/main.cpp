@@ -32,7 +32,7 @@ stages::Pickup pickup;
 void setup()
 {
   portMode(0, INPUT);
-  portMode(1, INPUT);
+  portMode(1, OUTPUT);
   
   LCD.begin(16,2) ;
 
