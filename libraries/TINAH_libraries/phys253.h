@@ -32,6 +32,11 @@ extern motorClass motor ;
 extern ServoTINAH RCServo0;    // declare variables for up to eight servos.   Replaced old Servo253 implementation 2015Jan2
 extern ServoTINAH RCServo1; 
 extern ServoTINAH RCServo2;
+extern ServoTINAH RCServo3;
+extern ServoTINAH RCServo4;
+extern ServoTINAH RCServo5;
+extern ServoTINAH RCServo6;
+extern ServoTINAH RCServo7;
 
 
 int knob(int value) ;	//	{ return analogRead(knobInput[value]) ;}

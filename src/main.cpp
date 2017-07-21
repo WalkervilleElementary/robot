@@ -31,8 +31,18 @@ stages::Pickup pickup;
 
 void setup()
 {
-  #include <phys253setup.txt>
+  portMode(0, INPUT);
+  portMode(1, INPUT);
+  
+  LCD.begin(16,2) ;
+
   Serial.begin(9600) ;
+
+  RCServo0.attach(SERVO_0());
+  RCServo1.attach(SERVO_1());
+  RCServo2.attach(SERVO_2());
+  RCServo3.attach(SERVO_3());
+
   tape.setup(qrd, driver);
   platform.setup(driver);
   maneuver.setup(driver, encoder);
