@@ -29,8 +29,19 @@ sequences::Tape tape(qrd, beacon, driver);
 stages::Gate gate(tape, beacon, encoder);
 stages::Pickup pickup(qrd, claw, maneuver, tape);
 
-void setup(){
-  #include <phys253setup.txt>
+void setup()
+{
+  portMode(0, INPUT);
+  portMode(1, OUTPUT);
+
+  LCD.begin(16,2) ;
+
+  Serial.begin(9600) ;
+
+  RCServo0.attach(SERVO_0());
+  RCServo1.attach(SERVO_1());
+  RCServo2.attach(SERVO_2());
+  RCServo3.attach(SERVO_3());
 }
 
 // loop for testing platform
