@@ -18,8 +18,8 @@ private:
   static uint32_t right_limit_;
   static uint32_t left_limit_;
 
-  static const uint32_t distance_to_encoder_;
-  static const uint32_t degree_to_distance_;
+  static const float distance_to_encoder_;
+  static const float degree_to_distance_;
   static const uint32_t gain_;
 
   const hardware::Driver& motor_;

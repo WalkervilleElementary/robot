@@ -127,7 +127,7 @@ void loop()
 */
 
 // loop for testing tape follow
-
+/*
 void loop(){
 #if DEBUG()
   LCD.clear(); LCD.home();
@@ -150,7 +150,7 @@ void loop(){
   }
   delay(50);
 }
-
+*/
 
 // Testing motor speed
 /*
@@ -176,23 +176,20 @@ void loop(){
 */
 
 // loop for testing maneuver
-/*
+
 int distance = 0;
 int mode = 0;
 
-void loop()
-{
+void loop(){
   LCD.clear(); LCD.home();
   LCD.setCursor(0,0); LCD.print(encoder.get(hardware::R_ENCODER_));
   LCD.setCursor(0,1); LCD.print(encoder.get(hardware::L_ENCODER_));
 
   maneuver.loop();
 
-  if (stopbutton())
-  {
+  if (stopbutton()){
     driver.stop();
-    while (!startbutton())
-    {
+    while (!startbutton()){
       if (stopbutton()) mode = (mode + 1) % 2;
       distance = knob(6);
       LCD.clear(); LCD.home();
@@ -208,7 +205,7 @@ void loop()
   }
   delay(50);
 }
-*/
+
 
 // loop for claw testing
 /*

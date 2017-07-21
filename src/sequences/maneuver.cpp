@@ -9,8 +9,8 @@ int8_t   Maneuver::state_ = 0;
 uint32_t Maneuver::right_limit_;
 uint32_t Maneuver::left_limit_;
 
-const uint32_t Maneuver::distance_to_encoder_ = GEAR_RATIO() * 24.0 / WHEEL_DIAMETER() / PI; // TODO use float?
-const uint32_t Maneuver::degree_to_distance_ = AXLE_LENGTH() * 2.0 * PI / 360.0;
+const float Maneuver::distance_to_encoder_ = GEAR_RATIO() * 24.0 / WHEEL_DIAMETER() / PI;
+const float Maneuver::degree_to_distance_ = AXLE_LENGTH() * 2.0 * PI / 360.0;
 const uint32_t Maneuver::gain_ = MANEUVER_GAIN();
 
 
