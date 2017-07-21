@@ -99,47 +99,6 @@ void Tape::update(){
     SWITCH_CASES(5,beacon_gain_p)
     SWITCH_CASES(6,beacon_gain_i)
     SWITCH_CASES(7,beacon_gain_d)
-    /*case 0:
-        gain_t_ += change;
-        LCD.setCursor(0,0); LCD.print("gain_tot");
-        LCD.setCursor(0,1); LCD.print(gain_t_);
-        break;
-    case 1:
-        gain_p_ += change;
-        LCD.setCursor(0,0); LCD.print("gain_p");
-        LCD.setCursor(0,1); LCD.print(gain_p_);
-        break;
-    case 2:
-        gain_i_ += change;
-        LCD.setCursor(0,0); LCD.print("gain_i");
-        LCD.setCursor(0,1); LCD.print(gain_i_);
-        break;
-    case 3:
-        gain_d_ += end_val - start_val;
-        LCD.setCursor(0,0); LCD.print("gain_d");
-        LCD.setCursor(0,1); LCD.print(gain_d_);
-        break;
-    case 4:
-        velocity_ += change;
-        LCD.setCursor(0,0); LCD.print("velocity");
-        LCD.setCursor(0,1); LCD.print(velocity_);
-        break;
-    case 5:
-        beacon_gain_p += change;
-        LCD.setCursor(0,0); LCD.print("beacon_gain_p");
-        LCD.setCursor(0,1); LCD.print(beacon_gain_p);
-        break;
-    case 6:
-        beacon_gain_i += change;
-        LCD.setCursor(0,0); LCD.print("beacon_gain_i");
-        LCD.setCursor(0,1); LCD.print(beacon_gain_i);
-        break;
-    case 7:
-        beacon_gain_d += change;
-        LCD.setCursor(0,0); LCD.print("beacon_gain_d");
-        LCD.setCursor(0,1); LCD.print(beacon_gain_d);
-        break;
-        */
     }
   }
 }

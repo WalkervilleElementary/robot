@@ -15,6 +15,7 @@
 
 #include "stages/gate.h"
 #include "stages/pickup.h"
+#include "stages/zipline.h"
 
 hardware::Driver driver;
 hardware::Qrd qrd;
@@ -28,6 +29,7 @@ sequences::Tape tape(qrd, beacon, driver);
 
 stages::Gate gate(tape, beacon, encoder);
 stages::Pickup pickup(qrd, claw, maneuver, tape);
+stages::Zipline zipline(tape, platform, maneuver, beacon, driver, encoder);
 
 bool left_surface;
 
@@ -44,15 +46,18 @@ void setup(){
   RCServo2.attach(SERVO_2());
   RCServo3.attach(SERVO_3());
 
+//claw.raise(sequences::RIGHT_CLAW);
+//while(!claw.loop()) delay(100);
+//claw.raise(sequences::LEFT_CLAW);
+//while(!claw.loop()) delay(100);
+
   left_surface = true;  // TODO read the switch
   // left_surface = digitalRead(LEFT_RIGHT_SWITCH());
   claw.fold(left_surface);
 }
 
-void loop() {}
-
-/*
 // real loop
+/*
 uint8_t state = 0;
 void loop() {
 #if DEBUG()
@@ -81,7 +86,6 @@ void loop() {
 
 // loop for testing platform
 /*
-
 //claw.raise(sequences::RIGHT_CLAW);
 //while(!claw.loop()) delay(100);
 //claw.raise(sequences::LEFT_CLAW);
@@ -155,6 +159,28 @@ void loop(){
   delay(50);
 }
 */
+
+// loop for testing zipline routine
+int state = 0;
+void loop() {
+  if (stopbutton()) {
+    zipline.update();
+    platform.update();
+    state = 0;  // restart routine after update
+  }
+
+  switch (state) {
+    case 0:  // only testing dead reckoning right now
+      zipline.set_state(0);
+      state++;
+    case 1:
+      if (zipline.loop())
+        state++;
+      break;
+  }
+
+  delay(20);
+}
 
 // loop for testing pickup
 /*

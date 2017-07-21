@@ -22,22 +22,26 @@
 // claw
 #define L_C_EXTEND() 5  // 5
 #define L_C_REST() 160  // 170
-#define L_C_VERTICAL() 100
+#define L_C_VERTICAL() 120
 #define L_OPEN() 20  //20
 #define L_CLOSE() 85  // 90
 // THe right claw needs to be tested
 #define R_C_EXTEND() 177
 #define R_C_REST() 10
-#define R_C_VERTICAL() 60
+#define R_C_VERTICAL() 130
 #define R_OPEN() 102
 #define R_CLOSE() 34
 
 // motor
 #define ACCEL_LIMIT() 50 // This is not the correct value
 #define VELOCITY() 90 // 80 to 100
+
 #define PLATFORM_RAISE_SPEED() -255
-#define PLATFORM_LOWER_SPEED_TOP() 25
+#define PLATFORM_LOWER_SPEED_TOP() 30
 #define PLATFORM_LOWER_SPEED_BOTTOM() 60
+
+#define SLOW_FORWARD_SPEED() 50 // for e.g. dead reckoning
+#define BACKUP_SPEED() -40  // for backing up after getting zipline
 
 #define PLATFORM_MAINTAIN_SPEED() -10
 #define BACKUP_SPEED() -40  // for backing up after getting zipline
@@ -48,6 +52,7 @@
 #define TAPE_QRD_STRENGTH_THRESHOLD() 100
 #define GATE_IR_STRENGTH_THRESHOLD() 150
 #define ENCODER_WAIT_TIME() 3
+#define IR_ERROR_MARGIN() 8
 
 // motor
 #define R_MOTOR() 2
@@ -87,9 +92,10 @@
 #define GATE_WAITING_DISTANCE() 120 // cm
 #define CAUTIOUS_GATE_ROUTINE() 1 // only cross on signal rise
 
-// zipline
-#define ZIPLINE_TURN_DISTANCE() 75 // cm
-#define MAX_ZIPLINE_DISTANCE() 50 // cm -- don't go further than this!
+// zipline distances (cm)
+#define ZIPLINE_TURN_DISTANCE() 100
+#define MAX_ZIPLINE_DISTANCE() 100
+#define BACKUP_DISTANCE() 25
 
 //macro to make switch code more concise
 #define MACRO_VARIABLE_TO_STRING(Variable) (void(Variable),#Variable) //supposed to convert variable name to a string
