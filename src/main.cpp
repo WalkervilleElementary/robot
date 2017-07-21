@@ -137,8 +137,12 @@ void loop()
 */
 
 // loop for testing tape follow
+<<<<<<< HEAD
 
 //int velocity = 50;
+=======
+/*
+>>>>>>> 9c78256... modify update so that if knob 7 is beyond a value turning knob 6 won't do
 void loop(){
 #if DEBUG()
   LCD.clear(); LCD.home();
@@ -162,7 +166,7 @@ void loop(){
   delay(100);
 }
 
-
+*/
 // Testing motor speed
 /*
 void loop(){
@@ -223,7 +227,7 @@ void loop(){
 */
 
 // loop for claw testing
-/*
+
 void loop()
 {
   int state = 0;
@@ -263,4 +267,7 @@ void loop()
   while (!claw.loop());
   delay(500);
 }
+<<<<<<< HEAD
 */
+=======
+>>>>>>> 9c78256... modify update so that if knob 7 is beyond a value turning knob 6 won't do

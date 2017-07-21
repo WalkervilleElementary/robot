@@ -87,24 +87,34 @@ bool Pickup::update(){
     if (stopbutton()) update_state_ ++;
     if (update_state_ > 2) update_state_ = 0;
 
-    int start_val = knob(6);
-    delay(100);
-    int end_val = knob(6);
-
-    int change = start_val - end_val;
-
-    LCD.clear(); LCD.home();
-
-    switch (update_state_){
-      case 0:
-        drive_distance_ += change / 50;
-        LCD.setCursor(0,0); LCD.print("drive distance");
-        LCD.setCursor(0,1); LCD.print(drive_distance_);
-      case 1:
-        turn_degree_ += change / 50;
-        LCD.setCursor(0,0); LCD.print("turn degree");
-        LCD.setCursor(0,1); LCD.print(turn_degree_);
+    int tune_val = knob(7);
+    if (tune_val < TUNE_THRESHOLD()){
+      LCD.clear(); LCD.home();
+      LCD.setCursor(0,0); LCD.print("Tuning Off");
+      LCD.setCursor(0,1); LCD.print(tune_val);
+      delay(100);
     }
+    else{
+      int start_val = knob(6);
+      delay(100);
+      int end_val = knob(6);
+
+      int change = start_val - end_val;
+
+      LCD.clear(); LCD.home();
+
+      switch (update_state_){
+        case 0:
+          drive_distance_ += change / 50;
+          LCD.setCursor(0,0); LCD.print("drive distance");
+          LCD.setCursor(0,1); LCD.print(drive_distance_);
+        case 1:
+          turn_degree_ += change / 50;
+          LCD.setCursor(0,0); LCD.print("turn degree");
+          LCD.setCursor(0,1); LCD.print(turn_degree_);
+      }
+    }
+
   }
 }
 #endif  // USE_UPDATE()

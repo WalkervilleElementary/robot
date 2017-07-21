@@ -5,6 +5,7 @@
 #define USE_UPDATE() 1
 #define DEBUG() 1
 #define LOOP_DELAY() 50
+#define TUNE_THRESHOLD() 500 //for determining if spinning knob 6 should do anything
 
 // PID initial values
 #define GAIN_T() 1
