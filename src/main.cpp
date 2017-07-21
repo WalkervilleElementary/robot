@@ -22,22 +22,15 @@ hardware::Encoder encoder;
 hardware::Beacon beacon;
 
 sequences::Claw claw;
-sequences::Tape tape;
-sequences::Platform platform;
-sequences::Maneuver maneuver;
+sequences::Maneuver maneuver(driver, encoder);
+sequences::Platform platform(driver);
+sequences::Tape tape(qrd, driver);
 
-stages::Gate gate;
-stages::Pickup pickup;
+stages::Gate gate(tape, beacon, encoder);
+stages::Pickup pickup(qrd, claw, maneuver, tape);
 
-void setup()
-{
+void setup(){
   #include <phys253setup.txt>
-  Serial.begin(9600) ;
-  tape.setup(qrd, driver);
-  platform.setup(driver);
-  maneuver.setup(driver, encoder);
-  gate.setup(tape, beacon, encoder);
-  pickup.setup(qrd, claw, maneuver, tape);
 }
 
 // loop for testing platform
@@ -85,21 +78,19 @@ void loop()
 // loop for testing gate routine
 
 int state = 0;
-void loop()
-{
+void loop(){
 #if DEBUG()
   LCD.clear(); LCD.home();
 #endif  // DEBUG()
-
-  if (stopbutton())
-  {
+#if USE_UPDATE()
+  if (stopbutton()){
     gate.update();
     // qrd.update();
   }
+#endif  // USE_UPDATE()
 
   // Tape follow loop
-  switch (state)
-  {
+  switch (state){
     case 0:
       if (gate.loop())
         state++;

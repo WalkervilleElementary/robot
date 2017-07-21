@@ -7,45 +7,38 @@
 #include "hardware/driver.h"
 #include "hardware/qrd.h"
 
-namespace sequences
-{
+#include <stdint.h>
 
-class Tape : public templates::Sequence
-{
+namespace sequences{
+
+class Tape : public templates::Sequence{
+
 private:
-#pragma region  // variables
-  // computeCommand
-  int gain_t_;
-  int gain_p_;
-  int gain_i_;
-  int gain_d_;
+  static int gain_t_;
+  static int gain_p_;
+  static int gain_i_;
+  static int gain_d_;
 
-  int i_error_;
-  int prev_error_;
+  static int8_t i_error_;
+  static int8_t prev_error_;
 
-  int kp_;
-  int ki_;
-  int kd_;
+  static int kp_;
+  static int ki_;
+  static int kd_;
 
   // general
-  int error_;
-  int command_;
-  int velocity_;
+  static int error_;
+  static int command_;
+  static int velocity_;
 
-#if USE_UPDATE()
-  char state_;
-#endif  // USE_UPDATE()
+  const hardware::Qrd& qrd_;
+  const hardware::Driver& motor_;
 
-  hardware::Qrd qrd_;
-  hardware::Driver motor_;
-#pragma endregion  // pragma region variables
-
-  int computeCommand(int error, int dt);
+  static int computeCommand(int8_t error, unsigned long dt);
 
 public:
-  Tape();
+  inline Tape(const hardware::Qrd& qrd, const hardware::Driver& motor): qrd_(qrd), motor_(motor){};
   inline ~Tape(){};
-  void setup(const hardware::Qrd& qrd, const hardware::Driver& motor);
   void stop();
   bool loop();
 #if USE_UPDATE()

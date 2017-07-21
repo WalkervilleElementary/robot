@@ -12,12 +12,7 @@ const unsigned char PS_32 = (1 << ADPS2) | (1 << ADPS0);
 const unsigned char PS_64 = (1 << ADPS2) | (1 << ADPS1);
 const unsigned char PS_128 = (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);
 
-namespace hardware
-{
-    
-Beacon::Beacon()
-{
-}
+namespace hardware{
 
 uint32_t Beacon::leftIntensity() const {
   return detect_10khz(L_BEACON_SENSOR_);
@@ -26,20 +21,5 @@ uint32_t Beacon::leftIntensity() const {
 uint32_t Beacon::rightIntensity() const {
   return detect_10khz(R_BEACON_SENSOR_);
 }
-
-#if USE_UPDATE()
-void Beacon::update()
-{  
-  /*Serial.println(leftIntensity());
-  LCD.setCursor(0,0);
-  LCD.print(leftIntensity());
-  LCD.print(' ');
-  LCD.print(rightIntensity());
-  LCD.print("   ");
-  LCD.setCursor(0,1);
-  LCD.print(analogRead(0));
-  LCD.print("   ");*/
-}
-#endif  // USE_UPDATE()
 
 }  // namespace hardware

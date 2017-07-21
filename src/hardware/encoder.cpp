@@ -3,21 +3,18 @@
 #include <phys253.h>
 #include <avr/interrupt.h>
 
-namespace hardware
-{
+namespace hardware{
 
-  volatile unsigned int counts[4];
+  volatile uint32_t counts[4];
   volatile unsigned long prevTime[4];
   const unsigned long WAITTIME = ENCODER_WAIT_TIME();
 
-Encoder::Encoder()
-{
+Encoder::Encoder(){
   start(R_ENCODER_);
   start(L_ENCODER_);
 }
 
-void Encoder::enableExternalInterrupt(unsigned int INTX, unsigned int mode)
-{
+void Encoder::enableExternalInterrupt(unsigned int INTX, unsigned int mode){
   if (INTX > 3 || mode > 3 || mode == 1) return;
   cli();
   /* Allow pin to trigger interrupts        */
@@ -30,33 +27,28 @@ void Encoder::enableExternalInterrupt(unsigned int INTX, unsigned int mode)
   sei();
 }
 
-void Encoder::disableExternalInterrupt(unsigned int INTX)
-{
+void Encoder::disableExternalInterrupt(unsigned int INTX){
   if (INTX > 3) return;
   EIMSK &= ~(1 << INTX);
 }
 
-void Encoder::start(unsigned int INTX)
-{
+void Encoder::start(unsigned int INTX){
   counts[INTX] = 0;
   enableExternalInterrupt(INTX, RISING);
 }
 
-unsigned int Encoder::stop(unsigned int INTX)
-{
+uint32_t Encoder::stop(unsigned int INTX){
   disableExternalInterrupt(INTX);
   return counts[INTX];
 }
 
-unsigned int Encoder::get(unsigned int INTX)
-{
+uint32_t Encoder::get(unsigned int INTX){
   return counts[INTX];
 }
 
 }  // namespace hardware
 
-ISR(INT0_vect)
-{
+ISR(INT0_vect){
   if (millis() > hardware::prevTime[0] + hardware::WAITTIME)
   {
     hardware::counts[0]++;
@@ -64,8 +56,7 @@ ISR(INT0_vect)
   }
 };
 
-ISR(INT1_vect)
-{
+ISR(INT1_vect){
   if (millis() > hardware::prevTime[1] + hardware::WAITTIME)
   {
     hardware::counts[1]++;
@@ -73,8 +64,7 @@ ISR(INT1_vect)
   }
 };
 
-ISR(INT2_vect)
-{
+ISR(INT2_vect){
   if (millis() > hardware::prevTime[2] + hardware::WAITTIME)
   {
     hardware::counts[2]++;
@@ -82,8 +72,7 @@ ISR(INT2_vect)
   }
 };
 
-ISR(INT3_vect)
-{
+ISR(INT3_vect){
   if (millis() > hardware::prevTime[3] + hardware::WAITTIME)
   {
     hardware::counts[3]++;

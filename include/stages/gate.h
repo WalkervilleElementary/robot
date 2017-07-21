@@ -8,36 +8,31 @@
 #include "hardware/encoder.h"
 #include "sequences/tape.h"
 
-namespace stages
-{
+#include <stdint.h>
 
-class Gate : public templates::Sequence
-{
+namespace stages{
+
+class Gate : public templates::Sequence{
+
 private:
-  sequences::Tape follower_;
-  hardware::Beacon beacon_;
-  hardware::Encoder encoder_;
-  unsigned int encoder_start_;
-  int distance_;  // configurable
-  char state_;
-  int threshold_;
+  sequences::Tape& follower_;
+  hardware::Beacon& beacon_;
+  hardware::Encoder& encoder_;
 
-#if USE_UPDATE()
-  int start_val;
-  int end_val;
-  int change;
-  char update_state_;
-#endif  // USE_UPDATE()
+  static uint32_t  encoder_start_;
+  static uint32_t distance_;  // configurable
+  static int8_t state_;
+  static uint32_t threshold_;
 
 #if CAUTIOUS_GATE_ROUTINE()
   /// gate state: 0 = unknown, 1 = closed
-  char gate_state_;
+  static int8_t gate_state_;
 #endif  // CAUTIOUS_GATE_ROUTINE()
 
 public:
-  Gate();
+  inline Gate(sequences::Tape& follower, hardware::Beacon& beacon, hardware::Encoder& encoder):
+              follower_(follower), beacon_(beacon), encoder_(encoder) {};
   inline ~Gate(){};
-  void setup(const sequences::Tape& follower, const hardware::Beacon& beacon, const hardware::Encoder& encoder);
   bool loop();
 #if USE_UPDATE()
   bool update();

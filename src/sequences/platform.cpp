@@ -2,48 +2,37 @@
 #include <phys253.h>
 #include <LiquidCrystal.h>
 
-namespace sequences
-{
-Platform::Platform()
-{
-  state_ = 0;
-  raise_speed_ = PLATFORM_RAISE_SPEED();
-  lower_speed_ = PLATFORM_LOWER_SPEED();
-  backup_speed_ = BACKUP_SPEED();
-#if USE_UPDATE()
-  update_state_ = 0;
-#endif  // USE_UPDATE()
-}
+namespace sequences{
 
-void Platform::setup(const hardware::Driver &driver)
-{
-  driver_ = driver;
-}
+int8_t Platform::state_ = 0;
+int Platform::raise_speed_ = PLATFORM_RAISE_SPEED();
+int Platform::lower_speed_ = PLATFORM_LOWER_SPEED();
+int Platform::backup_speed_ = BACKUP_SPEED();
 
-bool Platform::loop()
-{
-  switch (state_)
-  {
+const uint8_t Platform::upper_switch_ = PLATFORM_UPPER_SWITCH();
+const uint8_t Platform::lower_switch_ = PLATFORM_LOWER_SWITCH();
+const uint8_t Platform::motor_number_ = PLATFORM_MOTOR();
+
+bool Platform::loop(){
+  switch (state_){
     case 0:
       break;
     case 1:  // raising platform
-      if (digitalRead(PLATFORM_UPPER_SWITCH()))
-        motor.speed(PLATFORM_MOTOR(), raise_speed_);
+      if (digitalRead(upper_switch_))
+        motor.speed(motor_number_, raise_speed_);
       else
         state_++;
       return false;
     case 2:  // lower just enough so switch is no longer active
-      if (!digitalRead(PLATFORM_UPPER_SWITCH()))
-      {
-        motor.speed(PLATFORM_MOTOR(), (int)(lower_speed_ * 0.6));
+      if (!digitalRead(upper_switch_)){
+        motor.speed(motor_number_, (int)(lower_speed_ * 0.6));
         return false;
-      }
-      else
+      }else{
         break;
+      }
     case 3:  // slowly lower while backing up
-      if (digitalRead(PLATFORM_LOWER_SWITCH()))
-      {
-        motor.speed(PLATFORM_MOTOR(), lower_speed_);
+      if (digitalRead(lower_switch_)){
+        motor.speed(motor_number_, lower_speed_);
         driver_.sendWheelVelocities(backup_speed_, backup_speed_);
         return false;
       }
@@ -55,7 +44,7 @@ bool Platform::loop()
 
 void Platform::stop() {
   state_ = 0;
-  motor.stop(PLATFORM_MOTOR());
+  motor.stop(motor_number_);
   driver_.stop();
 }
 
@@ -68,12 +57,11 @@ void Platform::lower() {
 }
 
 #if USE_UPDATE()
-void Platform::update()
-{
+void Platform::update(){
+  int8_t update_state_ = 0;
   stop();
   delay(200);
-  while (!startbutton())
-  {
+  while (!startbutton()){
     if (stopbutton()) update_state_ += 1;
     if (update_state_ > 2) update_state_ = 0;
     int start_val = knob(6);
@@ -83,8 +71,7 @@ void Platform::update()
     int change = (start_val - end_val)/4 ;
     LCD.clear();  LCD.home() ;
 
-    switch (update_state_)
-    {
+    switch (update_state_){
     case 0:
         raise_speed_ += change;
         LCD.setCursor(0,0); LCD.print("raise speed");

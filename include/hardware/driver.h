@@ -3,25 +3,27 @@
 
 #include "configs.h"
 
-namespace hardware
-{
+#include <stdint.h>
 
-const int R_MOTOR_ = R_MOTOR();
-const int L_MOTOR_ = L_MOTOR();
+namespace hardware{
 
-class Driver
-{
+static const int R_MOTOR_ = R_MOTOR();  // This is int because that is how it is defined in tinah_libraries
+static const int L_MOTOR_ = L_MOTOR();
+
+class Driver{
+
 private:
-  int prev_right;
-  int prev_left;
-  int acceleration_limit;
+  static int prev_right_;
+  static int prev_left_;
+  static int accel_limit_;
+
 public:
-  Driver();
+  inline Driver(){};
   inline ~Driver(){};
 
-  void stop();
-  void sendWheelVelocities(int right, int left);
-  void sendMotorCommand(int velocity, int command);
+  static void stop();
+  static void sendWheelVelocities(int right, int left);
+  static void sendMotorCommand(int velocity, int command);
 
 #if USE_UPDATE()
   void update();

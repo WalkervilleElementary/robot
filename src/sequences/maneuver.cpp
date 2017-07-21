@@ -3,25 +3,18 @@
 #include <phys253.h>
 #include <LiquidCrystal.h>
 
-namespace sequences
-{
+namespace sequences{
 
-Maneuver::Maneuver()
-{
-  state_ = 0;
-  distance_to_encoder_ = GEAR_RATIO() * 24 / WHEEL_DIAMETER() / PI;
-  degree_to_distance_ = AXLE_LENGTH() * 2.0 * PI / 360.0;
-  gain_ = MANEUVER_GAIN();
-}
+int8_t   Maneuver::state_ = 0;
+uint32_t Maneuver::right_limit_;
+uint32_t Maneuver::left_limit_;
 
-void Maneuver::setup(const hardware::Driver &motor, const hardware::Encoder &encoder)
-{
-  motor_ = motor;
-  encoder_ = encoder;
-}
+const uint32_t Maneuver::distance_to_encoder_ = GEAR_RATIO() * 24.0 / WHEEL_DIAMETER() / PI; // TODO use float?
+const uint32_t Maneuver::degree_to_distance_ = AXLE_LENGTH() * 2.0 * PI / 360.0;
+const uint32_t Maneuver::gain_ = MANEUVER_GAIN();
 
-bool Maneuver::straight(int distance)
-{
+
+bool Maneuver::straight(int distance){
   if (state_ != 0) return false;
   state_ = 1;
   right_limit_ = distance_to_encoder_ * distance;
@@ -31,31 +24,25 @@ bool Maneuver::straight(int distance)
   return true;
 }
 
-bool Maneuver::turn(int degrees)
-{
+bool Maneuver::turn(int degrees){
   if (state_ != 0) return false;
   state_ = 2;
-  if (degrees > 0)
-  {
+  if (degrees > 0){
     right_limit_ = degree_to_distance_ * distance_to_encoder_ * degrees;
     left_limit_ = 0;
-  }
-  else
-  {
+  }else{
     left_limit_ = -degree_to_distance_ * distance_to_encoder_ * degrees;
     right_limit_ = 0;
   }
 
   right_limit_ += encoder_.get(hardware::R_ENCODER_);
-  left_limit_ +=  encoder_.get(hardware::L_ENCODER_);
+  left_limit_  += encoder_.get(hardware::L_ENCODER_);
   return true;
 }
 
 
-bool Maneuver::loop()
-{
-  switch(state_)
-  {
+bool Maneuver::loop(){
+  switch(state_){
     case 1:  // straight
     case 2:  // turn
     {
@@ -69,13 +56,10 @@ bool Maneuver::loop()
         left_velocity = gain_ * (left_limit_ - left_encoder + 30);
 
       if ((state_ = 2 && (right_velocity != 0 || left_velocity != 0)) ||
-          (state_ = 1 && right_velocity != 0 && left_velocity != 0))
-      {
+          (state_ = 1 && right_velocity != 0 && left_velocity != 0)){
         motor_.sendWheelVelocities(right_velocity, left_velocity);
         return false;
-      }
-      else
-      {
+      }else{
         state_ = 0;
         motor_.stop();
       }
