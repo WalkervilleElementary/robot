@@ -14,6 +14,7 @@ int Tape::gain_i_ = GAIN_I();
 int Tape::gain_d_ = GAIN_D();
 int Tape::velocity_ =  VELOCITY();
 
+uint8_t Tape::error_source_ = 0;
 int8_t Tape::i_error_ = 0;
 int8_t Tape::prev_error_ = 0;
 
@@ -25,6 +26,7 @@ int Tape::error_;
 int Tape::command_;
 
 bool Tape::loop(){
+  // TODO modify this to use ir error if error_source_ is 1
   error_ = qrd_.getTapeError();
   command_ = computeCommand(error_, 100);
 #if DEBUG()
@@ -47,6 +49,14 @@ int Tape::computeCommand(int8_t error, unsigned long dt){
   kd_ = gain_d_ * (error - prev_error_)*1000/dt;
   prev_error_ = error;
   return gain_t_*(kp_ + ki_ +  kd_);
+}
+
+void Tape::followIr() {
+  error_source_ = 1;
+}
+
+void Tape::followTape() {
+  error_source_ = 0;
 }
 
 #if USE_UPDATE()

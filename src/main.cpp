@@ -24,7 +24,7 @@ hardware::Beacon beacon;
 sequences::Claw claw;
 sequences::Maneuver maneuver(driver, encoder);
 sequences::Platform platform(driver);
-sequences::Tape tape(qrd, driver);
+sequences::Tape tape(qrd, beacon, driver);
 
 stages::Gate gate(tape, beacon, encoder);
 stages::Pickup pickup(qrd, claw, maneuver, tape);

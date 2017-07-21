@@ -22,4 +22,9 @@ uint32_t Beacon::rightIntensity() const {
   return detect_10khz(R_BEACON_SENSOR_);
 }
 
+int8_t Beacon::getTapeError() {
+  // TODO implement this
+  return 0;
+}
+
 }  // namespace hardware
