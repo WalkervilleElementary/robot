@@ -76,7 +76,7 @@ void loop()
 */
 
 // loop for testing gate routine
-
+/*
 int state = 0;
 void loop(){
 #if DEBUG()
@@ -101,7 +101,7 @@ void loop(){
   }
   delay(50);
 }
-
+*/
 
 // loop for testing pickup
 /*
@@ -123,6 +123,55 @@ void loop()
     // qrd.update();
   }
   delay(50);
+}
+*/
+
+// loop for testing tape follow
+
+void loop(){
+#if DEBUG()
+  LCD.clear(); LCD.home();
+#endif  // DEBUG()
+
+  LCD.setCursor(0,1); LCD.print("Tape");
+  tape.loop();
+
+  if (qrd.isIntersection()){
+    tape.stop();
+    LCD.setCursor(0,1); LCD.print("MANEUVER");
+    delay(1000);
+    maneuver.straight(6);
+    while (!maneuver.loop()) delay(50);
+  }
+
+  if (stopbutton()){
+    tape.update();
+    qrd.update();
+  }
+  delay(50);
+}
+
+
+// Testing motor speed
+/*
+void loop(){
+  int motor_speed = 90;
+
+  if (stopbutton()){
+    while (!startbutton()){
+      LCD.clear(); LCD.home();
+      LCD.setCursor(0,0); LCD.print(knob(6)/4);
+      motor_speed = knob(6)/4;
+      delay(50);
+    }
+  }
+
+  unsigned long start = millis();
+  while (millis() < start + 1000){
+    driver.sendMotorCommand(motor_speed,0);
+    delay(100);
+  }
+  delay(5000);
 }
 */
 

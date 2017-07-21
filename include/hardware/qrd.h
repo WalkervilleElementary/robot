@@ -16,6 +16,8 @@ static const uint8_t RR_QRD_SENSOR_ = RR_QRD_SENSOR();
 class Qrd{
 
 private:
+  static const int error_array_[];
+  static bool invalid_;
   // getTapeError
   static int8_t error_;
   static int tape_threshold_; // this is not sized because this is how analogRead works

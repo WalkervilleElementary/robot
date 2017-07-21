@@ -24,6 +24,8 @@ void Driver::sendMotorCommand(int velocity, int command){
 void Driver::stop(){
   motor.stop(L_MOTOR_);
   motor.stop(R_MOTOR_);
+  prev_right_ = 0;
+  prev_left_ = 0;
 }
 
 #if USE_UPDATE()

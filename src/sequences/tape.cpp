@@ -29,11 +29,6 @@ bool Tape::loop(){
   // TODO modify this to use ir error if error_source_ is 1
   error_ = qrd_.getTapeError();
   command_ = computeCommand(error_, 100);
-#if DEBUG()
-  LCD.home() ;
-  LCD.setCursor(0,1); LCD.print(velocity_ - command_);
-  LCD.setCursor(7,1); LCD.print(velocity_ + command_);
-#endif  // DEBUG()
   motor_.sendMotorCommand(velocity_, command_);
 }
 

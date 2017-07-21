@@ -23,9 +23,11 @@ bool Pickup::loop(){
   claw_.loop();
   switch (state_){
     case 0:  // Travelling from Gate to tub
+      //LCD.setCursor(0,0); LCD.print("going to tub");
       claw_.raise(0);  // TODO change to values defined by claw
       claw_.raise(1);
     case 2:  // Travelling to next agent
+      //LCD.setCursor(0,1); LCD.print("tape follow");
       if (qrd_.isIntersection()){
         follower_.stop();
         state_++;
@@ -34,6 +36,7 @@ bool Pickup::loop(){
       }
       break;
    case 1:   // Turning at the tub
+      //LCD.setCursor(0,0); LCD.print("turning");
       if (side_) maneuver_.turn(turn_degree_);
       else maneuver_.turn(-turn_degree_);
       if (maneuver_.loop()){
@@ -42,6 +45,7 @@ bool Pickup::loop(){
       }
       break;
     case 3:  // Aligning the Claw
+      //LCD.setCursor(0,0); LCD.print("straight");
       maneuver_.straight(drive_distance_);
       if (maneuver_.loop()){
         state_ = 4;
@@ -49,6 +53,7 @@ bool Pickup::loop(){
         break;
       }
      case 4:  // Waiting for claw to be ready
+      //LCD.setCursor(0,0); LCD.print("waiting");
       if (claw_.loop()){
         state_ = 5;
         if (side_) claw_.grab(0);  // TODO This should be the claw on the right side
@@ -57,6 +62,7 @@ bool Pickup::loop(){
         break;
       }
     case 5:  // Waiting for claw to grab
+      //LCD.setCursor(0,0); LCD.print("grab");
       if (claw_.loop()){
         state_ = 2;
         if (side_) claw_.release(0);  // TODO THis should be the claw on the right side
