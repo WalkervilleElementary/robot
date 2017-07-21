@@ -3,36 +3,41 @@
 
 #include "configs.h"
 
-#include <phys253.h>
-#include <avr/interrupt.h>
-#include <LiquidCrystal.h>
+#include <stdint.h>
 
-namespace hardware
-{
-  const int R_ENCODER_ = R_ENCODER();
-  const int L_ENCODER_ = L_ENCODER();
+namespace hardware{
 
-  extern volatile unsigned int counts[4];
-  extern volatile unsigned long prevTime[4];
+  static const int R_ENCODER_ = R_ENCODER();
+  static const int L_ENCODER_ = L_ENCODER();
 
-class Encoder
-{
+  extern volatile uint32_t counts[4];
+  extern volatile unsigned long prevTime[4]; // defined in arduino library
+
+class Encoder{
+
 private:
-  void enableExternalInterrupt(unsigned int INTX, unsigned int mode);
-  void disableExternalInterrupt(unsigned int INTX);
+  static void enableExternalInterrupt(unsigned int INTX, unsigned int mode);
+  static void disableExternalInterrupt(unsigned int INTX);
+  static void start(unsigned int INTX);
+  static uint32_t stop(unsigned int INTX);
 
 public:
   Encoder();
   inline ~Encoder(){};
 
-  static unsigned int distanceToTicks(unsigned int distance);
-  
-  void start(unsigned int INTX);
-  unsigned int stop(unsigned int INTX);
-  unsigned int get(unsigned int INTX);
+  static uint32_t get(unsigned int INTX);
+
+  /**
+   * Converts distance in centimeters to number of ticks.
+   * 
+   * @param distance The distance in centimeters.
+   * @return The equivalent number of encoder ticks.
+   */
+  static uint32_t cmToTicks(unsigned int distance);
 
   void loop();
 };  // class Encoder
+
 }  // namespace hardware
 
 #endif  // WALKERVILLE_ROBOT_HARDWARE_ENCODER_H

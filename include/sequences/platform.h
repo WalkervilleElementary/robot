@@ -5,11 +5,12 @@
 #include "hardware/driver.h"
 #include "templates/sequence.h"
 
-namespace sequences
-{
+#include <stdint.h>
 
-class Platform : public templates::Sequence
-{
+namespace sequences{
+
+class Platform : public templates::Sequence{
+
 private:
 /**
  * States:
@@ -18,24 +19,24 @@ private:
  *  2 = lower slightly so limit switch is no longer active
  *  3 = lower slowly while backing up
  */
-  int state_;
-  int raise_speed_;
-  int lower_speed_;
-  int backup_speed_;
-#if USE_UPDATE()
-  int update_state_;
-#endif  // USE_UPDATE()
+  static int8_t state_;
+  static int raise_speed_;
+  static int lower_speed_;
+  static int backup_speed_;
 
-  hardware::Driver driver_;
+  static const uint8_t upper_switch_;
+  static const uint8_t lower_switch_;
+  static const uint8_t motor_number_;
+
+  const hardware::Driver& driver_;
 
 public:
-  Platform();
+  inline Platform(const hardware::Driver &driver): driver_(driver) {};
   inline ~Platform(){};
-  void setup(const hardware::Driver &driver);
   bool loop();
   void stop();
-  void raise();
-  void lower();
+  static void raise();
+  static void lower();
 #if USE_UPDATE()
   void update();
 #endif  // USE_UPDATE()

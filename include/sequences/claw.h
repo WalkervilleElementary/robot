@@ -5,48 +5,42 @@
 
 #include "templates/sequence.h"
 
-namespace sequences
-{
-  const int LEFT_CLAW = 0;
-  const int RIGHT_CLAW = 1;
+#include <stdint.h>
 
-class Claw : public templates::Sequence
-{
+namespace sequences{
+  static const int8_t LEFT_CLAW = 0;
+  static const int8_t RIGHT_CLAW = 1;
+
+class Claw : public templates::Sequence{
+
 private:
-  unsigned long delay_;
-  int state_;
-  int degree_;
+  static unsigned long delay_;
+  static int8_t state_;
+  static uint16_t degree_;
 
-  int raise_pause;
-  int grab_pause;
-  int retrieve_pause;
+  static unsigned long raise_pause;
+  static unsigned long grab_pause;
+  static unsigned long retrieve_pause;
 
-  int left_claw_extended;
-  int left_claw_rest;
-  int left_claw_vertical;
-  int left_open;
-  int left_close;
-  // Right values have not been tested
-  int right_claw_extended;
-  int right_claw_rest;
-  int right_claw_vertical;
-  int right_open;
-  int right_close;
+  static uint16_t left_claw_extended;
+  static uint16_t left_claw_rest;
+  static uint16_t left_claw_vertical;
+  static uint16_t left_open;
+  static uint16_t left_close;
 
-#if USE_UPDATE()
-  char update_state_;
-  int start_val;
-  int end_val;
-  int change;
-#endif  // USE_UPDATE()
+  static uint16_t right_claw_extended;
+  static uint16_t right_claw_rest;
+  static uint16_t right_claw_vertical;
+  static uint16_t right_open;
+  static uint16_t right_close;
 
 public:
-  Claw();
+  inline Claw(){};
   inline ~Claw(){};
 
-  bool raise(int side);
-  bool grab(int side);
-  bool release(int side);
+  static bool raise(int8_t side);
+  static bool grab(int8_t side);
+  static bool release(int8_t side);
 
   bool loop();
 

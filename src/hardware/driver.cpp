@@ -3,39 +3,31 @@
 #include <phys253.h>
 #include "hardware/driver.h"
 
-namespace hardware
-{
+namespace hardware{
 
-Driver::Driver()
-{
-  acceleration_limit = ACCEL_LIMIT();
-  prev_right = 0;
-  prev_left = 0;
+int Driver::accel_limit_ = ACCEL_LIMIT();
+int Driver::prev_right_ = 0;
+int Driver::prev_left_ = 0;
+
+void Driver::sendWheelVelocities(int right, int left){
+  prev_right_ = constrain(right, prev_right_ - accel_limit_, prev_right_ + accel_limit_);
+  prev_left_ = constrain(left, prev_left_ - accel_limit_, prev_left_ + accel_limit_);
+
+  motor.speed(L_MOTOR_, -prev_left_);
+  motor.speed(R_MOTOR_, prev_right_);
 }
 
-void Driver::sendWheelVelocities(int right, int left)
-{
-  prev_right = constrain(right, prev_right - acceleration_limit, prev_right + acceleration_limit);
-  prev_left = constrain(left, prev_left - acceleration_limit, prev_left + acceleration_limit);
-
-  motor.speed(L_MOTOR_, -prev_left);
-  motor.speed(R_MOTOR_, prev_right);
-}
-
-void Driver::sendMotorCommand(int velocity, int command)
-{
+void Driver::sendMotorCommand(int velocity, int command){
   sendWheelVelocities(velocity + command, velocity - command);
 }
 
-void Driver::stop()
-{
+void Driver::stop(){
   motor.stop(L_MOTOR_);
   motor.stop(R_MOTOR_);
 }
 
 #if USE_UPDATE()
-void Driver::update()
-{
+void Driver::update(){
   delay(1000);
   while (startbutton());
   while (!startbutton())
@@ -43,10 +35,10 @@ void Driver::update()
     int start_val = knob(6);
     delay(100);
     int end_val = knob(6);
-    acceleration_limit += (end_val - start_val) / 8;
+    accel_limit_ += (end_val - start_val) / 8;
     LCD.clear(); LCD.home();
     LCD.setCursor(0,0); LCD.print("accel limit");
-    LCD.setCursor(0,1); LCD.print(acceleration_limit);
+    LCD.setCursor(0,1); LCD.print(accel_limit_);
   }
 }
 #endif  // USE_UDPATE()

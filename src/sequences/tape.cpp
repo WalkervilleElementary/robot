@@ -1,31 +1,30 @@
 #include "configs.h"
 
 #include <phys253.h>
+#if DEBUG() || USE_UPDATE()
 #include <LiquidCrystal.h>
+#endif
 #include "sequences/tape.h"
 
-namespace sequences
-{
-Tape::Tape()
-{
-  gain_t_ = GAIN_T();
-  gain_p_ = GAIN_P();
-  gain_i_ = GAIN_I();
-  gain_d_ = GAIN_D();
-  velocity_ =  VELOCITY();
-#if USE_UPDATE()
-  state_ = 0;
-#endif  // USE_UPDATE()
-}
+namespace sequences{
 
-void Tape::setup (const hardware::Qrd& qrd, const hardware::Driver& motor)
-{
-  qrd_ = qrd;
-  motor_ = motor;
-}
+int Tape::gain_t_ = GAIN_T();
+int Tape::gain_p_ = GAIN_P();
+int Tape::gain_i_ = GAIN_I();
+int Tape::gain_d_ = GAIN_D();
+int Tape::velocity_ =  VELOCITY();
 
-bool Tape::loop()
-{
+int8_t Tape::i_error_ = 0;
+int8_t Tape::prev_error_ = 0;
+
+int Tape::kp_;
+int Tape::ki_;
+int Tape::kd_;
+
+int Tape::error_;
+int Tape::command_;
+
+bool Tape::loop(){
   error_ = qrd_.getTapeError();
   command_ = computeCommand(error_, 100);
 #if DEBUG()
@@ -36,13 +35,11 @@ bool Tape::loop()
   motor_.sendMotorCommand(velocity_, command_);
 }
 
-void Tape::stop()
-{
+void Tape::stop(){
   motor_.stop();
 }
-
-int Tape::computeCommand(int error, int dt)
-{
+// TODO fix implicit casting
+int Tape::computeCommand(int8_t error, unsigned long dt){
   i_error_ += error*1000/dt;
   i_error_ = (i_error_ > 0)? 5 : ((i_error_ < -5)? -5 : i_error_);
   kp_ = gain_p_ * error;
@@ -53,13 +50,12 @@ int Tape::computeCommand(int error, int dt)
 }
 
 #if USE_UPDATE()
-void Tape::update()
-{
+void Tape::update(){
+  int8_t update_state_ = 0;
   stop();
-  while (!startbutton())
-  {
-    if (stopbutton()) state_ += 1;
-    if (state_ > 4) state_ = 0;
+  while (!startbutton()){
+    if (stopbutton()) update_state_ += 1;
+    if (update_state_ > 4) update_state_ = 0;
     int start_val = knob(6);
     delay(100);
     int end_val = knob(6);
@@ -67,8 +63,7 @@ void Tape::update()
     int change = (start_val - end_val)/4 ;
     LCD.clear();  LCD.home() ;
 
-    switch (state_)
-    {
+    switch (update_state_){
     case 0:
         gain_t_ += change;
         LCD.setCursor(0,0); LCD.print("gain_tot");

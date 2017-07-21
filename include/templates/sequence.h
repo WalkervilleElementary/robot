@@ -4,11 +4,10 @@
 #include "configs.h"
 
 
-namespace templates
-{
+namespace templates{
 
-class Sequence
-{
+class Sequence{
+
 public:
   bool loop();
 #if USE_UPDATE()

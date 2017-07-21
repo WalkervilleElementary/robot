@@ -56,30 +56,30 @@ uint32_t uint_sqrt(uint32_t n) {
     if (op > res) {
         res++;
     }
-    
+
     return res;
 }
 
 void sample_signal(uint8_t pin, size_t num_samples, uint8_t* out) {
     cli();
-    
+
     //save ADCSRA to restore later
     uint8_t old_ADCSRA = ADCSRA;
-    
+
     //set input pin and use VCC as reference voltage
     ADMUX = (pin & 0x07) | (1<<REFS0) | (1<<ADLAR);
     //enable ADC, start conversion, enable free running, 1/16 clock prescaler
     ADCSRA = (1<<ADEN) | (1<<ADSC) | (1<<ADFR) | (1<<ADPS2);
-    
-    for (size_t i = 0; i < num_samples; i++) {
+
+    for (size_t i = 0; i < num_samples; ++i) { // In general decrements are faster than increments
          //wait for conversion to complete
         while ((ADCSRA & (1<<ADIF)) == 0);
         //reset conversion complete flag
-        ADCSRA |= (1<<ADIF);    
+        ADCSRA |= (1<<ADIF);
         //read converted value to buffer
-        out[i] = ADCH;                     
+        out[i] = ADCH;
     }
-    
+
     //restore previous state of ADCSRA
     ADCSRA = old_ADCSRA;
     sei();
@@ -91,21 +91,21 @@ uint32_t detect_frequency(uint8_t* samples, size_t num_samples, uint32_t detecti
     int32_t real = 0;
     int32_t cplx = 0;
     int32_t signal_sum = 0;
-    
-    for (uint16_t n = 0; n < num_samples; n++) {
+
+    for (uint16_t n = 0; n < num_samples; ++n) { // In general decrements are faster than increments
         signal_sum += samples[n];
     }
     int16_t signal_offset = signal_sum / num_samples;
-    
-    for (uint16_t n = 0; n < num_samples; n++) {
+
+    for (uint16_t n = 0; n < num_samples; ++n) {
         real += ((samples[n] - signal_offset) * fixed_cos(theta));
         cplx += ((samples[n] - signal_offset) * fixed_sin(theta));
         theta += d_theta;
     }
-    
+
     real = real >> 8;
     cplx = cplx >> 8;
-    return uint_sqrt((real * real) + (cplx * cplx)); 
+    return uint_sqrt((real * real) + (cplx * cplx));
 }
 
 uint32_t detect_10khz(uint8_t analog_pin) {

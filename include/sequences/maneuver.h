@@ -7,28 +7,28 @@
 #include "hardware/driver.h"
 #include "hardware/encoder.h"
 
+#include <stdint.h>
 
-namespace sequences
-{
+namespace sequences{
 
-class Maneuver : public templates::Sequence
-{
+class Maneuver : public templates::Sequence{
+
 private:
-  int8_t state_;
-  unsigned int right_limit_;
-  unsigned int left_limit_;
+  static int8_t state_;
+  static uint32_t right_limit_;
+  static uint32_t left_limit_;
 
-  float distance_to_encoder_;
-  float degree_to_distance_;
-  int gain_;
+  static const uint32_t distance_to_encoder_;
+  static const uint32_t degree_to_distance_;
+  static const uint32_t gain_;
 
-  hardware::Driver motor_;
-  hardware::Encoder encoder_;
+  const hardware::Driver& motor_;
+  const hardware::Encoder& encoder_;
 
 public:
-  Maneuver();
+  inline Maneuver(const hardware::Driver &motor, const hardware::Encoder &encoder):
+                motor_(motor), encoder_(encoder){};
   inline ~Maneuver(){};
-  void setup(const hardware::Driver &motor, const hardware::Encoder &encoder);
 
   bool straight(int distance);
   bool turn(int degrees);
@@ -38,6 +38,7 @@ public:
   void update();
 #endif  // USE_UPDATE()
 };  // class Maneuver
+
 }  // namespace sequences
 
 #endif  // WALKERVILLE_ROBOT_SEQUENCES_MANEUVER_H

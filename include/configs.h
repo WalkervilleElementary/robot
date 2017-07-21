@@ -31,7 +31,7 @@
 #define PLATFORM_RAISE_SPEED() -110
 #define PLATFORM_LOWER_SPEED() 40
 #define BACKUP_SPEED() -40  // for backing up after getting zipline
-#define DEAD_RECKONING_SPEED() 50 // slow forward
+#define DEAD_RECKON_SPEED() 50 // slow forward
 
 // thresholds
 #define TAPE_QRD_STRENGTH_THRESHOLD() 100
@@ -54,8 +54,8 @@
 #define L_ENCODER() 2
 
 // 10 KHz IR sensors
-#define L_BEACON_SENSOR() 6
-#define R_BEACON_SENSOR() 7
+#define L_BEACON_SENSOR() 4
+#define R_BEACON_SENSOR() 5
 
 // switches
 #define PLATFORM_UPPER_SWITCH() 7

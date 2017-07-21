@@ -3,30 +3,31 @@
 
 #include "configs.h"
 
-namespace hardware
-{
+#include <stdint.h>
 
-const int LL_QRD_SENSOR_ = LL_QRD_SENSOR();
-const int LC_QRD_SENSOR_ = LC_QRD_SENSOR();
-const int RC_QRD_SENSOR_ = RC_QRD_SENSOR();
-const int RR_QRD_SENSOR_ = RR_QRD_SENSOR();
+namespace hardware{
+
+static const uint8_t LL_QRD_SENSOR_ = LL_QRD_SENSOR();
+static const uint8_t LC_QRD_SENSOR_ = LC_QRD_SENSOR();
+static const uint8_t RC_QRD_SENSOR_ = RC_QRD_SENSOR();
+static const uint8_t RR_QRD_SENSOR_ = RR_QRD_SENSOR();
 
 
-class Qrd
-{
+class Qrd{
+
 private:
   // getTapeError
-  int error_;
-  int tape_threshold_;
+  static int8_t error_;
+  static int tape_threshold_; // this is not sized because this is how analogRead works
 
 public:
-  Qrd();
+  inline Qrd(){};
   inline ~Qrd(){};
 
-  int getTapeError();
-  bool isIntersection();
+  static int8_t getTapeError();
+  static bool isIntersection();
 #if USE_UPDATE()
-  void update();
+  static void update();
 #endif  // USE_UPDATE()
 };  // class Qrd
 

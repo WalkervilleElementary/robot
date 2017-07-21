@@ -1,57 +1,48 @@
 #include "sequences/claw.h"
+
 #include "phys253.h"
+#if USE_UPDATE()
+#include <LiquidCrystal.h>
+#endif  // USE_UPDATE()
 
-namespace sequences
-{
+namespace sequences{
 
-Claw::Claw()
-{
-  state_ = 0;
+int8_t Claw::state_ = 0;
+uint16_t Claw::degree_ = 0;
 
-  raise_pause = 1000; //ms
-  grab_pause = 1000;
-  retrieve_pause = 1000;
+unsigned long Claw::delay_ = 0;
+unsigned long Claw::raise_pause = 1000; //ms
+unsigned long Claw::grab_pause = 1000;
+unsigned long Claw::retrieve_pause = 1000;
 
-  left_claw_extended = L_C_EXTEND();
-  left_claw_rest = L_C_REST();
-  left_claw_vertical = L_C_VERTICAL();
-  left_open = L_OPEN();
-  left_close = L_CLOSE();
-  // Right values have not been tested
-  right_claw_extended = R_C_EXTEND();
-  right_claw_rest = R_C_REST();
-  right_claw_vertical = R_C_VERTICAL();
-  right_open = R_OPEN();
-  right_close = R_CLOSE();
-}
+uint16_t Claw::left_claw_extended = L_C_EXTEND();
+uint16_t Claw::left_claw_rest = L_C_REST();
+uint16_t Claw::left_claw_vertical = L_C_VERTICAL();
+uint16_t Claw::left_open = L_OPEN();
+uint16_t Claw::left_close = L_CLOSE();
+// Right values have not been tested
+uint16_t Claw::right_claw_extended = R_C_EXTEND();
+uint16_t Claw::right_claw_rest = R_C_REST();
+uint16_t Claw::right_claw_vertical = R_C_VERTICAL();
+uint16_t Claw::right_open = R_OPEN();
+uint16_t Claw::right_close = R_CLOSE();
 
-bool Claw::raise(int side)
-{
+bool Claw::raise(int8_t side){
   if (state_ != 0) return false;
-  if (side == LEFT_CLAW)
-  {
-    RCServo0.write(left_claw_vertical);
-  }
-  else
-  {
-    RCServo1.write(right_claw_vertical);
-  }
+  if (side == LEFT_CLAW)  RCServo0.write(left_claw_vertical);
+  else RCServo1.write(right_claw_vertical);
   state_ = 3;
   delay_ = millis() + raise_pause;
   return true;
 }
 
-bool Claw::grab(int side)
-{
+bool Claw::grab(int8_t side){
   if (state_ != 0) return false;
   state_ = 2;
-  if (side == LEFT_CLAW)
-  {
+  if (side == LEFT_CLAW){
     RCServo0.write(left_claw_extended);
     degree_ = left_close;
-  }
-  if (side == RIGHT_CLAW)
-  {
+  }else{
     RCServo1.write(right_claw_extended);
     degree_ = right_close;
   }
@@ -59,17 +50,13 @@ bool Claw::grab(int side)
   return true;
 }
 
-bool Claw::release(int side)
-{
+bool Claw::release(int8_t side){
   if (state_ != 0) return false;
   state_ = 1;
-  if (side == LEFT_CLAW)
-  {
+  if (side == LEFT_CLAW){
     RCServo0.write(left_claw_rest);
     degree_ = left_open;
-  }
-  else
-  {
+  }else{
     RCServo1.write(right_claw_rest);
     degree_ = right_open;
   }
@@ -77,8 +64,7 @@ bool Claw::release(int side)
   return true;
 }
 
-bool Claw::loop()
-{
+bool Claw::loop(){
   // State description          notes
   // 0     doing nothing state
   // 1     release              wait for a period of time then activate claw
@@ -86,24 +72,19 @@ bool Claw::loop()
   // 3     raise                wait for a period of time for arm then return complete
   // 4     claw_wat             wait for a period of time for claw. Uses same the same code as raise
 
-  switch(state_)
-  {
+  switch(state_){
     case 1:
     case 2:
-      if (millis() > delay_)
-      {
+      if (millis() > delay_){
         RCServo2.write(degree_);
         state_ = 4;
         delay_ = millis() + 1000;
-      }
-      else
-      {
+      }else{
         break;
       }
     case 3:
     case 4:
-      if (millis() < delay_)
-        break;
+      if (millis() < delay_) break;
       state_ = 0;
     case 0:
       return true;
@@ -117,22 +98,19 @@ bool Claw::loop()
 }
 
 #if USE_UPDATE()
-bool Claw::update()
-{
-  update_state_ = 0;
-  while (!startbutton())
-  {
+bool Claw::update(){
+  int update_state_ = 0;
+  while (!startbutton()){
     if (stopbutton()) update_state_ += 1;
-    if (state_ > 9) state_ = 0;
-    start_val = knob(6);
+    if (update_state_ > 9) update_state_ = 0;
+    int start_val = knob(6);
     delay(100);
-    end_val = knob(6);
+    int end_val = knob(6);
 
-    change = (start_val - end_val)/50;
+    int change = (start_val - end_val)/50;
     LCD.clear();  LCD.home() ;
 
-    switch (state_)
-    {
+    switch (state_){
       case 0:
         left_claw_extended += change;
         LCD.setCursor(0,0); LCD.print("left_claw_extended");
