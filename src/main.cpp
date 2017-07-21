@@ -227,7 +227,7 @@ void loop(){
 */
 
 // loop for claw testing
-
+/*
 void loop()
 {
   int state = 0;
