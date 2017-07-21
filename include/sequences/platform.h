@@ -12,14 +12,6 @@ namespace sequences{
 class Platform : public templates::Sequence{
 
 private:
-/**
- * States:
- *  0 = stopped
- *  1 = raising platform
- *  2 = lower slightly so limit switch is no longer active
- *  3 = lower slowly while backing up
- */
-  static int8_t state_;
   static int raise_speed_;
   static int lower_speed_;
   static int backup_speed_;
@@ -35,8 +27,8 @@ public:
   inline ~Platform(){};
   bool loop();
   void stop();
-  static void raise();
-  static void lower();
+  bool raise();
+  bool lower();
 #if USE_UPDATE()
   void update();
 #endif  // USE_UPDATE()
