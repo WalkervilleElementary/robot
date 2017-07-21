@@ -65,7 +65,7 @@ void Platform::update(){
     if (stopbutton()) update_state_ += 1;
     if (update_state_ > 2) update_state_ = 0;
     int tune_val = knob(7);
-    if (tune_val < TUNE_THRESHOLD){
+    if (tune_val < TUNE_THRESHOLD()){
       LCD.clear(); LCD.home();
       LCD.setCursor(0,0); LCD.print("Tuning Off");
       LCD.setCursor(0,1); LCD.print(tune_val);
