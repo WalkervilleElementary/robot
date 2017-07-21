@@ -25,6 +25,8 @@ public:
   Encoder();
   inline ~Encoder(){};
 
+  static unsigned int distanceToTicks(unsigned int distance);
+  
   void start(unsigned int INTX);
   unsigned int stop(unsigned int INTX);
   unsigned int get(unsigned int INTX);

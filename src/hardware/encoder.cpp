@@ -46,6 +46,11 @@ unsigned int Encoder::stop(unsigned int INTX)
   return counts[INTX];
 }
 
+static unsigned int Encoder::distanceToTicks(unsigned int distance);
+{
+  return distance * GEAR_RATIO() * 24 / WHEEL_DIAMETER() / PI;
+}
+
 unsigned int Encoder::get(unsigned int INTX)
 {
   return counts[INTX];
