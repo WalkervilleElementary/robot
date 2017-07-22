@@ -194,14 +194,18 @@ void loop(){
       distance = knob(6);
       LCD.clear(); LCD.home();
       LCD.setCursor(0,0);
-      if (mode == 0) LCD.print("distance");
-      else LCD.print("degrees");
-      LCD.setCursor(0,1); LCD.print(distance);
+      if (mode == 0){
+        LCD.print("distance");
+        LCD.setCursor(0,1); LCD.print(distance);
+      }else{
+        LCD.print("degrees");
+        LCD.setCursor(0,1); LCD.print(distance - 512);
+      }
       delay(50);
     }
 
     if (mode == 0) maneuver.straight(distance);
-    else maneuver.turn(distance);
+    else maneuver.turn(distance - 512);
   }
   delay(50);
 }

@@ -31,7 +31,7 @@ bool Maneuver::turn(int degrees){
     right_limit_ = degree_to_distance_ * distance_to_encoder_ * degrees;
     left_limit_ = 0;
   }else{
-    left_limit_ = degree_to_distance_ * distance_to_encoder_ * degrees;
+    left_limit_ = degree_to_distance_ * distance_to_encoder_ * (-degrees);
     right_limit_ = 0;
   }
 
@@ -51,9 +51,9 @@ bool Maneuver::loop(){
       int right_velocity = 0;
       int left_velocity = 0;
       if (right_encoder < right_limit_)
-        right_velocity = gain_ * (right_limit_ - right_encoder) + 30;
+        right_velocity = gain_ * (right_limit_ - right_encoder) + 50;
       if (left_encoder < left_limit_)
-        left_velocity = gain_ * (left_limit_ - left_encoder) + 30;
+        left_velocity = gain_ * (left_limit_ - left_encoder) + 50;
 
       if ((state_ == 2 && (right_velocity != 0 || left_velocity != 0)) ||
           (state_ == 1 && right_velocity != 0 && left_velocity != 0)){
