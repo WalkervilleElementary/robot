@@ -24,8 +24,8 @@
 #define L_C_EXTEND() 5  // 5
 #define L_C_REST() 160  // 170
 #define L_C_VERTICAL() 120
-#define L_OPEN() 20  //20
-#define L_CLOSE() 85  // 90
+#define L_OPEN() 25 //20
+#define L_CLOSE() 90  // 90
 // THe right claw needs to be tested
 #define R_C_EXTEND() 177
 #define R_C_REST() 10

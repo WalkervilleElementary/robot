@@ -17,21 +17,31 @@ class Pickup : public templates::Sequence{
 
 private:
   const hardware::Qrd& qrd_;
+  const hardware::Encoder& encoder_;
   sequences::Claw& claw_;
   sequences::Maneuver& maneuver_;
   sequences::Tape& follower_;
+
 
   static int8_t state_;
   static bool side_;
   static int8_t agents_;
 
+  static uint32_t start_encoder_;
+  static uint32_t current_encoder_;
+
+  static uint32_t to_ramp_;
+  static uint32_t to_intersection_;
+
   static uint32_t turn_degree_;
   static uint32_t drive_distance_;
 
+  static const int8_t height[];
+
 public:
-  Pickup(hardware::Qrd qrd, sequences::Claw claw,
-              sequences::Maneuver maneuver, sequences::Tape follower):
-              qrd_(qrd), claw_(claw), maneuver_(maneuver), follower_(follower) {};
+  Pickup(hardware::Qrd qrd, hardware::Encoder& encoder,
+    sequences::Claw claw, sequences::Maneuver maneuver, sequences::Tape follower):
+              qrd_(qrd), encoder_(encoder), claw_(claw), maneuver_(maneuver), follower_(follower) {};
   inline ~Pickup(){};
 
   bool loop();
