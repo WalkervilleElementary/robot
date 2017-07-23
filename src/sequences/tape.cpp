@@ -1,4 +1,4 @@
-#include "configs.h"
+/*#include "configs.h"
 
 #include <phys253.h>
 #if DEBUG() || USE_UPDATE()
@@ -99,4 +99,4 @@ void Tape::update(){
 }
 #endif  // USE_UPDATE()
 
-}  // namespace tape
+}  // namespace tape*/

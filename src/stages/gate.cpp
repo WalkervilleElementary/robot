@@ -1,4 +1,4 @@
-#include "configs.h"
+/*#include "configs.h"
 
 #include <phys253.h>
 
@@ -99,4 +99,4 @@ bool Gate::update(){
 }
 #endif  // macro USE_UPDATE()
 
-}  // namespace stages
+}  // namespace stages*/

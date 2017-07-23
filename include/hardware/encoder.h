@@ -1,43 +1,19 @@
-#ifndef WALKERVILLE_ROBOT_HARDWARE_ENCODER_H
-#define WALKERVILLE_ROBOT_HARDWARE_ENCODER_H
-
-#include "configs.h"
-
+#pragma once
 #include <stdint.h>
 
-namespace hardware{
+namespace hardware {
 
-  static const int R_ENCODER_ = R_ENCODER();
-  static const int L_ENCODER_ = L_ENCODER();
-
-  extern volatile uint32_t counts[4];
-  extern volatile unsigned long prevTime[4]; // defined in arduino library
-
-class Encoder{
-
-private:
-  static void enableExternalInterrupt(unsigned int INTX, unsigned int mode);
-  static void disableExternalInterrupt(unsigned int INTX);
-  static void start(unsigned int INTX);
-  static uint32_t stop(unsigned int INTX);
-
+class Encoder {
 public:
-  Encoder();
-  inline ~Encoder(){};
+	Encoder(uint8_t encoderId, bool reverse = false);
+	int32_t getDisplacement() const;
+	int32_t getVelocity() const;
+	void tick();
+private:
+	uint8_t m_encoderId;
+	bool m_reverse;
+	int32_t m_currentDisplacement;
+	int32_t m_previousDisplacement;
+};
 
-  static uint32_t get(unsigned int INTX);
-
-  /**
-   * Converts distance in centimeters to number of ticks.
-   * 
-   * @param distance The distance in centimeters.
-   * @return The equivalent number of encoder ticks.
-   */
-  static uint32_t cmToTicks(unsigned int distance);
-
-  void loop();
-};  // class Encoder
-
-}  // namespace hardware
-
-#endif  // WALKERVILLE_ROBOT_HARDWARE_ENCODER_H
+}

@@ -63,7 +63,9 @@
 
 // maneuver
 #define WHEEL_DIAMETER() 6.0 // cm
+#define WHEEL_CIRCUMFERENCE() (WHEEL_DIAMETER() * 3.14159265)
 #define GEAR_RATIO() 2.0
+#define TICKS_PER_ROTATION() 12.0
 #define AXLE_LENGTH() 21.59 // cm
 #define MANEUVER_GAIN() 2
 
@@ -74,5 +76,9 @@
 // zipline
 #define ZIPLINE_TURN_DISTANCE() 75 // cm
 #define MAX_ZIPLINE_DISTANCE() 50 // cm -- don't go further than this!
+
+
+#define 
+
 
 #endif  // WALKERVILLE_ROBOT_CONFIGS_H

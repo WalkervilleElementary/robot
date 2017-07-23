@@ -3,7 +3,17 @@
 #include <phys253.h>
 #include <LiquidCrystal.h>
 
-#include "hardware/driver.h"
+#include "utils/encoderinterrupts.h"
+
+#include "hardware/motorcontroller.h"
+#include "hardware/switch.h"
+#include "hardware/encoder.h"
+#include "hardware/limitmotorcontroller.h"
+#include "hardware/frequencysensor.h"
+#include "hardware/linesensor.h"
+#include "hardware/drivetrain.h"
+
+/*#include "hardware/driver.h"
 #include "hardware/qrd.h"
 #include "hardware/encoder.h"
 #include "hardware/beacon.h"
@@ -14,9 +24,9 @@
 #include "sequences/maneuver.h"
 
 #include "stages/gate.h"
-#include "stages/pickup.h"
+#include "stages/pickup.h"*/
 
-hardware::Driver driver;
+/*hardware::Driver driver;
 hardware::Qrd qrd;
 hardware::Encoder encoder;
 hardware::Beacon beacon;
@@ -27,11 +37,46 @@ sequences::Platform platform(driver);
 sequences::Tape tape(qrd, beacon, driver);
 
 stages::Gate gate(tape, beacon, encoder);
-stages::Pickup pickup(qrd, claw, maneuver, tape);
+stages::Pickup pickup(qrd, claw, maneuver, tape);*/
 
 void setup(){
   #include <phys253setup.txt>
+  hardware::MotorController leftMotor(2, true);
+  hardware::MotorController rightMotor(3);
+  hardware::MotorController platformMotor(0);
+
+  hardware::Switch startButton(50, LOW);
+  hardware::Switch stopButton(49, LOW);
+  hardware::Switch platformRaiseLimit(6, LOW);
+  hardware::Switch platformLowerLimit(7, LOW);
+  
+  hardware::Encoder leftEncoder(0, true);
+  hardware::Encoder rightEncoder(0);
+
+  hardware::FrequencySensor leftBeaconSensor(4);
+  hardware::FrequencySensor rightBeaconSensor(5);
+
+  hardware::LineSensor tapeSensor(3,2,1,0);
+  
+  hardware::LimitMotorController platformController(platformMotor, platformRaiseLimit, platformLowerLimit);
+
+  hardware::Drivetrain drive(leftMotor, rightMotor, leftEncoder, rightEncoder, tapeSensor);
+
+
+  enableEncoderInterrupts();
+  
+  while (true) {
+    startButton.tick();
+    stopButton.tick();
+    leftEncoder.tick();
+    rightEncoder.tick();
+    platformController.tick();
+    tapeSensor.tick();
+    drive.tick();
+  }
 }
+
+void loop() {}
 
 // loop for testing platform
 /*
@@ -176,7 +221,7 @@ void loop(){
 */
 
 // loop for testing maneuver
-
+/*
 int distance = 0;
 int mode = 0;
 

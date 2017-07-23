@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include <stddef.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * Samples an analog signal from a pin into a buffer, at 77 KHz and 8 bits resolution
  * in: analog pin number (0-7 on TINAH)
@@ -31,5 +35,9 @@ uint32_t detect_10khz(uint8_t analog_pin);
  * Convenience function to detect a 10 kHz signal on an input pin
  */
 uint32_t detect_1khz(uint8_t analog_pin);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // WALKERVILLE_ROBOT_UTILS_FILTER_H
