@@ -46,6 +46,11 @@ public:
   void stop();
   bool loop();
 
+  inline void update_vel(int velocity) {velocity_ = velocity;};
+  inline void update_p(int p) {gain_p_ = p;};
+  inline void update_i(int i) {gain_i_ = i;};
+  inline void update_d(int d) {gain_d_ = d;};
+
   /**
    * Follow the IR beacon. (Use the IR strength for error calculation.)
    */
