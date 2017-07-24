@@ -13,6 +13,13 @@
 #define GAIN_I() 0
 #define GAIN_D() 0
 
+// beacon following initial values
+#define BEACON_GAIN_P() 12
+#define BEACON_GAIN_I() 0
+#define BEACON_GAIN_D() 0
+#define BEACON_UNCERTAINTY() 20 //Have no idea what this should be, needs testing
+
+
 // claw
 #define L_C_EXTEND() 10  // 5
 #define L_C_REST() 160  // 170

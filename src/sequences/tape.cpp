@@ -13,6 +13,9 @@ int Tape::gain_p_ = GAIN_P();
 int Tape::gain_i_ = GAIN_I();
 int Tape::gain_d_ = GAIN_D();
 int Tape::velocity_ =  VELOCITY();
+int Tape::beacon_gain_p = BEACON_GAIN_P();
+int Tape::beacon_gain_i = BEACON_GAIN_I();
+int Tape::beacon_gain_d = BEACON_GAIN_D();
 
 uint8_t Tape::error_source_ = 0;
 int8_t Tape::i_error_ = 0;
@@ -27,7 +30,12 @@ int Tape::command_;
 
 bool Tape::loop(){
   // TODO modify this to use ir error if error_source_ is 1
-  error_ = qrd_.getTapeError();
+  if (error_source_ == 0){
+    error_ = qrd_.getTapeError();
+  }
+   if (error_source_ == 1){
+    error_ = beacon.getTapeError();
+  }
   command_ = computeCommand(error_, 100);
   motor_.sendMotorCommand(velocity_, command_);
 }
@@ -38,10 +46,17 @@ void Tape::stop(){
 // TODO fix implicit casting
 int Tape::computeCommand(int8_t error, unsigned long dt){
   i_error_ += error*1000/dt;
-  i_error_ = (i_error_ > 0)? 5 : ((i_error_ < -5)? -5 : i_error_);
-  kp_ = gain_p_ * error;
-  ki_ = gain_i_ * i_error_;
-  kd_ = gain_d_ * (error - prev_error_)*1000/dt;
+  i_error_ = constrain(i_error_, -5, 5);
+  if (error_source_ == 0){
+    kp_ = gain_p_ * error;
+    ki_ = gain_i_ * i_error_;
+    kd_ = gain_d_ * (error - prev_error_)*1000/dt;
+  }
+  else{
+    kp_ = beacon_gain_p_ * error;
+    ki_ = beacon_gain_i_ * i_error_;
+    kd_ = beacon_gain_d_ * (error - prev_error_)*1000/dt;
+  }
   prev_error_ = error;
   return gain_t_*(kp_ + ki_ +  kd_);
 }
@@ -60,7 +75,7 @@ void Tape::update(){
   stop();
   while (!startbutton()){
     if (stopbutton()) update_state_ += 1;
-    if (update_state_ > 4) update_state_ = 0;
+    if (update_state_ > 7) update_state_ = 0;
     int tune_val = knob(7);
     if (tune_val < TUNE_THRESHOLD()){
       LCD.clear(); LCD.home();
@@ -100,6 +115,21 @@ void Tape::update(){
         velocity_ += change;
         LCD.setCursor(0,0); LCD.print("velocity");
         LCD.setCursor(0,1); LCD.print(velocity_);
+        break;
+    case 5:
+        beacon_gain_p_ += change;
+        LCD.setCursor(0,0); LCD.print("beacon_gain_p");
+        LCD.setCursor(0,1); LCD.print(beacon_gain_p_);
+        break;
+    case 6:
+        beacon_gain_i_ += change;
+        LCD.setCursor(0,0); LCD.print("beacon_gain_i");
+        LCD.setCursor(0,1); LCD.print(beacon_gain_i_);
+        break;
+    case 7:
+        beacon_gain_d_ += change;
+        LCD.setCursor(0,0); LCD.print("beacon_gain_d");
+        LCD.setCursor(0,1); LCD.print(beacon_gain_d_);
         break;
     }
   }
