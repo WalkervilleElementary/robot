@@ -12,8 +12,7 @@ motorClass motor ;
 ServoTINAH RCServo0;    // declare variables for up to eight servos.   Replaced old Servo253 implementation 2015Jan2
 ServoTINAH RCServo1; 
 ServoTINAH RCServo2;
-
-
+ServoTINAH RCServo3;
 
 int knob(int value) 		{ return analogRead(knobInput[value]) ;}
 void buzzer	(int value) { return ;} //   pulseOut(buzzerOutput, value*2) ;}

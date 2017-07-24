@@ -42,6 +42,11 @@
 #define R_MOTOR() 2
 #define L_MOTOR() 3 // going backwards
 #define PLATFORM_MOTOR() 0
+#define SERVO_0() 12 //no longer using TINAH servo connectors
+#define SERVO_1() 13
+#define SERVO_2() 14
+#define SERVO_3() 15
+
 
 // qrd sensors
 #define RR_QRD_SENSOR() 0
@@ -76,9 +81,5 @@
 // zipline
 #define ZIPLINE_TURN_DISTANCE() 75 // cm
 #define MAX_ZIPLINE_DISTANCE() 50 // cm -- don't go further than this!
-
-
-#define 
-
 
 #endif  // WALKERVILLE_ROBOT_CONFIGS_H
