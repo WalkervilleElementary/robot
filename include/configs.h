@@ -30,13 +30,14 @@
 #define VELOCITY() 90 // 80 to 100
 #define PLATFORM_RAISE_SPEED() -110
 #define PLATFORM_LOWER_SPEED() 40
+#define SLOW_FORWARD_SPEED() 50 // for e.g. dead reckoning
 #define BACKUP_SPEED() -40  // for backing up after getting zipline
-#define DEAD_RECKONING_SPEED() 50 // slow forward
 
 // thresholds
 #define TAPE_QRD_STRENGTH_THRESHOLD() 100
 #define GATE_IR_STRENGTH_THRESHOLD() 150
 #define ENCODER_WAIT_TIME() 3
+#define IR_ERROR_MARGIN() 8
 
 // motor
 #define R_MOTOR() 2
@@ -71,8 +72,9 @@
 #define GATE_WAITING_DISTANCE() 120 // cm
 #define CAUTIOUS_GATE_ROUTINE() 1 // only cross on signal rise
 
-// zipline
-#define ZIPLINE_TURN_DISTANCE() 75 // cm
-#define MAX_ZIPLINE_DISTANCE() 50 // cm -- don't go further than this!
+// zipline distances (cm)
+#define ZIPLINE_TURN_DISTANCE() 75
+#define MAX_ZIPLINE_DISTANCE() 50
+#define BACKUP_DISTANCE() 25
 
 #endif  // WALKERVILLE_ROBOT_CONFIGS_H

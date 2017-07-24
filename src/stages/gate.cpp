@@ -12,7 +12,7 @@ int8_t  Gate::gate_state_ = 0;
 #endif  // CAUTIOUS_GATE_ROUTINE()
 
 uint32_t Gate::threshold_ = GATE_IR_STRENGTH_THRESHOLD();
-uint32_t Gate::distance_ = GATE_WAITING_DISTANCE() * GEAR_RATIO() * 24 / WHEEL_DIAMETER() / PI;
+uint32_t Gate::distance_ = hardware::Encoder::cmToTicks(GATE_WAITING_DISTANCE());
 
 uint32_t Gate::encoder_start_;
 

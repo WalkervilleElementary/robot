@@ -15,6 +15,7 @@
 
 #include "stages/gate.h"
 #include "stages/pickup.h"
+#include "stages/zipline.h"
 
 hardware::Driver driver;
 hardware::Qrd qrd;
@@ -28,9 +29,35 @@ sequences::Tape tape(qrd, beacon, driver);
 
 stages::Gate gate(tape, beacon, encoder);
 stages::Pickup pickup(qrd, claw, maneuver, tape);
+stages::Zipline zipline(tape, platform, maneuver, beacon, driver, encoder);
+
+uint32_t loop_delay;
 
 void setup(){
   #include <phys253setup.txt>
+  loop_delay = LOOP_DELAY();
+}
+
+// loop for testing zipline routine
+int state = 0;
+void loop() {
+  if (stopbutton()) {
+    zipline.update();
+    platform.update();
+    state = 0;  // restart routine after update
+  }
+
+  switch (state) {
+    case 0:  // only testing dead reckoning right now
+      zipline.set_state(3);
+      state++;
+    case 1:
+      if (zipline.loop())
+        state++;
+      break;
+  }
+
+  delay(loop_delay);
 }
 
 // loop for testing platform
@@ -46,37 +73,28 @@ void loop()
   LCD.setCursor(0, 1); LCD.print(state);
 #endif  // DEBUG()
 
-  if (stopbutton())
-  {
+  if (stopbutton()) {
     platform.update();
     state = 0;  // restart routine after updating
   }
 
   // run through raise/lower routine once
-  switch (state)
-  {
-    case 0:  // starting state
+  switch (state) {
+    case 0:  // raise
       platform.raise();
+      delay(1000);  // pause for breath?
       state++;
     case 1:  // raising
-      if (platform.loop())
-        state++;
-      break;
-    case 2:
-      delay(1000);  // pause for breath?
       platform.lower();
       state++;
-    case 3:  // lowering
-      if (platform.loop())
-        state++;
-      break;
   }
-  delay(LOOP_DELAY());
+  delay(loop_delay);
 }
 */
 
 // loop for testing gate routine
 
+/*
 int state = 0;
 void loop(){
 #if DEBUG()
@@ -101,6 +119,7 @@ void loop(){
   }
   delay(50);
 }
+*/
 
 
 // loop for testing pickup
