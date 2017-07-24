@@ -27,8 +27,12 @@ uint32_t Beacon::rightIntensity()  {
 
 int8_t Beacon::getTapeError() {
   // TODO implement this
+  LCD.clear(); LCD.home();
   int left_beacon_val = leftIntensity();
+  LCD.setCursor(0,0); LCD.print(left_beacon_val);
   int right_beacon_val = rightIntensity();
+  LCD.setCursor(0,1); LCD.print(right_beacon_val);
+  delay(50);
   if (abs(left_beacon_val - right_beacon_val) < uncertainty){
     beacon_error_ = 0;
   }

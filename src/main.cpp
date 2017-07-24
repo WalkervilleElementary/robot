@@ -138,9 +138,9 @@ void loop()
 
 // loop for testing tape follow
 /*
-=======
 
->>>>>>> 70d73cd... add code to test ir following
+=======
+>>>>>>> c79d435... tests on robot work
 void loop(){
 #if DEBUG()
   LCD.clear(); LCD.home();
@@ -163,6 +163,7 @@ void loop(){
   }
   delay(100);
 }
+*/
 
 //loop for testing following ir
 void loop(){
@@ -181,7 +182,7 @@ void loop(){
   delay(50);
 }
 
-*/
+
 // Testing motor speed
 /*
 void loop(){
@@ -282,3 +283,4 @@ void loop()
   while (!claw.loop());
   delay(500);
 }
+*/

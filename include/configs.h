@@ -17,7 +17,7 @@
 #define BEACON_GAIN_P() 12
 #define BEACON_GAIN_I() 0
 #define BEACON_GAIN_D() 0
-#define BEACON_UNCERTAINTY() 20 //Have no idea what this should be, needs testing
+#define BEACON_UNCERTAINTY() 50 //Have no idea what this should be, needs testing
 
 
 // claw
@@ -28,7 +28,7 @@
 #define L_CLOSE() 85  // 90
 // THe right claw needs to be tested
 #define R_C_EXTEND() 177
-#define R_C_REST() 5
+#define R_C_REST() 10
 #define R_C_VERTICAL() 60
 #define R_OPEN() 102
 #define R_CLOSE() 34
