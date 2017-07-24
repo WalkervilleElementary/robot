@@ -4,7 +4,6 @@
 
 namespace sequences{
 
-int8_t Platform::state_ = 0;
 int Platform::raise_speed_ = PLATFORM_RAISE_SPEED();
 int Platform::lower_speed_ = PLATFORM_LOWER_SPEED();
 int Platform::backup_speed_ = BACKUP_SPEED();
@@ -14,46 +13,42 @@ const uint8_t Platform::lower_switch_ = PLATFORM_LOWER_SWITCH();
 const uint8_t Platform::motor_number_ = PLATFORM_MOTOR();
 
 bool Platform::loop(){
-  switch (state_){
-    case 0:
-      break;
-    case 1:  // raising platform
-      if (digitalRead(upper_switch_))
-        motor.speed(motor_number_, raise_speed_);
-      else
-        state_++;
-      return false;
-    case 2:  // lower just enough so switch is no longer active
-      if (!digitalRead(upper_switch_)){
-        motor.speed(motor_number_, (int)(lower_speed_ * 0.6));
-        return false;
-      }else{
-        break;
-      }
-    case 3:  // slowly lower while backing up
-      if (digitalRead(lower_switch_)){
-        motor.speed(motor_number_, lower_speed_);
-        driver_.sendWheelVelocities(backup_speed_, backup_speed_);
-        return false;
-      }
-  }
-  state_ = 0;
-  stop();
+  // do nothing
   return true;
 }
 
 void Platform::stop() {
-  state_ = 0;
-  motor.stop(motor_number_);
+  // stop drive train motors & reset platform position
   driver_.stop();
+  while (digitalRead(lower_switch_)) {
+    motor.speed(motor_number_, (int)(lower_speed_ * 1.2));
+    delay(LOOP_DELAY());
+  }
 }
 
-void Platform::raise() {
-  state_ = 1;
+bool Platform::raise() {
+  // raise until switch is hit
+  while (digitalRead(upper_switch_)) {
+    motor.speed(motor_number_, raise_speed_);
+    delay(LOOP_DELAY());
+  }
+
+  // slowly lower, just enough so switch is no longer active
+  while (!digitalRead(upper_switch_)) {
+    motor.speed(motor_number_, (int)(lower_speed_ * 0.8));
+    delay((int)(LOOP_DELAY() * 0.5));
+  }
+  return true;
 }
 
-void Platform::lower() {
-  state_ = 3;
+bool Platform::lower() {
+  // slowly lower while backing up
+  while (digitalRead(lower_switch_)) {
+    motor.speed(motor_number_, lower_speed_);
+    driver_.sendWheelVelocities(backup_speed_, backup_speed_);
+    delay(LOOP_DELAY());
+  }
+  return true;
 }
 
 #if USE_UPDATE()
