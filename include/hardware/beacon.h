@@ -17,10 +17,13 @@ private:
 public:
   inline Beacon(){};
   inline ~Beacon(){};
+  static int8_t beacon_error_;
+  static int8_t uncertainty;
 
   static int8_t getTapeError();
-  uint32_t leftIntensity() const;
-  uint32_t rightIntensity() const;
+  static uint32_t leftIntensity();
+  static uint32_t rightIntensity();
+  void update();
 };  // class Beacon
 
 }  // namespace hardware

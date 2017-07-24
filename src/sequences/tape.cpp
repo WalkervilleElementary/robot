@@ -34,7 +34,7 @@ bool Tape::loop(){
     error_ = qrd_.getTapeError();
   }
    if (error_source_ == 1){
-    error_ = beacon.getTapeError();
+    error_ = beacon_.getTapeError();
   }
   command_ = computeCommand(error_, 100);
   motor_.sendMotorCommand(velocity_, command_);
@@ -53,9 +53,9 @@ int Tape::computeCommand(int8_t error, unsigned long dt){
     kd_ = gain_d_ * (error - prev_error_)*1000/dt;
   }
   else{
-    kp_ = beacon_gain_p_ * error;
-    ki_ = beacon_gain_i_ * i_error_;
-    kd_ = beacon_gain_d_ * (error - prev_error_)*1000/dt;
+    kp_ = beacon_gain_p * error;
+    ki_ = beacon_gain_i * i_error_;
+    kd_ = beacon_gain_d * (error - prev_error_)*1000/dt;
   }
   prev_error_ = error;
   return gain_t_*(kp_ + ki_ +  kd_);
@@ -90,8 +90,25 @@ void Tape::update(){
     int change = (start_val - end_val)/4 ;
     LCD.clear();  LCD.home() ;
 
+    // macro for making switch cases more consise
+    #define MACRO_VARIABLE_TO_STRING(Variable) (void(Variable),#Variable) //supposed to convert variable name to a string
+    #define SWITCH_CASES(case_state, variable)\
+      case case_state:\
+          variable += change;\
+          LCD.setCursor(0,0); LCD.print(MACRO_VARIABLE_TO_STRING(variable));\
+          LCD.setCursor(0,1); LCD.print(variable);\
+          break;
+
     switch (update_state_){
-    case 0:
+    SWITCH_CASES(0,gain_t_)
+    SWITCH_CASES(1,gain_p_)
+    SWITCH_CASES(2,gain_i_)
+    SWITCH_CASES(3,gain_d_)
+    SWITCH_CASES(4,velocity_)
+    SWITCH_CASES(5,beacon_gain_p)
+    SWITCH_CASES(6,beacon_gain_i)
+    SWITCH_CASES(7,beacon_gain_d)
+    /*case 0:
         gain_t_ += change;
         LCD.setCursor(0,0); LCD.print("gain_tot");
         LCD.setCursor(0,1); LCD.print(gain_t_);
@@ -117,20 +134,21 @@ void Tape::update(){
         LCD.setCursor(0,1); LCD.print(velocity_);
         break;
     case 5:
-        beacon_gain_p_ += change;
+        beacon_gain_p += change;
         LCD.setCursor(0,0); LCD.print("beacon_gain_p");
-        LCD.setCursor(0,1); LCD.print(beacon_gain_p_);
+        LCD.setCursor(0,1); LCD.print(beacon_gain_p);
         break;
     case 6:
-        beacon_gain_i_ += change;
+        beacon_gain_i += change;
         LCD.setCursor(0,0); LCD.print("beacon_gain_i");
-        LCD.setCursor(0,1); LCD.print(beacon_gain_i_);
+        LCD.setCursor(0,1); LCD.print(beacon_gain_i);
         break;
     case 7:
-        beacon_gain_d_ += change;
+        beacon_gain_d += change;
         LCD.setCursor(0,0); LCD.print("beacon_gain_d");
-        LCD.setCursor(0,1); LCD.print(beacon_gain_d_);
+        LCD.setCursor(0,1); LCD.print(beacon_gain_d);
         break;
+        */
     }
   }
 }

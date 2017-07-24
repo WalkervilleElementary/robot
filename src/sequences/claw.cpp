@@ -127,7 +127,27 @@ bool Claw::update(){
       int change = (start_val - end_val)/50;
       LCD.clear();  LCD.home() ;
 
+      #define MACRO_VARIABLE_TO_STRING(Variable) (void(Variable),#Variable) //supposed to convert variable name to a string
+      #define SWITCH_CASES(case_state, variable)\
+        case case_state:\
+            variable += change;\
+            LCD.setCursor(0,0); LCD.print(MACRO_VARIABLE_TO_STRING(variable));\
+            LCD.setCursor(0,1); LCD.print(variable);\
+            break;
+
       switch (state_){
+        SWITCH_CASES(0, left_claw_extended)
+        SWITCH_CASES(1, left_claw_rest)
+        SWITCH_CASES(2, left_claw_vertical)
+        SWITCH_CASES(3, left_open)
+        SWITCH_CASES(4, left_close)
+        SWITCH_CASES(5, right_claw_extended)
+        SWITCH_CASES(6, right_claw_rest)
+        SWITCH_CASES(7, right_claw_vertical)
+        SWITCH_CASES(8, right_open)
+        SWITCH_CASES(9, right_close)
+
+        /*
         case 0:
           left_claw_extended += change;
           LCD.setCursor(0,0); LCD.print("left_claw_extended");
@@ -178,6 +198,7 @@ bool Claw::update(){
           LCD.setCursor(0,0); LCD.print("left_close");
           LCD.setCursor(0,1); LCD.print(left_close);
           break;
+          */
       }
     }
   }

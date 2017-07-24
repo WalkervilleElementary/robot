@@ -15,13 +15,13 @@ const unsigned char PS_128 = (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);
 namespace hardware{
 
 int8_t Beacon::beacon_error_ = 0;
-int8_t uncertainty = BEACON_UNCERTAINTY();
+int8_t Beacon::uncertainty = BEACON_UNCERTAINTY();
 
-uint32_t Beacon::leftIntensity() const {
+uint32_t Beacon::leftIntensity()  {
   return detect_10khz(L_BEACON_SENSOR_);
 }
 
-uint32_t Beacon::rightIntensity() const {
+uint32_t Beacon::rightIntensity()  {
   return detect_10khz(R_BEACON_SENSOR_);
 }
 
@@ -38,7 +38,7 @@ int8_t Beacon::getTapeError() {
   else{
     beacon_error_ = -2;
   }
-   return error_;
+   return beacon_error_;
 }
 #if USE_UPDATE()
 void Beacon::update(){
