@@ -137,7 +137,8 @@ void loop()
 */
 
 // loop for testing tape follow
-/*
+
+//int velocity = 50;
 void loop(){
 #if DEBUG()
   LCD.clear(); LCD.home();
@@ -145,7 +146,7 @@ void loop(){
 
   LCD.setCursor(0,1); LCD.print("Tape");
   tape.loop();
-
+  //tape.update_vel(++velocity);
   if (qrd.isIntersection()){
     tape.stop();
     LCD.setCursor(0,1); LCD.print("MANEUVER");
@@ -158,9 +159,9 @@ void loop(){
     tape.update();
     qrd.update();
   }
-  delay(50);
+  delay(100);
 }
-*/
+
 
 // Testing motor speed
 /*
@@ -186,7 +187,7 @@ void loop(){
 */
 
 // loop for testing maneuver
-
+/*
 int distance = 0;
 int mode = 0;
 
@@ -219,7 +220,7 @@ void loop(){
   }
   delay(50);
 }
-
+*/
 
 // loop for claw testing
 /*
