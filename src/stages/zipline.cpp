@@ -1,4 +1,4 @@
-#include <phys253.h>
+/*#include <phys253.h>
 
 #include "stages/zipline.h"
 
@@ -112,4 +112,4 @@ void Zipline::update() {
 }
 #endif  // USE_UPDATE()
 
-}  // namespace stages
+}  // namespace stages*/

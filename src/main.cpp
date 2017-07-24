@@ -24,12 +24,7 @@
 #include "sequences/maneuver.h"
 
 #include "stages/gate.h"
-<<<<<<< HEAD
 #include "stages/pickup.h"*/
-=======
-#include "stages/pickup.h"
-#include "stages/zipline.h"
->>>>>>> zipline-stuff
 
 /*hardware::Driver driver;
 hardware::Qrd qrd;
@@ -91,10 +86,34 @@ void setup(){
     stopButton.tick();
     leftEncoder.tick();
     rightEncoder.tick();
-    platformController.tick();
-    tapeSensor.tick();
-    drive.tick();
+    LCD.setCursor(0,0);
+    LCD.print(leftEncoder.getDisplacement());
+    LCD.print("  ");
+    LCD.setCursor(8,0);
+    LCD.print(rightEncoder.getDisplacement());
+    LCD.print("  ");
+    LCD.setCursor(0,1);
+    LCD.print(leftEncoder.getVelocity());
+    LCD.print("  ");
+    LCD.setCursor(8,1);
+    LCD.print(rightEncoder.getVelocity());
+    LCD.print("  ");
+    delay(50);
   }
+  /*
+  int buttonPressCount = 0;
+  while (true) {
+    if (startButton.released()) i++;
+    LCD.setCursor(0,0);
+    LCD.print(i);
+    delay(50);
+  }*/
+  /*
+  while (true) {
+    if (drive.readyForCommand() && startButton.released()) {
+      drive.commandDriveStraight(CM(30));
+    }
+  }*/
 }
 
 void loop() {}
@@ -161,10 +180,7 @@ void loop()
 */
 
 // loop for testing gate routine
-<<<<<<< HEAD
-=======
 
->>>>>>> zipline-stuff
 /*
 int state = 0;
 void loop(){
@@ -191,10 +207,6 @@ void loop(){
   delay(50);
 }
 */
-<<<<<<< HEAD
-=======
-
->>>>>>> zipline-stuff
 
 // loop for testing pickup
 /*

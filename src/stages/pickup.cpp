@@ -1,4 +1,4 @@
-#include "stages/pickup.h"
+/*#include "stages/pickup.h"
 
 #include <phys253.h>
 #include <LiquidCrystal.h>
@@ -109,4 +109,4 @@ bool Pickup::update(){
 }
 #endif  // USE_UPDATE()
 
-}  // namespace stages
+}  // namespace stages*/

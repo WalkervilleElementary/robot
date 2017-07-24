@@ -43,10 +43,10 @@ private:
 		float run(float error);
 		void setParameters(float P, float I, float D);
 		void init(float error);
-	private:
 		float kP;
 		float kI;
 		float kD;
+	private:
 		float prevError;
 		float integral;
 	};
