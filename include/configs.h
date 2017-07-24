@@ -21,17 +21,17 @@
 
 
 // claw
-#define L_C_EXTEND() 10  // 5
+#define L_C_EXTEND() 5  // 5
 #define L_C_REST() 160  // 170
 #define L_C_VERTICAL() 100
-#define L_OPEN() 30  //20
-#define L_CLOSE() 102  // 90
+#define L_OPEN() 20  //20
+#define L_CLOSE() 85  // 90
 // THe right claw needs to be tested
 #define R_C_EXTEND() 177
 #define R_C_REST() 5
 #define R_C_VERTICAL() 60
-#define R_OPEN() 140
-#define R_CLOSE() 40
+#define R_OPEN() 102
+#define R_CLOSE() 34
 
 // motor
 #define ACCEL_LIMIT() 50 // This is not the correct value
