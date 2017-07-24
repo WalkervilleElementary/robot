@@ -19,10 +19,18 @@ public:
   void stop();
   bool readyForCommand();
   void tick();
+  void rampMotors();
 
 private:
   MotorController& m_leftMotor;
   MotorController& m_rightMotor;
+
+  int16_t m_leftMotorCurrent;
+  int16_t m_leftMotorSetpoint;
+  int16_t m_rightMotorCurrent;
+  int16_t m_rightMotorSetpoint;
+
+
   const Encoder& m_leftEncoder;
   const Encoder& m_rightEncoder;
   const LineSensor& m_lineSensor;
@@ -33,13 +41,12 @@ private:
   int32_t leftEncoderError();
   int32_t rightEncoderError();
 
-  enum Command { IDLE, DRIVE_ENCODER, DRIVE_LINEFOLLOW_DISTANCE, DRIVE_LINEFOLLOW_INTERSECTION };
+  enum Command { IDLE, DRIVE_ENCODER };
   Command m_command;
   int16_t m_power;
 
   class PIDController {
   public:
-    PIDController();
     float run(float error);
     void setParameters(float P, float I, float D);
     void init(float error);
@@ -51,8 +58,8 @@ private:
     float integral;
   };
 
-  //PIDController m_leftEncoderPID;
-  //PIDController m_rightEncoderPID;
+  PIDController m_leftEncoderPID;
+  PIDController m_rightEncoderPID;
   //PIDController m_lineFollowPID;
 
 };

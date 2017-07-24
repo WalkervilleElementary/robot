@@ -38,6 +38,7 @@ void Switch::tick() {
   else {
     m_releaseEvent = false;
   }
+  m_prevState = currentState;
 }
 
 }

@@ -23,17 +23,17 @@ void setEncoderCount(uint8_t id, int32_t value) {
 
 void enableEncoderInterrupts() {
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-		EICRA |= (1 << ISC11) | (1 << ISC10) | (1 << ISC01) | (1 << ISC00);
-		EIMSK |= (1 << INT0) | (1 << INT1); 
+		EICRA |= (1 << ISC21) | (1 << ISC20) | (1 << ISC31) | (1 << ISC30);
+		EIMSK |= (1 << INT2) | (1 << INT3); 
 	}
 }
 
-#define ENCODER_WAIT_TIME 3
-#define ENCODER_0_DIR_READ() ((PIND >> 4) & 0x1)
-#define ENCODER_1_DIR_READ() ((PIND >> 5) & 0x1)
+#define ENCODER_WAIT_TIME 5
+#define ENCODER_0_DIR_READ() digitalRead(1)//((PIND >> 1) & 0x1)
+#define ENCODER_1_DIR_READ() digitalRead(4)//((PIND >> 4) & 0x1)
 
-ISR(INT0_vect) {
-	unsigned long now = 0;//millis();
+ISR(INT2_vect) {
+	unsigned long now = millis();
 	if (ENCODER_0_DIR_READ()) {
 		if (now - encoderDebounceFwd[0] >= ENCODER_WAIT_TIME) {
 			encoderCounts[0]++;
@@ -48,8 +48,8 @@ ISR(INT0_vect) {
 	}
 }
 
-ISR(INT1_vect) {
-	unsigned long now = 0;//millis();
+ISR(INT3_vect) {
+	unsigned long now = millis();
 	if (ENCODER_1_DIR_READ()) {
 		if (now - encoderDebounceFwd[1] >= ENCODER_WAIT_TIME) {
 			encoderCounts[1]++;

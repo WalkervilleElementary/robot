@@ -39,9 +39,7 @@ sequences::Tape tape(qrd, beacon, driver);
 
 stages::Gate gate(tape, beacon, encoder);
 stages::Pickup pickup(qrd, claw, maneuver, tape);
-stages::Zipline zipline(tape, platform, maneuver, beacon, driver, encoder);
-<<<<<<< HEAD
-stages::Pickup pickup(qrd, claw, maneuver, tape);*/
+stages::Zipline zipline(tape, platform, maneuver, beacon, driver, encoder);*/
 
 void setup(){
   portMode(0, INPUT);
@@ -51,23 +49,25 @@ void setup(){
 
   Serial.begin(9600) ;
 
-  RCServo0.attach(SERVO_0());
+  /*RCServo0.attach(SERVO_0());
   RCServo1.attach(SERVO_1());
   RCServo2.attach(SERVO_2());
-  RCServo3.attach(SERVO_3());
+  RCServo3.attach(SERVO_3());*/
 
 
-  hardware::MotorController leftMotor(2, true);
-  hardware::MotorController rightMotor(3);
+  hardware::MotorController leftMotor(2);
+  hardware::MotorController rightMotor(3, true);
   hardware::MotorController platformMotor(0);
 
+  pinMode(49, INPUT);
+  pinMode(50, INPUT);
   hardware::Switch startButton(50, LOW);
   hardware::Switch stopButton(49, LOW);
   hardware::Switch platformRaiseLimit(6, LOW);
   hardware::Switch platformLowerLimit(7, LOW);
   
-  hardware::Encoder leftEncoder(0, true);
-  hardware::Encoder rightEncoder(0);
+  hardware::Encoder leftEncoder(0);
+  hardware::Encoder rightEncoder(1, true);
 
   hardware::FrequencySensor leftBeaconSensor(4);
   hardware::FrequencySensor rightBeaconSensor(5);
@@ -81,7 +81,7 @@ void setup(){
 
   enableEncoderInterrupts();
   
-  while (true) {
+  /*while (true) {
     startButton.tick();
     stopButton.tick();
     leftEncoder.tick();
@@ -99,21 +99,28 @@ void setup(){
     LCD.print(rightEncoder.getVelocity());
     LCD.print("  ");
     delay(50);
-  }
-  /*
-  int buttonPressCount = 0;
+  }*/
+  
+  /*int buttonPressCount = 0;
   while (true) {
-    if (startButton.released()) i++;
+    startButton.tick();
+    if (startButton.released()) buttonPressCount++;
     LCD.setCursor(0,0);
-    LCD.print(i);
+    LCD.print(startButton.get());
+    LCD.print(buttonPressCount);
     delay(50);
   }*/
-  /*
+  
   while (true) {
+
+    leftEncoder.tick();
+    rightEncoder.tick();
+    drive.tick();
+    startButton.tick();
     if (drive.readyForCommand() && startButton.released()) {
-      drive.commandDriveStraight(CM(30));
+      drive.commandDriveStraight(255, 255);
     }
-  }*/
+  }
 }
 
 void loop() {}
