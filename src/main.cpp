@@ -137,12 +137,10 @@ void loop()
 */
 
 // loop for testing tape follow
-<<<<<<< HEAD
-
-//int velocity = 50;
-=======
 /*
->>>>>>> 9c78256... modify update so that if knob 7 is beyond a value turning knob 6 won't do
+=======
+
+>>>>>>> 70d73cd... add code to test ir following
 void loop(){
 #if DEBUG()
   LCD.clear(); LCD.home();
@@ -164,6 +162,23 @@ void loop(){
     qrd.update();
   }
   delay(100);
+}
+
+//loop for testing following ir
+void loop(){
+#if DEBUG()
+  LCD.clear(); LCD.home();
+#endif  // DEBUG()
+
+  LCD.setCursor(0,1); LCD.print("Following IR");
+  tape.followIr();
+  tape.loop();
+
+  if (stopbutton()){
+    tape.update();
+    qrd.update();
+  }
+  delay(50);
 }
 
 */
@@ -267,7 +282,3 @@ void loop()
   while (!claw.loop());
   delay(500);
 }
-<<<<<<< HEAD
-*/
-=======
->>>>>>> 9c78256... modify update so that if knob 7 is beyond a value turning knob 6 won't do
