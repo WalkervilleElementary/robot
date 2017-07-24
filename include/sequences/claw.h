@@ -17,6 +17,7 @@ private:
   static unsigned long delay_;
   static int8_t state_;
   static uint16_t degree_;
+  static bool left_;
 
   static unsigned long raise_pause;
   static unsigned long grab_pause;
@@ -27,19 +28,21 @@ private:
   static uint16_t left_claw_vertical;
   static uint16_t left_open;
   static uint16_t left_close;
+  static int16_t left_offset[];
 
   static uint16_t right_claw_extended;
   static uint16_t right_claw_rest;
   static uint16_t right_claw_vertical;
   static uint16_t right_open;
   static uint16_t right_close;
+  static int16_t right_offset[];
 
 public:
   inline Claw(){};
   inline ~Claw(){};
 
   static bool raise(int8_t side);
-  static bool grab(int8_t side);
+  static bool grab(int8_t side, int8_t offset = 1);
   static bool release(int8_t side);
 
   bool loop();

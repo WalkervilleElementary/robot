@@ -9,6 +9,7 @@ namespace sequences{
 
 int8_t Claw::state_ = 0;
 uint16_t Claw::degree_ = 0;
+bool Claw::left_ = false;
 
 unsigned long Claw::delay_ = 0;
 unsigned long Claw::raise_pause = 1000; //ms
@@ -20,12 +21,14 @@ uint16_t Claw::left_claw_rest = L_C_REST();
 uint16_t Claw::left_claw_vertical = L_C_VERTICAL();
 uint16_t Claw::left_open = L_OPEN();
 uint16_t Claw::left_close = L_CLOSE();
+int16_t Claw::left_offset[] = {10, 0, -10};
 // Right values have not been tested
 uint16_t Claw::right_claw_extended = R_C_EXTEND();
 uint16_t Claw::right_claw_rest = R_C_REST();
 uint16_t Claw::right_claw_vertical = R_C_VERTICAL();
 uint16_t Claw::right_open = R_OPEN();
 uint16_t Claw::right_close = R_CLOSE();
+int16_t Claw::right_offset[] = {10, 0 , -10};
 
 bool Claw::raise(int8_t side){
   if (state_ != 0) return false;
@@ -36,15 +39,17 @@ bool Claw::raise(int8_t side){
   return true;
 }
 
-bool Claw::grab(int8_t side){
+bool Claw::grab(int8_t side, int8_t offset){
   if (state_ != 0) return false;
   state_ = 2;
   if (side == LEFT_CLAW){
-    RCServo0.write(left_claw_extended);
+    RCServo0.write(left_claw_extended + left_offset[offset]);
     degree_ = left_close;
+    left_ = true;
   }else{
-    RCServo1.write(right_claw_extended);
+    RCServo1.write(right_claw_extended + right_offset[offset]);
     degree_ = right_close;
+    left_ = false;
   }
   delay_ = millis() + grab_pause;
   return true;
@@ -56,9 +61,11 @@ bool Claw::release(int8_t side){
   if (side == LEFT_CLAW){
     RCServo0.write(left_claw_rest);
     degree_ = left_open;
+    left_ = true;
   }else{
     RCServo1.write(right_claw_rest);
     degree_ = right_open;
+    left_ = false;
   }
   delay_ = millis() + retrieve_pause;
   return true;
@@ -76,7 +83,8 @@ bool Claw::loop(){
     case 1:
     case 2:
       if (millis() > delay_){
-        RCServo2.write(degree_);
+        if (left_) RCServo2.write(degree_);
+        else RCServo3.write(degree_);
         state_ = 4;
         delay_ = millis() + 1000;
       }else{
