@@ -19,6 +19,9 @@ private:
   static int gain_p_;
   static int gain_i_;
   static int gain_d_;
+  static int beacon_gain_p;
+  static int beacon_gain_i;
+  static int beacon_gain_d;
 
   static uint8_t error_source_;  // 0 = QRD, 1 = IR sensors
   static int8_t i_error_;
