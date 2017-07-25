@@ -29,6 +29,8 @@ sequences::Tape tape(qrd, beacon, driver);
 stages::Gate gate(tape, beacon, encoder);
 stages::Pickup pickup(qrd, claw, maneuver, tape);
 
+bool left_surface;
+
 void setup(){
   portMode(0, INPUT);
   portMode(1, OUTPUT);
@@ -41,6 +43,36 @@ void setup(){
   RCServo1.attach(SERVO_1());
   RCServo2.attach(SERVO_2());
   RCServo3.attach(SERVO_3());
+
+  left_surface = true;  // TODO read the switch
+  // left_surface = digitalRead(LEFT_RIGHT_SWITCH());
+  claw.fold(left_surface);
+}
+
+// real loop
+uint8_t state = 0;
+void loop() {
+#if DEBUG()
+  LCD.clear(); LCD.home();
+  LCD.setCursor(0,0); LCD.print(state);
+#endif  // DEBUG()
+
+  switch (state) {
+    case 0:  // going through gate
+      if (gate.loop())
+        state++;
+      break;
+    case 1:  // picking up agents
+      if (pickup.loop())
+        state++;
+      break;
+    case 2:  // finding zipline
+      LCD.clear(); LCD.home();
+      LCD.setCursor(0,0); LCD.print("zipline stage");
+    //   if (zipline.loop())
+    //     state++;
+    //   break;
+  }
 }
 
 // loop for testing platform
@@ -164,6 +196,7 @@ void loop(){
 */
 
 //loop for testing following ir
+/*
 void loop(){
 #if DEBUG()
   LCD.clear(); LCD.home();
@@ -179,6 +212,7 @@ void loop(){
   }
   delay(50);
 }
+*/
 
 // Testing motor speed
 /*

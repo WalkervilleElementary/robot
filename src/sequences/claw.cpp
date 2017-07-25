@@ -15,6 +15,7 @@ unsigned long Claw::delay_ = 0;
 unsigned long Claw::raise_pause = 1000; //ms
 unsigned long Claw::grab_pause = 1000;
 unsigned long Claw::retrieve_pause = 1000;
+unsigned long Claw::fold_delay = 500;
 
 uint16_t Claw::left_claw_extended = L_C_EXTEND();
 uint16_t Claw::left_claw_rest = L_C_REST();
@@ -30,10 +31,47 @@ uint16_t Claw::right_open = R_OPEN();
 uint16_t Claw::right_close = R_CLOSE();
 int16_t Claw::right_offset[] = {10, 0 , -10};
 
+void Claw::set_arm_position(int8_t side, int8_t position) {
+  uint16_t val;
+  switch (position) {
+    case 0:  // extended
+      val = (side == LEFT_CLAW) ? left_claw_extended : right_claw_extended;
+    case 1:  // folded
+      val = (side == LEFT_CLAW) ? left_claw_rest : right_claw_rest;
+    case 2:  // folded
+      val = (side == LEFT_CLAW) ? left_claw_vertical : right_claw_vertical;
+    case 3:  // open
+      val = (side == LEFT_CLAW) ? left_open : right_open;
+    case 4:  // closed
+      val = (side == LEFT_CLAW) ? left_close : right_close;
+  }
+  if (side == LEFT_CLAW) {
+    if (position < 3) RCServo0.write(val);
+    else RCServo2.write(val);
+  }
+  else {
+    if (position < 3) RCServo1.write(val);
+    else RCServo3.write(val);
+  }
+}
+
+void Claw::fold(bool left_surface) {
+  set_arm_position(left_surface ? RIGHT_CLAW : LEFT_CLAW, EXTENDED);
+  delay(fold_delay);
+  set_arm_position(left_surface ? RIGHT_CLAW : LEFT_CLAW, CLOSED);
+  delay(fold_delay);
+  set_arm_position(left_surface ? LEFT_CLAW : RIGHT_CLAW, OPEN);
+  delay(fold_delay);
+  set_arm_position(left_surface ? LEFT_CLAW : RIGHT_CLAW, FOLDED);
+  delay(fold_delay);
+  set_arm_position(left_surface ? RIGHT_CLAW : LEFT_CLAW, FOLDED);
+}
+
 bool Claw::raise(int8_t side){
   if (state_ != 0) return false;
-  if (side == LEFT_CLAW)  RCServo0.write(left_claw_vertical);
-  else RCServo1.write(right_claw_vertical);
+  // if (side == LEFT_CLAW)  RCServo0.write(left_claw_vertical);
+  // else RCServo1.write(right_claw_vertical);
+  set_arm_position(side, VERTICAL);
   state_ = 3;
   delay_ = millis() + raise_pause;
   return true;

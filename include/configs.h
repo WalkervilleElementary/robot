@@ -19,7 +19,6 @@
 #define BEACON_GAIN_D() 0
 #define BEACON_UNCERTAINTY() 50 //Have no idea what this should be, needs testing
 
-
 // claw
 #define L_C_EXTEND() 5  // 5
 #define L_C_REST() 160  // 170
@@ -73,6 +72,7 @@
 // switches
 #define PLATFORM_UPPER_SWITCH() 7
 #define PLATFORM_LOWER_SWITCH() 6
+#define LEFT_RIGHT_SWITCH() 5
 
 // maneuver
 #define WHEEL_DIAMETER() 6.0 // cm
