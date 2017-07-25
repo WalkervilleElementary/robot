@@ -138,8 +138,7 @@ void loop()
 
 // loop for testing tape follow
 /*
-
-
+//int velocity = 50;
 void loop(){
 #if DEBUG()
   LCD.clear(); LCD.home();
@@ -181,7 +180,6 @@ void loop(){
   delay(50);
 }
 
-
 // Testing motor speed
 /*
 void loop(){
@@ -221,7 +219,7 @@ void loop(){
     driver.stop();
     while (!startbutton()){
       if (stopbutton()) mode = (mode + 1) % 2;
-      distance = knob(6);
+      distance = knob(6) - 512;
       LCD.clear(); LCD.home();
       LCD.setCursor(0,0);
       if (mode == 0){
@@ -229,13 +227,13 @@ void loop(){
         LCD.setCursor(0,1); LCD.print(distance);
       }else{
         LCD.print("degrees");
-        LCD.setCursor(0,1); LCD.print(distance - 512);
+        LCD.setCursor(0,1); LCD.print(distance);
       }
       delay(50);
     }
 
     if (mode == 0) maneuver.straight(distance);
-    else maneuver.turn(distance - 512);
+    else maneuver.turn(distance);
   }
   delay(50);
 }

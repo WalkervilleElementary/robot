@@ -17,6 +17,8 @@ private:
   static int8_t state_;
   static uint32_t right_limit_;
   static uint32_t left_limit_;
+  static int8_t offset_;
+  static bool backward_;
 
   static const float distance_to_encoder_;
   static const float degree_to_distance_;
