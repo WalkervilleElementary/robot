@@ -139,8 +139,7 @@ void loop()
 // loop for testing tape follow
 /*
 
-=======
->>>>>>> c79d435... tests on robot work
+
 void loop(){
 #if DEBUG()
   LCD.clear(); LCD.home();
