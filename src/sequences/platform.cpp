@@ -7,7 +7,10 @@ namespace sequences{
 int8_t Platform::state_ = 0;
 int Platform::raise_speed_ = PLATFORM_RAISE_SPEED();
 int Platform::lower_speed_ = PLATFORM_LOWER_SPEED();
+int Platform::maintain_speed_ = PLATFORM_MAINTAIN_SPEED();
 int Platform::backup_speed_ = BACKUP_SPEED();
+unsigned long Platform::backup_time_ = BACKUP_TIME();
+unsigned long Platform::start_time_;
 
 const uint8_t Platform::upper_switch_ = PLATFORM_UPPER_SWITCH();
 const uint8_t Platform::lower_switch_ = PLATFORM_LOWER_SWITCH();
@@ -25,13 +28,15 @@ bool Platform::loop(){
       return false;
     case 2:  // lower just enough so switch is no longer active
       if (!digitalRead(upper_switch_)){
-        motor.speed(motor_number_, (int)(lower_speed_ * 0.6));
+        motor.speed(motor_number_, lower_speed_);
         return false;
       }else{
+	      motor.speed(motor_number_, maintain_speed_);
         break;
       }
     case 3:  // slowly lower while backing up
-      if (digitalRead(lower_switch_)){
+      if (digitalRead(lower_switch_) &&
+          millis() < start_time_ + backup_time_){
         motor.speed(motor_number_, lower_speed_);
         driver_.sendWheelVelocities(backup_speed_, backup_speed_);
         return false;
@@ -53,6 +58,7 @@ void Platform::raise() {
 }
 
 void Platform::lower() {
+  start_time_ = millis();
   state_ = 3;
 }
 
@@ -63,7 +69,7 @@ void Platform::update(){
   delay(200);
   while (!startbutton()){
     if (stopbutton()) update_state_ += 1;
-    if (update_state_ > 2) update_state_ = 0;
+    if (update_state_ > 4) update_state_ = 0;
     int tune_val = knob(7);
     if (tune_val < TUNE_THRESHOLD()){
       LCD.clear(); LCD.home();
@@ -80,21 +86,12 @@ void Platform::update(){
       LCD.clear();  LCD.home() ;
 
       switch (update_state_){
-      case 0:
-          raise_speed_ += change;
-          LCD.setCursor(0,0); LCD.print("raise speed");
-          LCD.setCursor(0,1); LCD.print(raise_speed_);
-          break;
-      case 1:
-          lower_speed_ += change;
-          LCD.setCursor(0,0); LCD.print("lower speed");
-          LCD.setCursor(0,1); LCD.print(lower_speed_ * 0.5);
-          break;
-      case 2:
-          backup_speed_ += change;
-          LCD.setCursor(0,0); LCD.print("backup speed");
-          LCD.setCursor(0,1); LCD.print(backup_speed_);
-          break;
+      SWITCH_CASES(0, raise_speed_)
+      SWITCH_CASES(1, lower_speed_)
+      SWITCH_CASES(2,backup_speed_)
+      SWITCH_CASES(3, maintain_speed_)
+      SWITCH_CASES(4, backup_time_)
+
       }
     }
   }
