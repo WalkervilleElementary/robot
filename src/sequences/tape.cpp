@@ -90,15 +90,6 @@ void Tape::update(){
     int change = (start_val - end_val)/4 ;
     LCD.clear();  LCD.home() ;
 
-    // macro for making switch cases more consise
-    #define MACRO_VARIABLE_TO_STRING(Variable) (void(Variable),#Variable) //supposed to convert variable name to a string
-    #define SWITCH_CASES(case_state, variable)\
-      case case_state:\
-          variable += change;\
-          LCD.setCursor(0,0); LCD.print(MACRO_VARIABLE_TO_STRING(variable));\
-          LCD.setCursor(0,1); LCD.print(variable);\
-          break;
-
     switch (update_state_){
     SWITCH_CASES(0,gain_t_)
     SWITCH_CASES(1,gain_p_)
