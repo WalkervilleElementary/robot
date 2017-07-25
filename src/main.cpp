@@ -49,6 +49,9 @@ void setup(){
   claw.fold(left_surface);
 }
 
+void loop() {}
+
+/*
 // real loop
 uint8_t state = 0;
 void loop() {
@@ -74,6 +77,7 @@ void loop() {
     //   break;
   }
 }
+*/
 
 // loop for testing platform
 /*

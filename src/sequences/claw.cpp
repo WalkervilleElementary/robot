@@ -15,7 +15,7 @@ unsigned long Claw::delay_ = 0;
 unsigned long Claw::raise_pause = 1000; //ms
 unsigned long Claw::grab_pause = 1000;
 unsigned long Claw::retrieve_pause = 1000;
-unsigned long Claw::fold_delay = 500;
+unsigned long Claw::fold_delay = 1000;
 
 uint16_t Claw::left_claw_extended = L_C_EXTEND();
 uint16_t Claw::left_claw_rest = L_C_REST();
@@ -36,12 +36,17 @@ void Claw::set_arm_position(int8_t side, int8_t position) {
   switch (position) {
     case 0:  // extended
       val = (side == LEFT_CLAW) ? left_claw_extended : right_claw_extended;
+      break;
     case 1:  // folded
       val = (side == LEFT_CLAW) ? left_claw_rest : right_claw_rest;
-    case 2:  // folded
+      break;
+    case 2:  // vertical
       val = (side == LEFT_CLAW) ? left_claw_vertical : right_claw_vertical;
+      break;
     case 3:  // open
-      val = (side == LEFT_CLAW) ? left_open : right_open;
+      // regular open position is a little too wide, reduce it a little
+      val = (side == LEFT_CLAW) ? left_open + 15 : right_open - 15;
+      break;
     case 4:  // closed
       val = (side == LEFT_CLAW) ? left_close : right_close;
   }

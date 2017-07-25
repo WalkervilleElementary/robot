@@ -41,8 +41,8 @@ private:
   static const int8_t EXTENDED = 0;
   static const int8_t FOLDED = 1;
   static const int8_t VERTICAL = 2;
-  static const int8_t OPEN = 2;
-  static const int8_t CLOSED = 2;
+  static const int8_t OPEN = 3;
+  static const int8_t CLOSED = 4;
 
   /**
    * Positions:
