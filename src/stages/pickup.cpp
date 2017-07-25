@@ -99,19 +99,22 @@ bool Pickup::update(){
       delay(100);
       int end_val = knob(6);
 
-      int change = start_val - end_val;
+      int change = (start_val - end_val)/50;
 
       LCD.clear(); LCD.home();
 
       switch (update_state_){
+        SWITCH_CASES(0, drive_distance_)
+        SWITCH_CASES(1, turn_degree_)
+        /*
         case 0:
-          drive_distance_ += change / 50;
+          drive_distance_ += change;
           LCD.setCursor(0,0); LCD.print("drive distance");
           LCD.setCursor(0,1); LCD.print(drive_distance_);
         case 1:
-          turn_degree_ += change / 50;
+          turn_degree_ += change;
           LCD.setCursor(0,0); LCD.print("turn degree");
-          LCD.setCursor(0,1); LCD.print(turn_degree_);
+          LCD.setCursor(0,1); LCD.print(turn_degree_);*/
       }
     }
 

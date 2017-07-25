@@ -35,9 +35,13 @@
 // motor
 #define ACCEL_LIMIT() 50 // This is not the correct value
 #define VELOCITY() 90 // 80 to 100
-#define PLATFORM_RAISE_SPEED() -110
-#define PLATFORM_LOWER_SPEED() 40
+#define PLATFORM_RAISE_SPEED() -255
+#define PLATFORM_LOWER_SPEED_TOP() 25
+#define PLATFORM_LOWER_SPEED_BOTTOM() 60
+
+#define PLATFORM_MAINTAIN_SPEED() -10
 #define BACKUP_SPEED() -40  // for backing up after getting zipline
+#define BACKUP_TIME() 3000
 #define DEAD_RECKONING_SPEED() 50 // slow forward
 
 // thresholds
@@ -53,7 +57,6 @@
 #define SERVO_1() 13
 #define SERVO_2() 14
 #define SERVO_3() 15
-
 
 // qrd sensors
 #define RR_QRD_SENSOR() 0
@@ -87,5 +90,14 @@
 // zipline
 #define ZIPLINE_TURN_DISTANCE() 75 // cm
 #define MAX_ZIPLINE_DISTANCE() 50 // cm -- don't go further than this!
+
+//macro to make switch code more concise
+#define MACRO_VARIABLE_TO_STRING(Variable) (void(Variable),#Variable) //supposed to convert variable name to a string
+#define SWITCH_CASES(case_state, variable)\
+  case case_state:\
+      variable += change;\
+      LCD.setCursor(0,0); LCD.print(MACRO_VARIABLE_TO_STRING(variable));\
+      LCD.setCursor(0,1); LCD.print(variable);\
+      break;
 
 #endif  // WALKERVILLE_ROBOT_CONFIGS_H
