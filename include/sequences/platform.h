@@ -21,7 +21,8 @@ private:
  */
   static int8_t state_;
   static int raise_speed_;
-  static int lower_speed_;
+  static int lower_speed_top_;
+  static int lower_speed_bottom_;
   static int backup_speed_;
   static int maintain_speed_;
   static unsigned long backup_time_;

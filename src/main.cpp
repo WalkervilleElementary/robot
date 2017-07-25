@@ -77,6 +77,12 @@ void loop() {
 
 // loop for testing platform
 /*
+
+//claw.raise(sequences::RIGHT_CLAW);
+//while(!claw.loop()) delay(100);
+//claw.raise(sequences::LEFT_CLAW);
+//while(!claw.loop()) delay(100);
+
 int state = 0;
 void loop()
 {
@@ -87,7 +93,6 @@ void loop()
   LCD.print(digitalRead(PLATFORM_LOWER_SWITCH()));
   LCD.setCursor(0, 1); LCD.print(state);
 #endif  // DEBUG()
-
   if (stopbutton())
   {
     platform.update();
@@ -105,9 +110,11 @@ void loop()
         state++;
       break;
     case 2:
-      delay(1000);  // pause for breath?
-      platform.lower();
-      state++;
+      if (!digitalRead(PLATFORM_UPPER_SWITCH())){
+        platform.lower();
+        state++;
+      }
+      break;
     case 3:  // lowering
       if (platform.loop())
         state++;
