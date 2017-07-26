@@ -152,90 +152,30 @@ bool Claw::loop(){
 #if USE_UPDATE()
 bool Claw::update(){
   int update_state_ = 0;
+  int change = 0;
   while (!startbutton()){
     if (stopbutton()) update_state_ += 1;
     if (update_state_ > 9) update_state_ = 0;
 
     int tune_val = knob(7);
-    if (tune_val<TUNE_THRESHOLD()){
-      LCD.clear(); LCD.home();
-      LCD.setCursor(0,0); LCD.print("Tuning Off");
-      LCD.setCursor(0,1); LCD.print(tune_val);
-      delay(100);
+    int start_val = knob(6);
+    delay(100);
+    int end_val = knob(6);
+    if (tune_val > TUNE_THRESHOLD()){
+      change = (start_val - end_val)/50;
     }
-    else{
-      int start_val = knob(6);
-      delay(100);
-      int end_val = knob(6);
 
-      int change = (start_val - end_val)/50;
-      LCD.clear();  LCD.home() ;
-
-      switch (state_){
-        SWITCH_CASES(0, left_claw_extended)
-        SWITCH_CASES(1, left_claw_rest)
-        SWITCH_CASES(2, left_claw_vertical)
-        SWITCH_CASES(3, left_open)
-        SWITCH_CASES(4, left_close)
-        SWITCH_CASES(5, right_claw_extended)
-        SWITCH_CASES(6, right_claw_rest)
-        SWITCH_CASES(7, right_claw_vertical)
-        SWITCH_CASES(8, right_open)
-        SWITCH_CASES(9, right_close)
-
-        /*
-        case 0:
-          left_claw_extended += change;
-          LCD.setCursor(0,0); LCD.print("left_claw_extended");
-          LCD.setCursor(0,1); LCD.print(left_claw_extended);
-          break;
-        case 1:
-          left_claw_rest += change;
-          LCD.setCursor(0,0); LCD.print("left_claw_rest");
-          LCD.setCursor(0,1); LCD.print(left_claw_rest);
-          break;
-        case 2:
-          left_claw_vertical += change;
-          LCD.setCursor(0,0); LCD.print("left_claw_vertical");
-          LCD.setCursor(0,1); LCD.print(left_claw_vertical);
-          break;
-        case 3:
-          left_open += change;
-          LCD.setCursor(0,0); LCD.print("left_open");
-          LCD.setCursor(0,1); LCD.print(left_open);
-          break;
-        case 4:
-          left_close += change;
-          LCD.setCursor(0,0); LCD.print("left_close");
-          LCD.setCursor(0,1); LCD.print(left_close);
-          break;
-        case 5:
-          right_claw_extended += change;
-          LCD.setCursor(0,0); LCD.print("right_claw_extended");
-          LCD.setCursor(0,1); LCD.print(right_claw_extended);
-          break;
-        case 6:
-          right_claw_rest += change;
-          LCD.setCursor(0,0); LCD.print("right_claw_rest");
-          LCD.setCursor(0,1); LCD.print(right_claw_rest);
-          break;
-        case 7:
-          right_claw_vertical += change;
-          LCD.setCursor(0,0); LCD.print("right_claw_vertical");
-          LCD.setCursor(0,1); LCD.print(right_claw_vertical);
-          break;
-        case 8:
-          right_open += change;
-          LCD.setCursor(0,0); LCD.print("right_open");
-          LCD.setCursor(0,1); LCD.print(right_open);
-          break;
-        case 9:
-          left_close += change;
-          LCD.setCursor(0,0); LCD.print("left_close");
-          LCD.setCursor(0,1); LCD.print(left_close);
-          break;
-          */
-      }
+    switch (state_){
+      SWITCH_CASES(0, left_claw_extended)
+      SWITCH_CASES(1, left_claw_rest)
+      SWITCH_CASES(2, left_claw_vertical)
+      SWITCH_CASES(3, left_open)
+      SWITCH_CASES(4, left_close)
+      SWITCH_CASES(5, right_claw_extended)
+      SWITCH_CASES(6, right_claw_rest)
+      SWITCH_CASES(7, right_claw_vertical)
+      SWITCH_CASES(8, right_open)
+      SWITCH_CASES(9, right_close)
     }
   }
 }

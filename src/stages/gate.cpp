@@ -73,36 +73,30 @@ bool Gate::loop(){
 #if USE_UPDATE()
 bool Gate::update(){
   int8_t update_state_ = 0;
+  int change = 0;
   while (!startbutton()){
     if(stopbutton()) update_state_ += 1;
     if (update_state_ > 2) update_state_ = 0;
 
     int tune_val = knob(7);
-    if (tune_val < TUNE_THRESHOLD()){
-      LCD.clear(); LCD.home();
-      LCD.setCursor(0,0); LCD.print("Tuning Off");
-      LCD.setCursor(0,1); LCD.print(tune_val);
-      delay(100);
+    int start_val = knob(6);
+    delay(100);
+    int end_val = knob(6);
+    if (tune_val > TUNE_THRESHOLD()){
+      change = (start_val - end_val)/4 ;
     }
-    else{
-      int start_val = knob(6);
-      delay(100);
-      int end_val = knob(6);
-
-      int change = (start_val - end_val)/4 ;
-      LCD.clear();  LCD.home();
-      switch (update_state_){
-        case 0:  // set distance
-          distance_ += (change * GEAR_RATIO() * 24 / WHEEL_DIAMETER() / PI);
-          LCD.setCursor(0,0); LCD.print("distance");
-          LCD.setCursor(0,1); LCD.print(distance_);
-          break;
-        case 1:  // set threshold
-          threshold_ += change;
-          LCD.setCursor(0,0); LCD.print("threshold");
-          LCD.setCursor(0,1); LCD.print(threshold_);
-          break;
-      }
+    LCD.clear();  LCD.home();
+    switch (update_state_){
+      case 0:  // set distance
+        distance_ += (change * GEAR_RATIO() * 24 / WHEEL_DIAMETER() / PI);
+        LCD.setCursor(0,0); LCD.print("distance");
+        LCD.setCursor(0,1); LCD.print(distance_);
+        break;
+      case 1:  // set threshold
+        threshold_ += change;
+        LCD.setCursor(0,0); LCD.print("threshold");
+        LCD.setCursor(0,1); LCD.print(threshold_);
+        break;
     }
   }
 }

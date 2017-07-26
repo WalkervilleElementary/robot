@@ -60,21 +60,15 @@ void Beacon::update(){
   while(startbutton());
   while(!startbutton()){
     int tune_val = knob(7);
-    if (tune_val < TUNE_THRESHOLD()){
-      LCD.clear(); LCD.home();
-      LCD.setCursor(0,0); LCD.print("Tuning Off");
-      LCD.setCursor(0,1); LCD.print(tune_val);
-      delay(100);
-    }
-    else{
-      int start_val = knob(6);
-      delay(100);
-      int end_val = knob(6);
+    int start_val = knob(6);
+    delay(100);
+    int end_val = knob(6);
+    if (tune_val > TUNE_THRESHOLD()){
       uncertainty_ += (end_val - start_val)/15;
-      LCD.clear();  LCD.home() ;
-      LCD.setCursor(0,0); LCD.print("uncertainty");
-      LCD.setCursor(0,1); LCD.print(uncertainty_);
     }
+    LCD.clear();  LCD.home() ;
+    LCD.setCursor(0,0); LCD.print("uncertainty");
+    LCD.setCursor(0,1); LCD.print(uncertainty_);
   }
 }
 #endif  // USE_UPDATE()

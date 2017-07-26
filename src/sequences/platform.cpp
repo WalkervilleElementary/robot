@@ -69,36 +69,28 @@ void Platform::lower() {
 #if USE_UPDATE()
 void Platform::update(){
   int8_t update_state_ = 0;
+  int change = 0;
   stop();
   delay(200);
   while (!startbutton()){
     if (stopbutton()) update_state_ += 1;
     if (update_state_ > 5) update_state_ = 0;
     int tune_val = knob(7);
-    if (tune_val < TUNE_THRESHOLD()){
-      LCD.clear(); LCD.home();
-      LCD.setCursor(0,0); LCD.print("Tuning Off");
-      LCD.setCursor(0,1); LCD.print(tune_val);
-      delay(100);
+    int start_val = knob(6);
+    delay(100);
+    int end_val = knob(6);
+    if (tune_val > TUNE_THRESHOLD()){
+      change = (start_val - end_val)/4 ;
     }
-    else{
-      int start_val = knob(6);
-      delay(100);
-      int end_val = knob(6);
+    LCD.clear();  LCD.home() ;
 
-      int change = (start_val - end_val)/4 ;
-      LCD.clear();  LCD.home() ;
-
-      switch (update_state_){
-      SWITCH_CASES(0, raise_speed_)
-      SWITCH_CASES(1, lower_speed_top_)
-      SWITCH_CASES(2,backup_speed_)
-      SWITCH_CASES(3, maintain_speed_)
-      SWITCH_CASES(4, backup_time_)
-      SWITCH_CASES(5, lower_speed_bottom_)
-
-
-      }
+    switch (update_state_){
+    SWITCH_CASES(0, raise_speed_)
+    SWITCH_CASES(1, lower_speed_top_)
+    SWITCH_CASES(2,backup_speed_)
+    SWITCH_CASES(3, maintain_speed_)
+    SWITCH_CASES(4, backup_time_)
+    SWITCH_CASES(5, lower_speed_bottom_)
     }
   }
 }

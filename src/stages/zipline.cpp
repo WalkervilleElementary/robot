@@ -102,39 +102,38 @@ void Zipline::set_state(uint8_t state) {
 #if USE_UPDATE()
 void Zipline::update() {
   int8_t update_state_ = 0;
+  int change = 0;
   stop();
   delay(200);
   while (!startbutton()) {
     if (stopbutton()) update_state_++;
-    if (update_state_ > 2) update_state_ = 0;
+    if (update_state_ > 1) update_state_ = 0;
     int tune_val = knob(7);
-    if (tune_val < TUNE_THRESHOLD()){
-      LCD.clear(); LCD.home();
-      LCD.setCursor(0,0); LCD.print("Tuning off");
-      LCD.setCursor(0,1); LCD.print(tune_val);
-      delay(100);
+    int start_val = knob(6);
+    delay(100);
+    int end_val = knob(6);
+
+    if (tune_val > TUNE_THRESHOLD()){
+       change = (start_val - end_val)/4 ;
     }
-    else{
-      int start_val = knob(6);
-      delay(100);
-      int end_val = knob(6);
+    LCD.clear();  LCD.home() ;
 
-      int change = (start_val - end_val)/4 ;
-      LCD.clear();  LCD.home() ;
+    switch (update_state_) {
+    SWITCH_CASES(0, distance_to_turn_)
+    SWITCH_CASES(1, distance_to_zipline_)
 
-      switch (update_state_) {
-      case 0:
+    /*case 0:
         distance_to_turn_ += change;
         LCD.setCursor(0,0); LCD.print("turn distance cm");
         LCD.setCursor(0,1); LCD.print(distance_to_turn_);
         break;
-      case 1:
+    case 1:
         distance_to_zipline_ += change;
         LCD.setCursor(0,0); LCD.print("zipline dist cm");
         LCD.setCursor(0,1); LCD.print(distance_to_zipline_);
         break;
-      }
-    }
+    */
+    } 
   }
 }
 #endif  // USE_UPDATE()

@@ -72,22 +72,18 @@ void Tape::followTape() {
 #if USE_UPDATE()
 void Tape::update(){
   int8_t update_state_ = 0;
+  int change = 0;
   stop();
   while (!startbutton()){
     if (stopbutton()) update_state_ += 1;
     if (update_state_ > 7) update_state_ = 0;
     int tune_val = knob(7);
-    if (tune_val < TUNE_THRESHOLD()){
-      LCD.clear(); LCD.home();
-      LCD.setCursor(0,0); LCD.print("Tuning off");
-      LCD.setCursor(0,1); LCD.print(tune_val);
-      delay(100);
-    }
     int start_val = knob(6);
     delay(100);
     int end_val = knob(6);
-
-    int change = (start_val - end_val)/4 ;
+    if (tune_val >  TUNE_THRESHOLD()){
+      change = (start_val - end_val)/4 ;
+    }
     LCD.clear();  LCD.home() ;
 
     switch (update_state_){
