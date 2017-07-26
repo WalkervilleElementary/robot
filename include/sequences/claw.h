@@ -24,18 +24,18 @@ private:
   static unsigned long retrieve_pause;
   static unsigned long fold_delay;
 
-  static uint16_t left_claw_extended;
-  static uint16_t left_claw_rest;
-  static uint16_t left_claw_vertical;
-  static uint16_t left_open;
-  static uint16_t left_close;
+  static int16_t left_claw_extended;
+  static int16_t left_claw_rest;
+  static int16_t left_claw_vertical;
+  static int16_t left_open;
+  static int16_t left_close;
   static int16_t left_offset[];
 
-  static uint16_t right_claw_extended;
-  static uint16_t right_claw_rest;
-  static uint16_t right_claw_vertical;
-  static uint16_t right_open;
-  static uint16_t right_close;
+  static int16_t right_claw_extended;
+  static int16_t right_claw_rest;
+  static int16_t right_claw_vertical;
+  static int16_t right_open;
+  static int16_t right_close;
   static int16_t right_offset[];
 
   static const int8_t EXTENDED = 0;
@@ -60,6 +60,7 @@ public:
 
   static bool raise(int8_t side);
   static bool grab(int8_t side, int8_t offset = 1);
+
   static bool release(int8_t side);
   static void fold(bool left_surface);
 

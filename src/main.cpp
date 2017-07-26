@@ -28,7 +28,7 @@ sequences::Platform platform(driver);
 sequences::Tape tape(qrd, beacon, driver);
 
 stages::Gate gate(tape, beacon, encoder);
-stages::Pickup pickup(qrd, claw, maneuver, tape);
+stages::Pickup pickup(qrd, encoder, claw, maneuver, tape);
 stages::Zipline zipline(tape, platform, maneuver, beacon, driver, encoder);
 
 bool left_surface;
@@ -164,6 +164,7 @@ void loop(){
 
 
 // loop for testing zipline routine
+/*
 int state = 0;
 void loop() {
   if (stopbutton()) {
@@ -192,10 +193,11 @@ void loop() {
 
   delay(loop_delay);
 }
+*/
 
 
 // loop for testing pickup
-/*
+
 void loop()
 {
 #if DEBUG()
@@ -210,12 +212,11 @@ void loop()
     pickup.update();
     tape.update();
     qrd.update();
-    gate.update();
     // qrd.update();
   }
-  delay(50);
+  delay(15);
 }
-*/
+
 
 // loop for testing tape follow
 /*

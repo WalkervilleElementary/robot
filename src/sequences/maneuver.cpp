@@ -67,7 +67,6 @@ bool Maneuver::loop(){
         right_velocity = gain_ * (right_limit_ - right_encoder) + offset_;
       if (left_encoder < left_limit_)
         left_velocity = gain_ * (left_limit_ - left_encoder) + offset_;
-
       if ((state_ == 2 && (right_velocity != 0 || left_velocity != 0)) ||
           (state_ == 1 && right_velocity != 0 && left_velocity != 0)){
         if (backward_) motor_.sendWheelVelocities(-right_velocity, -left_velocity);
@@ -90,4 +89,4 @@ bool Maneuver::loop(){
   return false;
 }
 
-}  // namespace sequnces
+}  // namespace sequences

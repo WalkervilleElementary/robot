@@ -17,19 +17,19 @@ unsigned long Claw::grab_pause = 1000;
 unsigned long Claw::retrieve_pause = 1000;
 unsigned long Claw::fold_delay = 1000;
 
-uint16_t Claw::left_claw_extended = L_C_EXTEND();
-uint16_t Claw::left_claw_rest = L_C_REST();
-uint16_t Claw::left_claw_vertical = L_C_VERTICAL();
-uint16_t Claw::left_open = L_OPEN();
-uint16_t Claw::left_close = L_CLOSE();
-int16_t Claw::left_offset[] = {10, 0, -10};
+int16_t Claw::left_claw_extended = L_C_EXTEND();
+int16_t Claw::left_claw_rest = L_C_REST();
+int16_t Claw::left_claw_vertical = L_C_VERTICAL();
+int16_t Claw::left_open = L_OPEN();
+int16_t Claw::left_close = L_CLOSE();
+int16_t Claw::left_offset[] = {0, 10, 20};
 // Right values have not been tested
-uint16_t Claw::right_claw_extended = R_C_EXTEND();
-uint16_t Claw::right_claw_rest = R_C_REST();
-uint16_t Claw::right_claw_vertical = R_C_VERTICAL();
-uint16_t Claw::right_open = R_OPEN();
-uint16_t Claw::right_close = R_CLOSE();
-int16_t Claw::right_offset[] = {10, 0, -10};
+int16_t Claw::right_claw_extended = R_C_EXTEND();
+int16_t Claw::right_claw_rest = R_C_REST();
+int16_t Claw::right_claw_vertical = R_C_VERTICAL();
+int16_t Claw::right_open = R_OPEN();
+int16_t Claw::right_close = R_CLOSE();
+int16_t Claw::right_offset[] = {0, 10 , 20};
 
 void Claw::set_arm_position(int8_t side, int8_t position) {
   uint16_t val;
@@ -87,11 +87,11 @@ bool Claw::grab(int8_t side, int8_t offset){
   if (state_ != 0) return false;
   state_ = 2;
   if (side == LEFT_CLAW){
-    RCServo0.write(left_claw_extended + left_offset[offset]);
+    RCServo0.write(constrain(left_claw_extended - left_offset[offset], 0, 180));
     degree_ = left_close;
     left_ = true;
   }else{
-    RCServo1.write(right_claw_extended + right_offset[offset]);
+    RCServo1.write(constrain(right_claw_extended + right_offset[offset], 0, 180));
     degree_ = right_close;
     left_ = false;
   }

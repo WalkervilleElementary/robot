@@ -21,7 +21,7 @@
 #define BEACON_THRESHOLD() 180  // Beacon is undetected below this value
 
 // claw
-#define L_C_EXTEND() 5  // 5
+#define L_C_EXTEND() 15  // 5
 #define L_C_REST() 160  // 170
 #define L_C_VERTICAL() 65
 #define L_OPEN() 20  // 20
