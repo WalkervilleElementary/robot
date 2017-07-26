@@ -21,13 +21,13 @@
 #define BEACON_THRESHOLD() 300
 
 // claw
-#define L_C_EXTEND() 5  // 5
+#define L_C_EXTEND() 15  // 5
 #define L_C_REST() 160  // 170
 #define L_C_VERTICAL() 120
 #define L_OPEN() 25 //20
-#define L_CLOSE() 90  // 90
+#define L_CLOSE() 120  // 90
 // THe right claw needs to be tested
-#define R_C_EXTEND() 177
+#define R_C_EXTEND() 167
 #define R_C_REST() 10
 #define R_C_VERTICAL() 130
 #define R_OPEN() 102
