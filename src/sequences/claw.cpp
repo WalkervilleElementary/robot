@@ -29,7 +29,7 @@ uint16_t Claw::right_claw_rest = R_C_REST();
 uint16_t Claw::right_claw_vertical = R_C_VERTICAL();
 uint16_t Claw::right_open = R_OPEN();
 uint16_t Claw::right_close = R_CLOSE();
-int16_t Claw::right_offset[] = {10, 0 , -10};
+int16_t Claw::right_offset[] = {10, 0, -10};
 
 void Claw::set_arm_position(int8_t side, int8_t position) {
   uint16_t val;
@@ -72,6 +72,7 @@ void Claw::fold(bool left_surface) {
   set_arm_position(left_surface ? LEFT_CLAW : RIGHT_CLAW, FOLDED);
   delay(fold_delay);
   set_arm_position(left_surface ? RIGHT_CLAW : LEFT_CLAW, FOLDED);
+  delay(fold_delay);
 }
 
 bool Claw::raise(int8_t side){
