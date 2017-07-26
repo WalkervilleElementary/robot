@@ -8,7 +8,7 @@ namespace stages{
 
 int8_t Gate::state_ = 0;
 #if CAUTIOUS_GATE_ROUTINE()
-int8_t  Gate::gate_state_ = 0;
+bool Gate::gate_low_ = false;
 #endif  // CAUTIOUS_GATE_ROUTINE()
 
 uint32_t Gate::threshold_ = GATE_IR_STRENGTH_THRESHOLD();
@@ -42,7 +42,7 @@ bool Gate::loop(){
 #endif  // DEBUG()
       if (left + right > threshold_){
 #if CAUTIOUS_GATE_ROUTINE()
-        if (gate_state_ < 1){
+        if (!gate_low_){
           follower_.stop();
           return false;
         }
@@ -52,7 +52,7 @@ bool Gate::loop(){
       }else{
         follower_.stop();
 #if CAUTIOUS_GATE_ROUTINE()
-        gate_state_++;
+        gate_low_ = true;
 #endif  // CAUTIOUS_GATE_ROUTINE()
       }
       break;
