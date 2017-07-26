@@ -30,6 +30,7 @@ private:
   static uint32_t distance_to_turn_;
   static uint32_t distance_to_zipline_;
   static uint32_t ir_start_;
+  static uint32_t ir_end_;
 
   // constants
   static int forward_speed_;  // for dead reckoning

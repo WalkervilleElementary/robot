@@ -32,6 +32,7 @@ stages::Pickup pickup(qrd, claw, maneuver, tape);
 stages::Zipline zipline(tape, platform, maneuver, beacon, driver, encoder);
 
 bool left_surface;
+unsigned long loop_delay = LOOP_DELAY();
 
 void setup(){
   portMode(0, INPUT);
@@ -170,16 +171,24 @@ void loop() {
   }
 
   switch (state) {
-    case 0:  // only testing dead reckoning right now
+    case 0:
       zipline.set_state(0);
-      state++;
-    case 1:
-      if (zipline.loop())
-        state++;
+      if (claw.raise(sequences::LEFT_CLAW)) state++;
+      break;
+    case 1:  // raise left claw
+      if (claw.loop()) {
+        if (claw.raise(sequences::RIGHT_CLAW)) state++;
+      }
+      break;
+    case 2:  // raise right claw
+      if (claw.loop()) state++;
+      break;
+    case 3:  // zipline
+      if (zipline.loop()) state++;
       break;
   }
 
-  delay(20);
+  delay(loop_delay);
 }
 
 // loop for testing pickup

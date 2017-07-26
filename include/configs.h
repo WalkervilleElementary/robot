@@ -4,7 +4,7 @@
 // debug and generation use
 #define USE_UPDATE() 1
 #define DEBUG() 1
-#define LOOP_DELAY() 50
+#define LOOP_DELAY() 25
 #define TUNE_THRESHOLD() 500 //for determining if spinning knob 6 should do anything
 
 // PID initial values
@@ -50,6 +50,7 @@
 #define TAPE_QRD_STRENGTH_THRESHOLD() 100
 #define GATE_IR_STRENGTH_THRESHOLD() 150
 #define ZIPLINE_IR_START() 150  // threshold to leave tape and head for zipline
+#define ZIPLINE_IR_END() 500  // threshold to turn toward zipline
 #define ENCODER_WAIT_TIME() 3
 #define IR_ERROR_MARGIN() 8
 

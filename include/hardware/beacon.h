@@ -29,9 +29,12 @@ public:
   inline ~Beacon(){};
 
   static int8_t getTapeError();
+  static void updateIntensities();
   static uint32_t leftIntensity();
   static uint32_t rightIntensity();
+#if USE_UPDATE()
   void update();
+#endif  // USE_UPDATE()
 };  // class Beacon
 
 }  // namespace hardware

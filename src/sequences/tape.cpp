@@ -29,7 +29,6 @@ int Tape::error_;
 int Tape::command_;
 
 bool Tape::loop(){
-  // TODO modify this to use ir error if error_source_ is 1
   if (error_source_ == 0){
     error_ = qrd_.getTapeError();
   }
@@ -49,12 +48,11 @@ void Tape::stop(){
 int Tape::computeCommand(int8_t error, unsigned long dt){
   i_error_ += error*1000/dt;
   i_error_ = constrain(i_error_, -5, 5);
-  if (error_source_ == 0){
+  if (error_source_ == 0) {
     kp_ = gain_p_ * error;
     ki_ = gain_i_ * i_error_;
     kd_ = gain_d_ * (error - prev_error_)*1000/dt;
-  }
-  else{
+  } else {
     kp_ = beacon_gain_p * error;
     ki_ = beacon_gain_i * i_error_;
     kd_ = beacon_gain_d * (error - prev_error_)*1000/dt;

@@ -14,6 +14,7 @@ uint32_t Zipline::encoder_start_;
 uint32_t Zipline::ticks_;
 
 uint32_t Zipline::ir_start_ = ZIPLINE_IR_START();
+uint32_t Zipline::ir_end_ = ZIPLINE_IR_END();
 
 bool Zipline::left_surface_ = true;  // TODO read this from the switch
 uint8_t Zipline::state_ = 0;
@@ -37,15 +38,19 @@ bool Zipline::loop() {
       break;
     }
     case 2:  // follow beacon for predetermined number of ticks
+    {
       //LCD.setCursor(0,0); LCD.print("toward beacon");
       follower_.loop();
-      if (encoder_.get(hardware::R_ENCODER_) - encoder_start_ > ticks_) {
+      const int32_t left = beacon_.leftIntensity();
+      const int32_t right = beacon_.rightIntensity();
+      if (left + right > ir_end_) {
         // turn toward zipline
         maneuver_.turn(left_surface_ ? -90 : 90); // TODO make this configurables
         state_ = 3;
       } else {
         break;
       }
+    }
     case 3:
       //LCD.setCursor(0,0); LCD.print("turning");
       if (maneuver_.loop()) {

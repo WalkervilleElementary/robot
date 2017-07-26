@@ -53,6 +53,7 @@ int8_t Beacon::getTapeError() {
   else if (left > right) return 2;
   else return -2;
 }
+
 #if USE_UPDATE()
 void Beacon::update(){
   delay(1000);
