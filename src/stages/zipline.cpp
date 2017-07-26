@@ -17,6 +17,7 @@ uint8_t Zipline::state_ = 0;
 bool Zipline::loop() {
   switch (state_) {
     case 0:  // initialization
+      LCD.setCursor(0,0); LCD.print("initialize");
       follower_.loop();
       qrd_.isIntersection();  // clear intersection state
       state_++;
@@ -24,17 +25,27 @@ bool Zipline::loop() {
     case 1:  // follow tape until first intersection
       // ticks_ = hardware::Encoder::cmToTicks(distance_to_turn_);
       // encoder_start_ = encoder_.get(hardware::R_ENCODER_);
+      LCD.setCursor(0,0); LCD.print("follow tape");
       follower_.loop();
       if (qrd_.isIntersection()) {
-        follower_.followIr();
         encoder_start_ = encoder_.get(hardware::R_ENCODER_);
+        ticks_ = hardware::Encoder::cmToTicks(15);
+        state_++;
+      }
+      break;
+    case 2:
+      LCD.setCursor(0,0); LCD.print("follow tape");
+      follower_.loop();
+      if (encoder_.get(hardware::R_ENCODER_) - encoder_start_ > ticks_) {
+        encoder_start_ = encoder_.get(hardware::R_ENCODER_);
+        follower_.followIr();
         ticks_ = hardware::Encoder::cmToTicks(distance_to_turn_);
         state_++;
-      } else {
-        break;
       }
-    case 2:  // follow beacon for predetermined number of ticks
+      break;
+    case 3:  // follow beacon for predetermined number of ticks
       //LCD.setCursor(0,0); LCD.print("toward beacon");
+      LCD.setCursor(0,0); LCD.print("follow beacon");
       follower_.loop();
       if (encoder_.get(hardware::R_ENCODER_) - encoder_start_ > ticks_) {
         // turn toward zipline
@@ -43,7 +54,7 @@ bool Zipline::loop() {
       } else {
         break;
       }
-    case 3:  // turn toward zipline
+    case 4:  // turn toward zipline
       //LCD.setCursor(0,0); LCD.print("turning");
       if (maneuver_.loop()) {
         // drive backwards so we are not underneath the zipline
@@ -53,7 +64,7 @@ bool Zipline::loop() {
       } else {
         break;
       }
-    case 4:  // backup and raise platform
+    case 5:  // backup and raise platform
       //LCD.setCursor(0,0); LCD.print("back raise");
       if (maneuver_.loop() && platform_.loop()) {
         // raise platform
@@ -63,7 +74,7 @@ bool Zipline::loop() {
       } else {
         break;
       }
-    case 5:  // dead reckoning stage, drive slowly until zipline is hit
+    case 6:  // dead reckoning stage, drive slowly until zipline is hit
       //LCD.setCursor(0,0); LCD.print("Ramming the zipline");
       driver_.sendWheelVelocities(forward_speed_, forward_speed_);
       if (!digitalRead(PLATFORM_UPPER_SWITCH())) {
@@ -74,7 +85,7 @@ bool Zipline::loop() {
         state_++;
       }
       break;
-    case 6:
+    case 7:
       if (platform_.loop()) return true;
       break;
     default:  // oh noes, we didn't find the zipline

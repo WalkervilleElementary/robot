@@ -54,9 +54,11 @@ void setup(){
 
   left_surface = true;  // TODO read the switch
   // left_surface = digitalRead(LEFT_RIGHT_SWITCH());
-  // claw.fold(left_surface);
-  // delay(1000);
+  claw.fold(left_surface);
+  delay(1000);
 }
+
+// void loop() {}
 
 // real loop
 /*
@@ -135,11 +137,14 @@ void loop()
 */
 
 // loop for testing gate routine
-/*
+
 int state = 0;
+unsigned int gate_time = 0;
 void loop(){
 #if DEBUG()
-  LCD.clear(); LCD.home();
+  //LCD.clear(); LCD.home();
+  //LCD.setCursor(0,0); LCD.print(beacon.leftIntensity());
+  //LCD.setCursor(0,0); LCD.print(beacon.rightIntensity());  
 #endif  // DEBUG()
 #if USE_UPDATE()
   if (stopbutton()){
@@ -149,18 +154,23 @@ void loop(){
 #endif  // USE_UPDATE()
 
   // Tape follow loop
-  switch (state){
+  switch (state) {
     case 0:
       if (gate.loop())
+        gate_time = millis();
         state++;
-      else
-        break;
+      break;
     case 1:
       tape.loop();
+      if (millis() - gate_time > 1000) {
+        state++;
+      }
+      break;
+    default:
+      break;
   }
-  delay(50);
+  delay(loop_delay);
 }
-*/
 
 
 // loop for testing zipline routine
@@ -175,7 +185,7 @@ void loop() {
 
   switch (state) {
     case 0:
-      zipline.set_state(0));
+      zipline.set_state(0);
       if (claw.raise(sequences::LEFT_CLAW)) state++;
       break;
     case 1:  // raise left claw
@@ -195,9 +205,8 @@ void loop() {
 }
 */
 
-
 // loop for testing pickup
-
+/*
 void loop()
 {
 #if DEBUG()
@@ -216,7 +225,7 @@ void loop()
   }
   delay(15);
 }
-
+*/
 
 // loop for testing tape follow
 /*

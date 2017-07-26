@@ -26,7 +26,7 @@ private:
 
 #if CAUTIOUS_GATE_ROUTINE()
   /// gate state: 0 = unknown, 1 = closed
-  static bool gate_low_;
+  static bool gate_high_;
 #endif  // CAUTIOUS_GATE_ROUTINE()
 
 public:

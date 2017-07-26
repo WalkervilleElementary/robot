@@ -50,7 +50,7 @@
 
 // thresholds
 #define TAPE_QRD_STRENGTH_THRESHOLD() 100
-#define GATE_IR_STRENGTH_THRESHOLD() 150
+#define GATE_IR_STRENGTH_THRESHOLD() 200
 #define ENCODER_WAIT_TIME() 3
 
 // motor
@@ -88,11 +88,11 @@
 #define MANEUVER_GAIN() 2
 
 // gate
-#define GATE_WAITING_DISTANCE() 130 // cm
+#define GATE_WAITING_DISTANCE() 150 // cm
 #define CAUTIOUS_GATE_ROUTINE() 1 // only cross on signal rise
 
 // zipline distances (cm)
-#define ZIPLINE_TURN_DISTANCE() 95
+#define ZIPLINE_TURN_DISTANCE() 100
 #define MAX_ZIPLINE_DISTANCE() 120
 #define BACKUP_DISTANCE() 30
 

@@ -8,7 +8,7 @@ namespace stages{
 
 int8_t Gate::state_ = 0;
 #if CAUTIOUS_GATE_ROUTINE()
-bool Gate::gate_low_ = false;
+bool Gate::gate_high_ = false;
 #endif  // CAUTIOUS_GATE_ROUTINE()
 
 uint32_t Gate::threshold_ = GATE_IR_STRENGTH_THRESHOLD();
@@ -29,7 +29,7 @@ bool Gate::loop(){
         ++state_;
       }
 #if DEBUG()
-      LCD.println(encoder_.get(hardware::R_ENCODER_) - encoder_start_);
+      // LCD.println(encoder_.get(hardware::R_ENCODER_) - encoder_start_);
 #endif  // DEBUG()
       break;
     case 2:  // waiting at the gate
@@ -37,12 +37,12 @@ bool Gate::loop(){
       uint32_t left = beacon_.leftIntensity();
       uint32_t right = beacon_.rightIntensity();
 #if DEBUG()
-      LCD.setCursor(0,0); LCD.print(left);
-      LCD.setCursor(0,1); LCD.print(right);
+      // LCD.setCursor(0,0); LCD.print(left);
+      // LCD.setCursor(0,1); LCD.print(right);
 #endif  // DEBUG()
-      if (left + right > threshold_){
+      if (left + right < threshold_) {
 #if CAUTIOUS_GATE_ROUTINE()
-        if (!gate_low_){
+        if (!gate_high_){
           follower_.stop();
           return false;
         }
@@ -52,7 +52,7 @@ bool Gate::loop(){
       }else{
         follower_.stop();
 #if CAUTIOUS_GATE_ROUTINE()
-        gate_low_ = true;
+        gate_high_ = true;
 #endif  // CAUTIOUS_GATE_ROUTINE()
       }
       break;
