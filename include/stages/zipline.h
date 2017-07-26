@@ -23,13 +23,13 @@ private:
   hardware::Beacon& beacon_;
   hardware::Driver& driver_;
   hardware::Encoder& encoder_;
+  hardware::Qrd& qrd_;
 
   static uint32_t encoder_start_;
   static uint32_t ticks_;
 
   static uint32_t distance_to_turn_;
   static uint32_t distance_to_zipline_;
-  static uint32_t ir_end_;
 
   // constants
   static int forward_speed_;  // for dead reckoning
@@ -37,15 +37,9 @@ private:
   static bool left_surface_;
 
   /**
-   * Margin of error for beacon readings. When left & right encoder readings
-   * get below this margin, robot will leave the tape.
-   */
-  static uint8_t error_margin_;
-
-  /**
    * States:
    *  0 = Initialization
-   *  1 = Follow tape
+   *  1 = Follow tape until first intersection
    *  2 = Follow beacon
    *  3 = Turn toward zipline
    *  4 = Backup while raising platform
@@ -57,10 +51,11 @@ private:
 public:
   inline Zipline(sequences::Tape& follower, sequences::Platform& platform,
                 sequences::Maneuver& maneuver, hardware::Beacon& beacon,
-                hardware::Driver& driver, hardware::Encoder& encoder)
+                hardware::Driver& driver, hardware::Encoder& encoder,
+                hardware::Qrd& qrd)
                 : follower_(follower), platform_(platform),
-                  maneuver_(maneuver), beacon_(beacon),
-                  driver_(driver), encoder_(encoder) {};
+                  maneuver_(maneuver), beacon_(beacon), driver_(driver),
+                  encoder_(encoder), qrd_(qrd) {};
   inline ~Zipline(){};
   bool loop();
   void stop();

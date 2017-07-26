@@ -29,7 +29,7 @@ sequences::Tape tape(qrd, beacon, driver);
 
 stages::Gate gate(tape, beacon, encoder);
 stages::Pickup pickup(qrd, encoder, claw, maneuver, tape);
-stages::Zipline zipline(tape, platform, maneuver, beacon, driver, encoder);
+stages::Zipline zipline(tape, platform, maneuver, beacon, driver, encoder, qrd);
 
 bool left_surface;
 unsigned long loop_delay = LOOP_DELAY();
@@ -175,7 +175,7 @@ void loop() {
 
   switch (state) {
     case 0:
-      zipline.set_state(1);
+      zipline.set_state(0));
       if (claw.raise(sequences::LEFT_CLAW)) state++;
       break;
     case 1:  // raise left claw

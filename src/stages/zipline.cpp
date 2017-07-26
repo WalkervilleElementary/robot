@@ -11,37 +11,35 @@ uint32_t Zipline::distance_to_zipline_ = MAX_ZIPLINE_DISTANCE();
 uint32_t Zipline::encoder_start_;
 uint32_t Zipline::ticks_;
 
-uint32_t Zipline::ir_end_ = ZIPLINE_IR_END();
-
 bool Zipline::left_surface_ = true;  // TODO read this from the switch
 uint8_t Zipline::state_ = 0;
 
 bool Zipline::loop() {
   switch (state_) {
-    case 0:  // initialize settings
+    case 0:  // initialization
+      follower_.loop();
+      qrd_.isIntersection();  // clear intersection state
+      state_++;
+      break;
+    case 1:  // follow tape until first intersection
       // ticks_ = hardware::Encoder::cmToTicks(distance_to_turn_);
       // encoder_start_ = encoder_.get(hardware::R_ENCODER_);
-      state_ = 1;
-    case 1:
-    {
-      LCD.setCursor(0,0); LCD.print(beacon_.leftIntensity());
-      LCD.setCursor(0,0); LCD.print(beacon_.rightIntensity());
       follower_.loop();
-      if (beacon_.getTapeError() == 0) {
+      if (qrd_.isIntersection()) {
         follower_.followIr();
         encoder_start_ = encoder_.get(hardware::R_ENCODER_);
         ticks_ = hardware::Encoder::cmToTicks(distance_to_turn_);
-        state_ = 2;
+        state_++;
+      } else {
+        break;
       }
-      break;
-    }
     case 2:  // follow beacon for predetermined number of ticks
       //LCD.setCursor(0,0); LCD.print("toward beacon");
       follower_.loop();
       if (encoder_.get(hardware::R_ENCODER_) - encoder_start_ > ticks_) {
         // turn toward zipline
         maneuver_.turn(left_surface_ ? -75 : 75); // TODO make this configurables
-        state_ = 3;
+        state_++;
       } else {
         break;
       }
@@ -51,7 +49,7 @@ bool Zipline::loop() {
         // drive backwards so we are not underneath the zipline
         maneuver_.straight(-50);
         platform_.raise();
-        state_ = 4;
+        state_++;
       } else {
         break;
       }
@@ -61,7 +59,7 @@ bool Zipline::loop() {
         // raise platform
         encoder_start_ = encoder_.get(hardware::R_ENCODER_);
         ticks_ = hardware::Encoder::cmToTicks(distance_to_zipline_);
-        state_ = 5;
+        state_++;
       } else {
         break;
       }
@@ -71,9 +69,9 @@ bool Zipline::loop() {
       if (!digitalRead(PLATFORM_UPPER_SWITCH())) {
         // got the zipline!
         platform_.lower();
-        state_ = 6;
+        state_++;
       } else if (encoder_.get(hardware::R_ENCODER_) - encoder_start_ > ticks_) {
-        state_ = 7;
+        state_++;
       }
       break;
     case 6:

@@ -18,7 +18,7 @@
 #define BEACON_GAIN_I() 0
 #define BEACON_GAIN_D() 0
 #define BEACON_UNCERTAINTY() 50 //Have no idea what this should be, needs testing
-#define BEACON_THRESHOLD() 180  // Beacon is undetected below this value
+#define BEACON_THRESHOLD() 150  // Beacon is undetected below this value
 
 // claw
 #define L_C_EXTEND() 23
@@ -50,8 +50,7 @@
 
 // thresholds
 #define TAPE_QRD_STRENGTH_THRESHOLD() 100
-#define GATE_IR_STRENGTH_THRESHOLD() 300
-#define ZIPLINE_IR_END() 600  // threshold to turn toward zipline
+#define GATE_IR_STRENGTH_THRESHOLD() 150
 #define ENCODER_WAIT_TIME() 3
 
 // motor
