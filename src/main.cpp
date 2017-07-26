@@ -54,7 +54,8 @@ void setup(){
 
   left_surface = true;  // TODO read the switch
   // left_surface = digitalRead(LEFT_RIGHT_SWITCH());
-  claw.fold(left_surface);
+  // claw.fold(left_surface);
+  // delay(1000);
 }
 
 // real loop
@@ -161,6 +162,7 @@ void loop(){
 }
 */
 
+
 // loop for testing zipline routine
 int state = 0;
 void loop() {
@@ -172,7 +174,7 @@ void loop() {
 
   switch (state) {
     case 0:
-      zipline.set_state(2);
+      zipline.set_state(1);
       if (claw.raise(sequences::LEFT_CLAW)) state++;
       break;
     case 1:  // raise left claw
@@ -190,6 +192,7 @@ void loop() {
 
   delay(loop_delay);
 }
+
 
 // loop for testing pickup
 /*

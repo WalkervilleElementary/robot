@@ -19,12 +19,13 @@ uint8_t Zipline::state_ = 0;
 bool Zipline::loop() {
   switch (state_) {
     case 0:  // initialize settings
-      ticks_ = hardware::Encoder::cmToTicks(distance_to_turn_);
-      encoder_start_ = encoder_.get(hardware::R_ENCODER_);
+      // ticks_ = hardware::Encoder::cmToTicks(distance_to_turn_);
+      // encoder_start_ = encoder_.get(hardware::R_ENCODER_);
       state_ = 1;
     case 1:
     {
-      //LCD.setCursor(0,0); LCD.print("tape follow");
+      LCD.setCursor(0,0); LCD.print(beacon_.leftIntensity());
+      LCD.setCursor(0,0); LCD.print(beacon_.rightIntensity());
       follower_.loop();
       if (beacon_.getTapeError() == 0) {
         follower_.followIr();
@@ -39,7 +40,7 @@ bool Zipline::loop() {
       follower_.loop();
       if (encoder_.get(hardware::R_ENCODER_) - encoder_start_ > ticks_) {
         // turn toward zipline
-        maneuver_.turn(left_surface_ ? -90 : 90); // TODO make this configurables
+        maneuver_.turn(left_surface_ ? -75 : 75); // TODO make this configurables
         state_ = 3;
       } else {
         break;
@@ -59,7 +60,7 @@ bool Zipline::loop() {
       if (maneuver_.loop() && platform_.loop()) {
         // raise platform
         encoder_start_ = encoder_.get(hardware::R_ENCODER_);
-        ticks_ = hardware::Encoder::cmToTicks(MAX_ZIPLINE_DISTANCE());
+        ticks_ = hardware::Encoder::cmToTicks(distance_to_zipline_);
         state_ = 5;
       } else {
         break;
@@ -70,19 +71,18 @@ bool Zipline::loop() {
       if (!digitalRead(PLATFORM_UPPER_SWITCH())) {
         // got the zipline!
         platform_.lower();
-        state_ = 7;
-      } else if (encoder_.get(hardware::R_ENCODER_) - encoder_start_ > ticks_) {
         state_ = 6;
+      } else if (encoder_.get(hardware::R_ENCODER_) - encoder_start_ > ticks_) {
+        state_ = 7;
       }
       break;
-    case 6:  // oh noes, we didn't find the zipline
-      follower_.stop();
-      //LCD.clear();  LCD.home();
-      //LCD.setCursor(0,0); LCD.print("SOMETHING WENT WRONG");
-      delay(1000);
-      break;
-    case 7:
+    case 6:
       if (platform_.loop()) return true;
+      break;
+    default:  // oh noes, we didn't find the zipline
+      follower_.stop();
+      LCD.home(); LCD.setCursor(0,0); LCD.print("SOMETHING WENT WRONG");
+      delay(1000);
   }
   return false;
 }
@@ -95,11 +95,7 @@ void Zipline::stop() {
 
 #if DEBUG()
 void Zipline::set_state(uint8_t state) {
-  if (state > 3) {
-    state_ = 3;
-  } else {
-    state_ = state;
-  }
+  state_ = state;
 }
 #endif  // DEBUG()
 

@@ -45,7 +45,7 @@ void Claw::set_arm_position(int8_t side, int8_t position) {
       break;
     case 3:  // open
       // regular open position is a little too wide, reduce it a little
-      val = (side == LEFT_CLAW) ? left_open + 15 : right_open - 15;
+      val = (side == LEFT_CLAW) ? left_open + 25 : right_open - 25;
       break;
     case 4:  // closed
       val = (side == LEFT_CLAW) ? left_close : right_close;
