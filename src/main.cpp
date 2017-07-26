@@ -325,12 +325,10 @@ void loop(){
 
 // loop for claw testing
 /*
-void loop()
-{
+void loop() {
   int state = 0;
   int left = 0;
-  while (!startbutton())
-  {
+  while (!startbutton()) {
     if (stopbutton())
       claw.update();
     state = knob(6);
@@ -343,20 +341,25 @@ void loop()
     delay(100);
   }
   LCD.clear(); LCD.home();
-  if (state < 300)
-  {
+  if (state < 300) {
     LCD.setCursor(0,0); LCD.print("raise");
     if (left > 500) claw.raise(sequences::LEFT_CLAW);
     else claw.raise(sequences::RIGHT_CLAW);
-  }
-  else if (state < 600)
-  {
-    LCD.setCursor(0,0); LCD.print("grab");
-    if (left > 500) claw.grab(sequences::LEFT_CLAW);
-    else claw.grab(sequences::RIGHT_CLAW);
-  }
-  else
-  {
+  } else if (state < 600) {
+    if (state < 400) {
+      LCD.setCursor(0,0); LCD.print("grab");
+      if (left > 500) claw.grab(sequences::LEFT_CLAW, 0);
+      else claw.grab(sequences::RIGHT_CLAW, 0);
+    } else if (state < 500) {
+      LCD.setCursor(0,0); LCD.print("grab");
+      if (left > 500) claw.grab(sequences::LEFT_CLAW, 1);
+      else claw.grab(sequences::RIGHT_CLAW, 1);
+    } else {
+      LCD.setCursor(0,0); LCD.print("grab");
+      if (left > 500) claw.grab(sequences::LEFT_CLAW, 2);
+      else claw.grab(sequences::RIGHT_CLAW, 2);
+    }
+  } else {
     LCD.setCursor(0,0); LCD.print("release");
     if (left > 500) claw.release(sequences::LEFT_CLAW);
     else claw.release(sequences::RIGHT_CLAW);

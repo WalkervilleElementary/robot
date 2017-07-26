@@ -22,14 +22,14 @@ int16_t Claw::left_claw_rest = L_C_REST();
 int16_t Claw::left_claw_vertical = L_C_VERTICAL();
 int16_t Claw::left_open = L_OPEN();
 int16_t Claw::left_close = L_CLOSE();
-int16_t Claw::left_offset[] = {0, 10, 20};
-// Right values have not been tested
+int16_t Claw::left_offset[] = L_OFFSET();
+
 int16_t Claw::right_claw_extended = R_C_EXTEND();
 int16_t Claw::right_claw_rest = R_C_REST();
 int16_t Claw::right_claw_vertical = R_C_VERTICAL();
 int16_t Claw::right_open = R_OPEN();
 int16_t Claw::right_close = R_CLOSE();
-int16_t Claw::right_offset[] = {0, 10 , 20};
+int16_t Claw::right_offset[] = R_OFFSET();
 
 void Claw::set_arm_position(int8_t side, int8_t position) {
   uint16_t val;

@@ -21,17 +21,19 @@
 #define BEACON_THRESHOLD() 180  // Beacon is undetected below this value
 
 // claw
-#define L_C_EXTEND() 15  // 5
-#define L_C_REST() 160  // 170
-#define L_C_VERTICAL() 65
-#define L_OPEN() 20  // 20
-#define L_CLOSE() 85  // 90
-// THe right claw needs to be tested
-#define R_C_EXTEND() 177
-#define R_C_REST() 7
-#define R_C_VERTICAL() 100
-#define R_OPEN() 102
-#define R_CLOSE() 34
+#define L_C_EXTEND() 23
+#define L_C_REST() 180
+#define L_C_VERTICAL() 75
+#define L_OPEN() 20
+#define L_CLOSE() 145
+#define L_OFFSET() {0, -10, -13}
+
+#define R_C_EXTEND() 168
+#define R_C_REST() 5
+#define R_C_VERTICAL() 103
+#define R_OPEN() 161
+#define R_CLOSE() 30
+#define R_OFFSET() {0, 4, 12}
 
 // motor
 #define ACCEL_LIMIT() 50 // This is not the correct value
