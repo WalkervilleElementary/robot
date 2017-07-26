@@ -34,7 +34,7 @@ bool Tape::loop(){
   }
    if (error_source_ == 1){
     error_ = beacon_.getTapeError();
-    // TODO decide what to do when error is -4
+    // TODO: decide what should happen if error is -4
     if (error_ == -4) error_ = 0;
   }
   command_ = computeCommand(error_, 100);

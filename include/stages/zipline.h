@@ -29,13 +29,10 @@ private:
 
   static uint32_t distance_to_turn_;
   static uint32_t distance_to_zipline_;
-  static uint32_t ir_start_;
   static uint32_t ir_end_;
 
   // constants
   static int forward_speed_;  // for dead reckoning
-  static int reverse_speed_;  // for backing up from zipline
-  static uint8_t beacon_error_;
 
   static bool left_surface_;
 
@@ -50,8 +47,10 @@ private:
    *  0 = Initialization
    *  1 = Follow tape
    *  2 = Follow beacon
-   *  3 = Dead reckoning
-   *  4 = Error state
+   *  3 = Turn toward zipline
+   *  4 = Backup while raising platform
+   *  5 = Dead reckoning
+   *  6 = Error state
    */
   static uint8_t state_;
 

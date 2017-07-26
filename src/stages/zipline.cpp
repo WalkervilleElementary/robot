@@ -4,16 +4,13 @@
 
 namespace stages{
 
-uint8_t Zipline::beacon_error_ = IR_ERROR_MARGIN();
 int Zipline::forward_speed_ = SLOW_FORWARD_SPEED();
-int Zipline::reverse_speed_ = BACKUP_SPEED();
 
 uint32_t Zipline::distance_to_turn_ = ZIPLINE_TURN_DISTANCE();
 uint32_t Zipline::distance_to_zipline_ = MAX_ZIPLINE_DISTANCE();
 uint32_t Zipline::encoder_start_;
 uint32_t Zipline::ticks_;
 
-uint32_t Zipline::ir_start_ = ZIPLINE_IR_START();
 uint32_t Zipline::ir_end_ = ZIPLINE_IR_END();
 
 bool Zipline::left_surface_ = true;  // TODO read this from the switch
@@ -38,20 +35,16 @@ bool Zipline::loop() {
       break;
     }
     case 2:  // follow beacon for predetermined number of ticks
-    {
       //LCD.setCursor(0,0); LCD.print("toward beacon");
       follower_.loop();
-      const int32_t left = beacon_.leftIntensity();
-      const int32_t right = beacon_.rightIntensity();
-      if (left + right > ir_end_) {
+      if (encoder_.get(hardware::R_ENCODER_) - encoder_start_ > ticks_) {
         // turn toward zipline
         maneuver_.turn(left_surface_ ? -90 : 90); // TODO make this configurables
         state_ = 3;
       } else {
         break;
       }
-    }
-    case 3:
+    case 3:  // turn toward zipline
       //LCD.setCursor(0,0); LCD.print("turning");
       if (maneuver_.loop()) {
         // drive backwards so we are not underneath the zipline
@@ -61,7 +54,7 @@ bool Zipline::loop() {
       } else {
         break;
       }
-    case 4:
+    case 4:  // backup and raise platform
       //LCD.setCursor(0,0); LCD.print("back raise");
       if (maneuver_.loop() && platform_.loop()) {
         // raise platform
@@ -135,19 +128,15 @@ void Zipline::update() {
 
       switch (update_state_) {
       case 0:
-          distance_to_turn_ += change;
-          LCD.setCursor(0,0); LCD.print("turn distance cm");
-          LCD.setCursor(0,1); LCD.print(distance_to_turn_);
-          break;
+        distance_to_turn_ += change;
+        LCD.setCursor(0,0); LCD.print("turn distance cm");
+        LCD.setCursor(0,1); LCD.print(distance_to_turn_);
+        break;
       case 1:
-          distance_to_zipline_ += change;
-          LCD.setCursor(0,0); LCD.print("zipline dist cm");
-          LCD.setCursor(0,1); LCD.print(distance_to_zipline_);
-          break;
-        case 2:
-          beacon_error_ += change;
-          LCD.setCursor(0,0); LCD.print("beacon error");
-          LCD.setCursor(0,1); LCD.print(beacon_error_);
+        distance_to_zipline_ += change;
+        LCD.setCursor(0,0); LCD.print("zipline dist cm");
+        LCD.setCursor(0,1); LCD.print(distance_to_zipline_);
+        break;
       }
     }
   }

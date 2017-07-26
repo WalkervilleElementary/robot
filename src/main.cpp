@@ -172,7 +172,7 @@ void loop() {
 
   switch (state) {
     case 0:
-      zipline.set_state(0);
+      zipline.set_state(2);
       if (claw.raise(sequences::LEFT_CLAW)) state++;
       break;
     case 1:  // raise left claw
