@@ -42,15 +42,13 @@
 
 #define SLOW_FORWARD_SPEED() 50 // for e.g. dead reckoning
 #define BACKUP_SPEED() -40  // for backing up after getting zipline
-
 #define PLATFORM_MAINTAIN_SPEED() -10
-#define BACKUP_SPEED() -40  // for backing up after getting zipline
 #define BACKUP_TIME() 3000
-#define DEAD_RECKONING_SPEED() 50 // slow forward
 
 // thresholds
 #define TAPE_QRD_STRENGTH_THRESHOLD() 100
 #define GATE_IR_STRENGTH_THRESHOLD() 150
+#define ZIPLINE_IR_START() 150  // threshold to leave tape and head for zipline
 #define ENCODER_WAIT_TIME() 3
 #define IR_ERROR_MARGIN() 8
 
@@ -89,7 +87,7 @@
 #define MANEUVER_GAIN() 2
 
 // gate
-#define GATE_WAITING_DISTANCE() 120 // cm
+#define GATE_WAITING_DISTANCE() 130 // cm
 #define CAUTIOUS_GATE_ROUTINE() 1 // only cross on signal rise
 
 // zipline distances (cm)

@@ -13,6 +13,8 @@ uint32_t Zipline::distance_to_zipline_ = MAX_ZIPLINE_DISTANCE();
 uint32_t Zipline::encoder_start_;
 uint32_t Zipline::ticks_;
 
+uint32_t Zipline::ir_start_ = ZIPLINE_IR_START();
+
 bool Zipline::left_surface_ = true;  // TODO read this from the switch
 uint8_t Zipline::state_ = 0;
 
@@ -26,8 +28,9 @@ bool Zipline::loop() {
     {
       //LCD.setCursor(0,0); LCD.print("tape follow");
       follower_.loop();
-      const int32_t difference = abs(beacon_.leftIntensity() - beacon_.rightIntensity());
-      if (difference < beacon_error_) { // TODO use value in beacon error
+      const int32_t left = beacon_.leftIntensity();
+      const int32_t right = beacon_.rightIntensity();
+      if ((left + right > ir_start_) && (abs(left - right) < beacon_error_)) {
         follower_.followIr();
         encoder_start_ = encoder_.get(hardware::R_ENCODER_);
         ticks_ = hardware::Encoder::cmToTicks(distance_to_turn_);
