@@ -15,6 +15,7 @@ const unsigned char PS_128 = (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);
 namespace hardware{
 
 uint8_t Beacon::uncertainty_ = BEACON_UNCERTAINTY();
+uint32_t Beacon::threshold_ = BEACON_THRESHOLD();
 
 unsigned long Beacon::left_update_;
 unsigned long Beacon::right_update_;
@@ -41,14 +42,15 @@ uint32_t Beacon::rightIntensity() {
 }
 
 int8_t Beacon::getTapeError() {
-  int left_beacon_val = leftIntensity();
-  int right_beacon_val = rightIntensity();
+  int left = leftIntensity();
+  int right = rightIntensity();
 #if DEBUG()
-  LCD.setCursor(0,0); LCD.print(left_beacon_val);
-  LCD.setCursor(0,1); LCD.print(right_beacon_val);
+  LCD.setCursor(0,0); LCD.print(left);
+  LCD.setCursor(0,1); LCD.print(right);
 #endif  // DEBUG()
-  if (abs(left_beacon_val - right_beacon_val) < uncertainty_) return 0;
-  else if (left_beacon_val > right_beacon_val) return 2;
+  if (left + right < threshold_) return -4;
+  else if (abs(left - right) < uncertainty_) return 0;
+  else if (left > right) return 2;
   else return -2;
 }
 #if USE_UPDATE()

@@ -18,6 +18,7 @@
 #define BEACON_GAIN_I() 0
 #define BEACON_GAIN_D() 0
 #define BEACON_UNCERTAINTY() 50 //Have no idea what this should be, needs testing
+#define BEACON_THRESHOLD() 300
 
 // claw
 #define L_C_EXTEND() 5  // 5

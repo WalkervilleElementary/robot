@@ -28,9 +28,7 @@ bool Zipline::loop() {
     {
       //LCD.setCursor(0,0); LCD.print("tape follow");
       follower_.loop();
-      const int32_t left = beacon_.leftIntensity();
-      const int32_t right = beacon_.rightIntensity();
-      if ((left + right > ir_start_) && (abs(left - right) < beacon_error_)) {
+      if (beacon_.getTapeError() == 0) {
         follower_.followIr();
         encoder_start_ = encoder_.get(hardware::R_ENCODER_);
         ticks_ = hardware::Encoder::cmToTicks(distance_to_turn_);

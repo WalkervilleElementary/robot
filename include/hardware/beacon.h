@@ -22,6 +22,7 @@ private:
   static uint32_t left_intensity_;
   static uint32_t right_intensity_;
   static uint8_t uncertainty_;
+  static uint32_t threshold_;
 
 public:
   inline Beacon(){};
