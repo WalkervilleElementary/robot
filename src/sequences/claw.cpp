@@ -61,8 +61,10 @@ void Claw::set_arm_position(int8_t side, int8_t position) {
 }
 
 void Claw::fold(bool left_surface) {
-  set_arm_position(left_surface ? RIGHT_CLAW : LEFT_CLAW, EXTENDED);
-  delay(fold_delay);
+  if (left_surface) {
+    set_arm_position(RIGHT_CLAW, EXTENDED);
+    delay(fold_delay);
+  }
   set_arm_position(left_surface ? RIGHT_CLAW : LEFT_CLAW, CLOSED);
   delay(fold_delay);
   set_arm_position(left_surface ? LEFT_CLAW : RIGHT_CLAW, OPEN);
@@ -74,8 +76,6 @@ void Claw::fold(bool left_surface) {
 
 bool Claw::raise(int8_t side){
   if (state_ != 0) return false;
-  // if (side == LEFT_CLAW)  RCServo0.write(left_claw_vertical);
-  // else RCServo1.write(right_claw_vertical);
   set_arm_position(side, VERTICAL);
   state_ = 3;
   delay_ = millis() + raise_pause;

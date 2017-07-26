@@ -14,35 +14,42 @@ const unsigned char PS_128 = (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);
 
 namespace hardware{
 
-int8_t Beacon::beacon_error_ = 0;
-int8_t Beacon::uncertainty = BEACON_UNCERTAINTY();
+uint8_t Beacon::uncertainty_ = BEACON_UNCERTAINTY();
 
-uint32_t Beacon::leftIntensity()  {
-  return detect_10khz(L_BEACON_SENSOR_);
+unsigned long Beacon::left_update_;
+unsigned long Beacon::right_update_;
+
+uint32_t Beacon::left_intensity_;
+uint32_t Beacon::right_intensity_;
+
+uint32_t Beacon::leftIntensity() {
+  unsigned long current_time = millis();
+  if (current_time - left_update_ > update_interval_) {
+    left_intensity_ = detect_10khz(L_BEACON_SENSOR_);
+    left_update_ = millis();
+  }
+  return left_intensity_;
 }
 
-uint32_t Beacon::rightIntensity()  {
-  return detect_10khz(R_BEACON_SENSOR_);
+uint32_t Beacon::rightIntensity() {
+  unsigned long current_time = millis();
+  if (current_time - right_update_ > update_interval_) {
+    right_intensity_ = detect_10khz(R_BEACON_SENSOR_);
+    right_update_ = millis();
+  }
+  return right_intensity_;
 }
 
 int8_t Beacon::getTapeError() {
-  // TODO implement this
-  LCD.clear(); LCD.home();
   int left_beacon_val = leftIntensity();
-  LCD.setCursor(0,0); LCD.print(left_beacon_val);
   int right_beacon_val = rightIntensity();
+#if DEBUG()
+  LCD.setCursor(0,0); LCD.print(left_beacon_val);
   LCD.setCursor(0,1); LCD.print(right_beacon_val);
-  delay(50);
-  if (abs(left_beacon_val - right_beacon_val) < uncertainty){
-    beacon_error_ = 0;
-  }
-  else if (left_beacon_val > right_beacon_val){
-    beacon_error_ = 2;
-  }
-  else{
-    beacon_error_ = -2;
-  }
-   return beacon_error_;
+#endif  // DEBUG()
+  if (abs(left_beacon_val - right_beacon_val) < uncertainty_) return 0;
+  else if (left_beacon_val > right_beacon_val) return 2;
+  else return -2;
 }
 #if USE_UPDATE()
 void Beacon::update(){
@@ -60,10 +67,10 @@ void Beacon::update(){
       int start_val = knob(6);
       delay(100);
       int end_val = knob(6);
-      uncertainty += (end_val - start_val)/15;
+      uncertainty_ += (end_val - start_val)/15;
       LCD.clear();  LCD.home() ;
       LCD.setCursor(0,0); LCD.print("uncertainty");
-      LCD.setCursor(0,1); LCD.print(uncertainty);
+      LCD.setCursor(0,1); LCD.print(uncertainty_);
     }
   }
 }
