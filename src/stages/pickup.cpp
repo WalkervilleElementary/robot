@@ -11,11 +11,11 @@ int8_t Pickup::agents_ = 0;
 uint32_t Pickup::start_encoder_;
 uint32_t Pickup::current_encoder_;
 
-uint32_t Pickup::to_ramp_ = hardware::Encoder::cmToTicks(200);
-uint32_t Pickup::to_intersection_ = hardware::Encoder::cmToTicks(600);
+uint32_t Pickup::to_ramp_ = hardware::Encoder::cmToTicks(230);
+uint32_t Pickup::to_intersection_ = hardware::Encoder::cmToTicks(560);
 
 uint32_t Pickup::drive_distance_ = 20;  // TODO make this configurable
-uint32_t Pickup::turn_degree_ = 24;  // TODO make this configurable
+uint32_t Pickup::turn_degree_ = 40;  // TODO make this configurable
 bool Pickup::side_ = false;  // TODO
 
 const int8_t Pickup::height[] = {2,0,1,2,0,1,1}; // TODO actual values
@@ -104,7 +104,7 @@ bool Pickup::loop(){
       //else maneuver_.turn(drive_distance_);
       // if (side_) maneuver_.straight(-7);
       // else maneuver_.straight(-7);
-      if (agents_ == 0) maneuver_.straight(-3);
+      if (agents_ == 0) maneuver_.straight(-4);
       else maneuver_.straight(-7);
       if (maneuver_.loop()){
         state_ = 4;

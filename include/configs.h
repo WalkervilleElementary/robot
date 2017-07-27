@@ -4,7 +4,7 @@
 // debug and generation use
 #define USE_UPDATE() 1
 #define DEBUG() 1
-#define LOOP_DELAY() 20
+#define LOOP_DELAY() 10
 #define TUNE_THRESHOLD() 500 //for determining if spinning knob 6 should do anything
 #define CAUTIOUS_GATE_ROUTINE() 1 // only cross on signal rise
 
