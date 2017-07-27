@@ -6,6 +6,31 @@
 #define DEBUG() 1
 #define LOOP_DELAY() 20
 #define TUNE_THRESHOLD() 500 //for determining if spinning knob 6 should do anything
+#define CAUTIOUS_GATE_ROUTINE() 1 // only cross on signal rise
+
+// claw servo positions
+#define L_C_EXTEND() 23
+#define L_C_REST() 180
+#define L_C_VERTICAL() 75
+#define L_OPEN() 65
+#define L_CLOSE() 175
+#define L_OFFSET() {-3, -13, -14}
+
+#define R_C_EXTEND() 168
+#define R_C_REST() 4
+#define R_C_VERTICAL() 103
+#define R_OPEN() 161
+#define R_CLOSE() 30
+#define R_OFFSET() {0, 4, 12}
+
+// distances (cm)
+#define GATE_WAITING_DISTANCE() 205
+#define ZIPLINE_TURN_DISTANCE() 140
+#define ZIPLINE_TAPE_DISTANCE() 25  // after first intersection, follow a bit more
+#define ZIPLINE_BACKUP_DISTANCE() 50
+
+// angles (degrees)
+#define ZIPLINE_TURN_DEGREES() 75
 
 // PID initial values
 #define GAIN_T() 1
@@ -14,26 +39,11 @@
 #define GAIN_D() 0
 
 // beacon following initial values
-#define BEACON_GAIN_P() 12
+#define BEACON_GAIN_P() 6  // 12
 #define BEACON_GAIN_I() 0
 #define BEACON_GAIN_D() 0
-#define BEACON_UNCERTAINTY() 50 //Have no idea what this should be, needs testing
+#define BEACON_UNCERTAINTY() 70 // 50
 #define BEACON_THRESHOLD() 150  // Beacon is undetected below this value
-
-// claw
-#define L_C_EXTEND() 23
-#define L_C_REST() 180
-#define L_C_VERTICAL() 75
-#define L_OPEN() 65
-#define L_CLOSE() 175
-#define L_OFFSET() {0, -10, -13}
-
-#define R_C_EXTEND() 168
-#define R_C_REST() 5
-#define R_C_VERTICAL() 103
-#define R_OPEN() 161
-#define R_CLOSE() 30
-#define R_OFFSET() {0, 4, 12}
 
 // motor
 #define ACCEL_LIMIT() 50 // This is not the correct value
@@ -86,15 +96,6 @@
 #define GEAR_RATIO() 2.0
 #define AXLE_LENGTH() 21.59 // cm
 #define MANEUVER_GAIN() 2
-
-// gate
-#define GATE_WAITING_DISTANCE() 200 // cm
-#define CAUTIOUS_GATE_ROUTINE() 1 // only cross on signal rise
-
-// zipline distances (cm)
-#define ZIPLINE_TURN_DISTANCE() 120
-#define MAX_ZIPLINE_DISTANCE() 120
-#define BACKUP_DISTANCE() 30
 
 //macro to make switch code more concise
 #define MACRO_VARIABLE_TO_STRING(Variable) (void(Variable),#Variable) //supposed to convert variable name to a string

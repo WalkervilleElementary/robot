@@ -22,10 +22,10 @@ bool Maneuver::straight(int distance){
   if (distance < 0) {
     backward_ = true;
     distance = -distance;
-    offset_ = 30;
+    offset_ = 33; //originally 30
   } else {
     backward_ = false;
-    offset_ = 30;
+    offset_ = 33; //originally 30
   }
   right_limit_ = distance_to_encoder_ * distance;
   left_limit_ = right_limit_;

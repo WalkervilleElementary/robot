@@ -28,10 +28,12 @@ private:
   static uint32_t encoder_start_;
   static uint32_t ticks_;
 
-  static uint32_t distance_to_turn_;
-  static uint32_t distance_to_zipline_;
-
   // constants
+  static uint32_t turn_distance_;
+  static uint32_t turn_degrees_;
+  static uint32_t tape_distance_;
+  static uint32_t backup_distance_;
+  // static uint32_t distance_to_zipline_;
   static int forward_speed_;  // for dead reckoning
 
   static bool left_surface_;
@@ -40,11 +42,12 @@ private:
    * States:
    *  0 = Initialization
    *  1 = Follow tape until first intersection
-   *  2 = Follow beacon
-   *  3 = Turn toward zipline
-   *  4 = Backup while raising platform
-   *  5 = Dead reckoning
-   *  6 = Error state
+   *  2 = Follow tape a little more
+   *  3 = Follow beacon
+   *  4 = Turn toward zipline
+   *  5 = Backup and raise platform
+   *  6 = Dead reckoning
+   *  7 = Backup while lowering platform
    */
   static uint8_t state_;
 

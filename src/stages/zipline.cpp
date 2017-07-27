@@ -6,8 +6,10 @@ namespace stages{
 
 int Zipline::forward_speed_ = SLOW_FORWARD_SPEED();
 
-uint32_t Zipline::distance_to_turn_ = ZIPLINE_TURN_DISTANCE();
-uint32_t Zipline::distance_to_zipline_ = MAX_ZIPLINE_DISTANCE();
+uint32_t Zipline::turn_distance_ = ZIPLINE_TURN_DISTANCE();
+uint32_t Zipline::turn_degrees_ = ZIPLINE_TURN_DEGREES();
+uint32_t Zipline::tape_distance_ = ZIPLINE_TAPE_DISTANCE();
+uint32_t Zipline::backup_distance_ = ZIPLINE_BACKUP_DISTANCE();
 uint32_t Zipline::encoder_start_;
 uint32_t Zipline::ticks_;
 
@@ -17,39 +19,39 @@ uint8_t Zipline::state_ = 0;
 bool Zipline::loop() {
   switch (state_) {
     case 0:  // initialization
-      LCD.setCursor(0,0); LCD.print("initialize");
+      // LCD.setCursor(0,0); LCD.print("initialize");
       follower_.loop();
       qrd_.isIntersection();  // clear intersection state
       state_++;
       break;
     case 1:  // follow tape until first intersection
-      // ticks_ = hardware::Encoder::cmToTicks(distance_to_turn_);
+      // ticks_ = hardware::Encoder::cmToTicks(turn_distance_);
       // encoder_start_ = encoder_.get(hardware::R_ENCODER_);
-      LCD.setCursor(0,0); LCD.print("follow tape");
+      // LCD.setCursor(0,0); LCD.print("follow tape");
       follower_.loop();
       if (qrd_.isIntersection()) {
         encoder_start_ = encoder_.get(hardware::R_ENCODER_);
-        ticks_ = hardware::Encoder::cmToTicks(25);
+        ticks_ = hardware::Encoder::cmToTicks(tape_distance_);
         state_++;
       }
       break;
-    case 2:
-      LCD.setCursor(0,0); LCD.print("follow tape");
+    case 2:  // follow tape a little further
+      // LCD.setCursor(0,0); LCD.print("follow tape");
       follower_.loop();
       if (encoder_.get(hardware::R_ENCODER_) - encoder_start_ > ticks_) {
         encoder_start_ = encoder_.get(hardware::R_ENCODER_);
         follower_.followIr();
-        ticks_ = hardware::Encoder::cmToTicks(distance_to_turn_);
+        ticks_ = hardware::Encoder::cmToTicks(turn_distance_);
         state_++;
       }
       break;
     case 3:  // follow beacon for predetermined number of ticks
       //LCD.setCursor(0,0); LCD.print("toward beacon");
-      LCD.setCursor(0,0); LCD.print("follow beacon");
+      // LCD.setCursor(0,0); LCD.print("follow beacon");
       follower_.loop();
       if (encoder_.get(hardware::R_ENCODER_) - encoder_start_ > ticks_) {
         // turn toward zipline
-        maneuver_.turn(left_surface_ ? -75 : 75); // TODO make this configurables
+        maneuver_.turn(left_surface_ ? (-1 * turn_degrees_) : turn_degrees_);
         state_++;
       } else {
         break;
@@ -58,7 +60,7 @@ bool Zipline::loop() {
       //LCD.setCursor(0,0); LCD.print("turning");
       if (maneuver_.loop()) {
         // drive backwards so we are not underneath the zipline
-        maneuver_.straight(-50);
+        maneuver_.straight(-1 * backup_distance_);
         platform_.raise();
         state_++;
       } else {
@@ -67,25 +69,19 @@ bool Zipline::loop() {
     case 5:  // backup and raise platform
       //LCD.setCursor(0,0); LCD.print("back raise");
       if (maneuver_.loop() && platform_.loop()) {
-        // raise platform
-        encoder_start_ = encoder_.get(hardware::R_ENCODER_);
-        ticks_ = hardware::Encoder::cmToTicks(distance_to_zipline_);
+        motor.speed(PLATFORM_MOTOR(), -10);
         state_++;
-      } else {
-        break;
       }
+      else break;
     case 6:  // dead reckoning stage, drive slowly until zipline is hit
       //LCD.setCursor(0,0); LCD.print("Ramming the zipline");
       driver_.sendWheelVelocities(forward_speed_, forward_speed_);
       if (!digitalRead(PLATFORM_UPPER_SWITCH())) {
-        // got the zipline!
         platform_.lower();
-        state_++;
-      } else if (encoder_.get(hardware::R_ENCODER_) - encoder_start_ > ticks_) {
         state_++;
       }
       break;
-    case 7:
+    case 7:  // lower while backing up
       if (platform_.loop()) return true;
       break;
     default:  // oh noes, we didn't find the zipline
@@ -128,13 +124,16 @@ void Zipline::update() {
     LCD.clear();  LCD.home() ;
 
     switch (update_state_) {
-    SWITCH_CASES(0, distance_to_turn_)
-    SWITCH_CASES(1, distance_to_zipline_)
+    SWITCH_CASES(0, turn_distance_)
+    // SWITCH_CASES(1, distance_to_zipline_)
+    SWITCH_CASES(1, turn_degrees_)
+    SWITCH_CASES(2, tape_distance_)
+    SWITCH_CASES(3, backup_distance_)
 
     /*case 0:
-        distance_to_turn_ += change;
+        turn_distance_ += change;
         LCD.setCursor(0,0); LCD.print("turn distance cm");
-        LCD.setCursor(0,1); LCD.print(distance_to_turn_);
+        LCD.setCursor(0,1); LCD.print(turn_distance_);
         break;
     case 1:
         distance_to_zipline_ += change;

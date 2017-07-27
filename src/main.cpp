@@ -70,19 +70,24 @@ void loop() {
 #endif  // DEBUG()
 
   switch (state) {
-    case 0:  // going through gate
+    case 0:  // wait for start button
+      if (!startbutton()) break;
+      else state++;
+    case 1:  // going through gate
       if (gate.loop())
         state++;
       break;
-    case 1:  // picking up agents
+    case 2:  // picking up agents
       if (pickup.loop())
         state++;
       break;
-    case 2:  // finding zipline
+    case 3:  // finding zipline
        if (zipline.loop())
          state++;
        break;
   }
+
+  delay(loop_delay);
 }
 
 
