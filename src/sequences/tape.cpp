@@ -49,6 +49,7 @@ int Tape::computeCommand(int8_t error, unsigned long dt){
   i_error_ += error*1000/dt;
   i_error_ = constrain(i_error_, -5, 5);
   if (error_source_ == 0) {
+    i_error_ = 0;
     kp_ = gain_p_ * error;
     ki_ = gain_i_ * i_error_;
     kd_ = gain_d_ * (error - prev_error_)*1000/dt;
@@ -58,7 +59,7 @@ int Tape::computeCommand(int8_t error, unsigned long dt){
     kd_ = beacon_gain_d * (error - prev_error_)*1000/dt;
   }
   prev_error_ = error;
-  return gain_t_*(kp_ + ki_ +  kd_);
+  return gain_t_*(kp_ + ki_ - kd_);
 }
 
 void Tape::followIr() {
