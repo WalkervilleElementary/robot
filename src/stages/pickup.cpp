@@ -34,7 +34,8 @@ bool Pickup::loop(){
   // 5      wait for claw; initialize release turn back on tape
   // 6      wait for claw; wait for realign with tape;
   //             wait for release to finish or return to state 2
-  // 7      wait for release to finish
+  // 7      tape follow until intersection
+  // 8
 
   switch (state_){
     case -4:  // start
@@ -78,6 +79,7 @@ bool Pickup::loop(){
     }
     case 0:  // going into the tub
     case 2:  // Travelling to next agent
+    case 7:  // ignore the the intersection
       LCD.setCursor(0,1); LCD.print("tape follow");
       claw_.loop();
       if (qrd_.isIntersection()){
@@ -139,16 +141,26 @@ bool Pickup::loop(){
       claw_.loop();
       if (maneuver_.loop()){
         if (agents_ == 5) state_ = 7;
+        else if (agents_ == 7) state_ = 9;
         else state_ = 2;
       }else{
         break;
       }
-    case 7:  // wait for claw to finish before next stage
+    case 8:
+      maneuver_.straight(5);
+      agents_++;
+      state_ = 6;
+      break;
+    case 9:
       if (claw_.loop()) {
         if (side_) claw_.raise(sequences::RIGHT_CLAW);
         else claw_.raise(sequences::LEFT_CLAW);
-        return true;
+        state_ = 10;
       }
+      break;
+    case 10:
+      if (claw_.loop()) return true;
+      break;
   }
 
   return false;
