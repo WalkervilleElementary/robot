@@ -47,15 +47,15 @@ void setup(){
   RCServo2.attach(SERVO_2());
   RCServo3.attach(SERVO_3());
 
-//claw.raise(sequences::RIGHT_CLAW);
-//while(!claw.loop()) delay(100);
-//claw.raise(sequences::LEFT_CLAW);
-//while(!claw.loop()) delay(100);
-
   left_surface = true;  // TODO read the switch
   // left_surface = digitalRead(LEFT_RIGHT_SWITCH());
   claw.fold(left_surface);
   delay(1000);
+
+//claw.raise(sequences::RIGHT_CLAW);
+//while(!claw.loop()) delay(100);
+//claw.raise(sequences::LEFT_CLAW);
+//while(!claw.loop()) delay(100);
 }
 
 // void loop() {}
@@ -198,6 +198,8 @@ void loop() {
     case 3:  // zipline
       if (zipline.loop()) state++;
       break;
+    case 4:
+      driver.stop();
   }
 
   delay(loop_delay);

@@ -32,7 +32,7 @@ bool Platform::loop(){
         motor.speed(motor_number_, lower_speed_top_);
         return false;
       }else{
-	      motor.speed(motor_number_, maintain_speed_);
+        motor.speed(motor_number_, maintain_speed_);
         break;
       }
     case 3:  // slowly lower while backing up

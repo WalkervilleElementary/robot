@@ -68,10 +68,7 @@ bool Zipline::loop() {
       }
     case 5:  // backup and raise platform
       //LCD.setCursor(0,0); LCD.print("back raise");
-      if (maneuver_.loop() && platform_.loop()) {
-        motor.speed(PLATFORM_MOTOR(), -10);
-        state_++;
-      }
+      if (maneuver_.loop() && platform_.loop()) state_++;
       else break;
     case 6:  // dead reckoning stage, drive slowly until zipline is hit
       //LCD.setCursor(0,0); LCD.print("Ramming the zipline");

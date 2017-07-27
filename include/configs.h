@@ -55,7 +55,7 @@
 
 #define SLOW_FORWARD_SPEED() 50 // for e.g. dead reckoning
 #define BACKUP_SPEED() -40  // for backing up after getting zipline
-#define PLATFORM_MAINTAIN_SPEED() -10
+#define PLATFORM_MAINTAIN_SPEED() -15
 #define BACKUP_TIME() 3000
 
 // thresholds
