@@ -144,7 +144,7 @@ void loop(){
 #if DEBUG()
   //LCD.clear(); LCD.home();
   //LCD.setCursor(0,0); LCD.print(beacon.leftIntensity());
-  //LCD.setCursor(0,0); LCD.print(beacon.rightIntensity());  
+  //LCD.setCursor(0,0); LCD.print(beacon.rightIntensity());
 #endif  // DEBUG()
 #if USE_UPDATE()
   if (stopbutton()){
@@ -156,17 +156,13 @@ void loop(){
   // Tape follow loop
   switch (state) {
     case 0:
-      if (gate.loop())
-        gate_time = millis();
-        state++;
+      if (gate.loop()) state++;
       break;
     case 1:
       tape.loop();
-      if (millis() - gate_time > 1000) {
-        state++;
-      }
       break;
     default:
+      motor.stop();
       break;
   }
   delay(loop_delay);
