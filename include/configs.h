@@ -88,11 +88,11 @@
 #define MANEUVER_GAIN() 2
 
 // gate
-#define GATE_WAITING_DISTANCE() 150 // cm
+#define GATE_WAITING_DISTANCE() 200 // cm
 #define CAUTIOUS_GATE_ROUTINE() 1 // only cross on signal rise
 
 // zipline distances (cm)
-#define ZIPLINE_TURN_DISTANCE() 100
+#define ZIPLINE_TURN_DISTANCE() 120
 #define MAX_ZIPLINE_DISTANCE() 120
 #define BACKUP_DISTANCE() 30
 

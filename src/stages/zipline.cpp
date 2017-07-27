@@ -29,7 +29,7 @@ bool Zipline::loop() {
       follower_.loop();
       if (qrd_.isIntersection()) {
         encoder_start_ = encoder_.get(hardware::R_ENCODER_);
-        ticks_ = hardware::Encoder::cmToTicks(15);
+        ticks_ = hardware::Encoder::cmToTicks(25);
         state_++;
       }
       break;
@@ -142,7 +142,7 @@ void Zipline::update() {
         LCD.setCursor(0,1); LCD.print(distance_to_zipline_);
         break;
     */
-    } 
+    }
   }
 }
 #endif  // USE_UPDATE()

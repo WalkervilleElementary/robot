@@ -61,7 +61,7 @@ void setup(){
 // void loop() {}
 
 // real loop
-/*
+
 uint8_t state = 0;
 void loop() {
 #if DEBUG()
@@ -79,14 +79,12 @@ void loop() {
         state++;
       break;
     case 2:  // finding zipline
-      LCD.clear(); LCD.home();
-      LCD.setCursor(0,0); LCD.print("zipline stage");
-    //   if (zipline.loop())
-    //     state++;
-    //   break;
+       if (zipline.loop())
+         state++;
+       break;
   }
 }
-*/
+
 
 // loop for testing platform
 /*
@@ -137,7 +135,7 @@ void loop()
 */
 
 // loop for testing gate routine
-
+/*
 int state = 0;
 unsigned int gate_time = 0;
 void loop(){
@@ -167,7 +165,7 @@ void loop(){
   }
   delay(loop_delay);
 }
-
+*/
 
 // loop for testing zipline routine
 /*
