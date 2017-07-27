@@ -52,10 +52,10 @@ void setup(){
 //claw.raise(sequences::LEFT_CLAW);
 //while(!claw.loop()) delay(100);
 
-  left_surface = true;  // TODO read the switch
-  // left_surface = digitalRead(LEFT_RIGHT_SWITCH());
-  // claw.fold(left_surface);
-  // delay(1000);
+  left_surface = true;
+  //left_surface = digitalRead(LEFT_RIGHT_SWITCH());
+  //claw.fold(left_surface);
+  //delay(1000);
 }
 
 // real loop
