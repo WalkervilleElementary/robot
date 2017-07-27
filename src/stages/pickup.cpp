@@ -12,13 +12,13 @@ uint32_t Pickup::start_encoder_;
 uint32_t Pickup::current_encoder_;
 
 uint32_t Pickup::to_ramp_ = hardware::Encoder::cmToTicks(200);
-uint32_t Pickup::to_intersection_ = hardware::Encoder::cmToTicks(400);
+uint32_t Pickup::to_intersection_ = hardware::Encoder::cmToTicks(550);
 
 uint32_t Pickup::drive_distance_ = 20;  // TODO make this configurable
 uint32_t Pickup::turn_degree_ = 24;  // TODO make this configurable
 bool Pickup::side_ = false;  // TODO
 
-const int8_t Pickup::height[] = {2,0,1,2,0}; // TODO actual values
+const int8_t Pickup::height[] = {2,0,1,2,0,1,1}; // TODO actual values
 
 bool Pickup::loop(){
   // States Description
@@ -56,7 +56,7 @@ bool Pickup::loop(){
         break;
     }
     case -2:  // getting ready to go up the ramp
-      follower_.update_vel(150); // TODO update value
+      follower_.update_vel(110); // TODO update value
       if (side_) claw_.raise(sequences::LEFT_CLAW);
       else claw_.raise(sequences::RIGHT_CLAW);
       state_ = -1;
@@ -137,15 +137,15 @@ bool Pickup::loop(){
       }else{
         break;
       }
-    case 6:  // Return back to tape following
+    case 6:  // Return back to tape followin
+      LCD.setCursor(0,0); LCD.print("going straight");
       claw_.loop();
       if (maneuver_.loop()){
         if (agents_ == 5) state_ = 7;
         else if (agents_ == 7) state_ = 9;
         else state_ = 2;
-      }else{
-        break;
       }
+      break;
     case 8:
       maneuver_.straight(5);
       agents_++;

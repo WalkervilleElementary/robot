@@ -219,7 +219,7 @@ void loop()
     qrd.update();
     // qrd.update();
   }
-  delay(15);
+  delay(10);
 }
 */
 

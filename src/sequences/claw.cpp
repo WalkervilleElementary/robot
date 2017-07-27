@@ -87,7 +87,7 @@ bool Claw::grab(int8_t side, int8_t offset){
   if (state_ != 0) return false;
   state_ = 2;
   if (side == LEFT_CLAW){
-    RCServo0.write(constrain(left_claw_extended - left_offset[offset], 0, 180));
+    RCServo0.write(constrain(left_claw_extended + left_offset[offset], 0, 180));
     degree_ = left_close;
     left_ = true;
   }else{

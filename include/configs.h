@@ -24,8 +24,8 @@
 #define L_C_EXTEND() 23
 #define L_C_REST() 180
 #define L_C_VERTICAL() 75
-#define L_OPEN() 20
-#define L_CLOSE() 145
+#define L_OPEN() 65
+#define L_CLOSE() 175
 #define L_OFFSET() {0, -10, -13}
 
 #define R_C_EXTEND() 168
