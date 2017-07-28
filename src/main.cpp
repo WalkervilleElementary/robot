@@ -51,15 +51,7 @@ void setup(){
   
   LCD.begin(16,2) ;
 
-  Serial.begin(9600) ;
-
-  while(true) {
-    for(int i = 0; i < 4; i++) {
-      Serial.print(analogRead(i));
-      Serial.print(",");
-    }
-    Serial.println(".");
-  }
+  Serial.begin(9600);
   
   bool mirror = false;
 
@@ -123,7 +115,15 @@ void setup(){
     LCD.setCursor(8,1);
     LCD.print(rightEncoder.getVelocity());
     LCD.print("  ");
-    delay(100);
+    /*Serial.print(getEncoderCount(0));
+    Serial.print(",");
+    Serial.print(getEncoderCount(1));*/
+    /*Serial.print(getEncoderState(0,1));
+    Serial.print(getEncoderState(0,0));
+    Serial.print(getEncoderState(1,1));
+    Serial.print(getEncoderState(1,0));*/
+    //Serial.print("\n");
+    delay(50);
   }
   
   /*int buttonPressCount = 0;
@@ -136,7 +136,7 @@ void setup(){
     delay(50);
   }*/
   
-  while (true) {
+  /*while (true) {
 
     leftEncoder.tick();
     rightEncoder.tick();
@@ -145,7 +145,7 @@ void setup(){
     if (drive.readyForCommand() && startButton.released()) {
       drive.commandDriveStraight(255, 255);
     }
-  }
+  }*/
 }
 
 void loop() {}

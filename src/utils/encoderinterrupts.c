@@ -3,17 +3,12 @@
 #include <util/atomic.h>
 
 static volatile int32_t encoderCounts[2];
-static volatile uint32_t encoderDebounceFwd[2];
-static volatile uint32_t encoderDebounceRev[2];
+static volatile uint8_t encoderPrevState[2];
 
-//Only use pins on Port D!
-#define ENCODER_0_INT 0
-#define ENCODER_0_DIR 2
-#define ENCODER_1_INT 1
-#define ENCODER_1_DIR 3
+#define ENCODER_INT 0
 
-#define ENCODER_0_DIR_READ() ((PIND >> ENCODER_0_DIR) & 0x1)
-#define ENCODER_1_DIR_READ() ((PIND >> ENCODER_1_DIR) & 0x1)
+#define ENCODER_0_READ() ((PIND >> 4) & 0b11)
+#define ENCODER_1_READ() ((PIND >> 6) & 0b11)
 
 int32_t getEncoderCount(uint8_t id) {
 	int32_t count;
@@ -23,6 +18,11 @@ int32_t getEncoderCount(uint8_t id) {
 	return count;
 }
 
+uint8_t getEncoderState(uint8_t id, uint8_t pin) {
+  uint8_t state = id ? ENCODER_1_READ() : ENCODER_0_READ();
+  return (state >> pin) & 0b01;
+}
+
 void setEncoderCount(uint8_t id, int32_t value) {
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
 		encoderCounts[id] = value;
@@ -30,45 +30,35 @@ void setEncoderCount(uint8_t id, int32_t value) {
 }
 
 void enableEncoderInterrupts() {
-	enableEncoderInterrupt(ENCODER_0_INT);
-  enableEncoderInterrupt(ENCODER_1_INT);
+	enableEncoderInterrupt(ENCODER_INT);
 }
 
-void enableEncoderInterrupt(uint8_t encoderId) {
+void enableEncoderInterrupt(uint8_t pin) {
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-		EIMSK |= (1 << encoderId);
-    EICRA |= (0b11 << (2 * encoderId)); 
+		EIMSK |= (1 << pin);
+    EICRA |= (0b11 << (2 * pin)); 
 	}
 }
 
-ISR(_VECTOR(ENCODER_0_INT)) {
-	unsigned long now = millis();
-	if (ENCODER_0_DIR_READ()) {
-		//if (now - encoderDebounceFwd[0] >= ENCODER_WAIT_TIME) {
-			encoderCounts[0]++;
-			encoderDebounceFwd[0] = now;
-		//}
-	}
-	else {
-		//if (now - encoderDebounceRev[0] >= ENCODER_WAIT_TIME) {
-			encoderCounts[0]--;
-			encoderDebounceRev[0] = now;
-		//}
-	}
-}
+const int8_t table[16] = {
+	0, 1, -1, 2,
+	-1, 0, 2, 1,
+	1, 2, 0, -1,
+	2, -1, 1, 0
+};
 
-ISR(_VECTOR(ENCODER_1_INT)) {
-	unsigned long now = millis();
-	if (ENCODER_1_DIR_READ()) {
-		//if (now - encoderDebounceFwd[1] >= ENCODER_WAIT_TIME) {
-			encoderCounts[1]++;
-			encoderDebounceFwd[1] = now;
-		//}
-	}
-	else {
-		//if (now - encoderDebounceRev[1] >= ENCODER_WAIT_TIME) {
-			encoderCounts[1]--;
-			encoderDebounceRev[1] = now;
-		//}
-	}
+ISR(INT0_vect) {
+  uint8_t input0 = ENCODER_0_READ();
+  uint8_t input1 = ENCODER_1_READ();
+  int8_t delta0 = table[input0 | (encoderPrevState[0] << 2)];
+  int8_t delta1 = table[input1 | (encoderPrevState[1] << 2)];
+  if (delta0 != 2) {
+    encoderCounts[0] += delta0;
+    encoderPrevState[0] = input0;
+  }
+  if (delta1 != 2) {
+    encoderCounts[1] += delta1;
+    encoderPrevState[1] = input1;
+  }
+  
 }
