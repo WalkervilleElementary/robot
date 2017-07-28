@@ -1,22 +1,22 @@
-#include "hardware/motorcontroller.h"
+#include "hardware/dcmotor.h"
  
 #include <Arduino.h>
 #include <phys253pins.h>
 
 namespace hardware {
 
-MotorController::MotorController(uint8_t directionPin, uint8_t enablePin, bool reversed) {
+DCMotor::DCMotor(uint8_t directionPin, uint8_t enablePin, bool reversed) {
   m_directionPin = directionPin;
   m_enablePin = enablePin;
   m_reversed = reversed;
 }
 
-MotorController::MotorController(uint8_t output) {
+DCMotor::DCMotor(uint8_t output) {
   m_directionPin = Motor_Direction[output];
   m_enablePin = Motor_EnableDigital[output];
 }
  
- void MotorController::set(int16_t power) {
+ void DCMotor::setPower(int16_t power) {
   if (power > 255) {
     power = 255;	
   }
@@ -34,8 +34,8 @@ MotorController::MotorController(uint8_t output) {
   }
 }
 
-void MotorController::stop() {
-  set(0);
+void DCMotor::stop() {
+  setPower(0);
 }
 
 }

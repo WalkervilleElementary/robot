@@ -5,13 +5,15 @@
 
 #include "utils/encoderinterrupts.h"
 
-#include "hardware/motorcontroller.h"
+#include "hardware/dcmotor.h"
 #include "hardware/switch.h"
 #include "hardware/encoder.h"
-#include "hardware/limitmotorcontroller.h"
+#include "hardware/limitmechanism.h"
 #include "hardware/frequencysensor.h"
 #include "hardware/linesensor.h"
 #include "hardware/drivetrain.h"
+#include "hardware/servomotor.h"
+#include "hardware/clawmechanism.h"
 
 /*#include "hardware/driver.h"
 #include "hardware/qrd.h"
@@ -41,6 +43,8 @@ stages::Gate gate(tape, beacon, encoder);
 stages::Pickup pickup(qrd, claw, maneuver, tape);
 stages::Zipline zipline(tape, platform, maneuver, beacon, driver, encoder);*/
 
+using namespace hardware;
+
 void setup(){
   portMode(0, INPUT);
   portMode(1, OUTPUT);
@@ -49,48 +53,69 @@ void setup(){
 
   Serial.begin(9600) ;
 
-  /*RCServo0.attach(SERVO_0());
-  RCServo1.attach(SERVO_1());
-  RCServo2.attach(SERVO_2());
-  RCServo3.attach(SERVO_3());*/
-
-
-  hardware::MotorController leftMotor(2);
-  hardware::MotorController rightMotor(3, true);
-  hardware::MotorController platformMotor(0);
-
-  pinMode(49, INPUT);
-  pinMode(50, INPUT);
-  hardware::Switch startButton(50, LOW);
-  hardware::Switch stopButton(49, LOW);
-  hardware::Switch platformRaiseLimit(6, LOW);
-  hardware::Switch platformLowerLimit(7, LOW);
+  while(true) {
+    for(int i = 0; i < 4; i++) {
+      Serial.print(analogRead(i));
+      Serial.print(",");
+    }
+    Serial.println(".");
+  }
   
-  hardware::Encoder leftEncoder(0);
-  hardware::Encoder rightEncoder(1, true);
+  bool mirror = false;
 
-  hardware::FrequencySensor leftBeaconSensor(4);
-  hardware::FrequencySensor rightBeaconSensor(5);
+  ServoMotor leftGrabServo(SERVO_0(), 10);
+  ServoMotor leftRaiseServo(SERVO_1(), 10);
+  ServoMotor rightGrabServo(SERVO_2(), 10);
+  ServoMotor rightRaiseServo(SERVO_3(), 10);
 
-  hardware::LineSensor tapeSensor(3,2,1,0);
+  int16_t leftClawLiftPositions[5] = {0,0,0,0,0};
+  int16_t leftClawGrabPositions[2] = {0,0};
+  int16_t rightClawLiftPositions[5] = {0,0,0,0,0};
+  int16_t rightClawGrabPositions[2] = {0,0};
+  ClawMechanism leftClaw(leftRaiseServo, leftGrabServo, leftClawLiftPositions, leftClawGrabPositions);
+  ClawMechanism rightClaw(rightRaiseServo, rightGrabServo, rightClawLiftPositions, rightClawGrabPositions);
+
+  ClawMechanism& primaryClaw = mirror ? rightClaw : leftClaw;
+  ClawMechanism& secondaryClaw = mirror ? leftClaw : rightClaw;
+
+  DCMotor leftMotor(2);
+  DCMotor rightMotor(3, true);
+  Encoder leftEncoder(0);
+  Encoder rightEncoder(1, true);
+
+  DCMotor& insideMotor = mirror ? rightMotor : leftMotor;
+  DCMotor& outsideMotor = mirror ? leftMotor : rightMotor;
+  Encoder& insideEncoder = mirror ? rightEncoder : leftEncoder;
+  Encoder& outsideEncoder = mirror ? leftEncoder : rightEncoder;
+
+  Switch platformRaiseLimit(6, LOW);
+  Switch platformLowerLimit(7, LOW);
+  DCMotor platformMotor(0);
+  LimitMechanism platform(platformMotor, platformRaiseLimit, platformLowerLimit);
+
+  Switch startButton(50, LOW);
+  Switch stopButton(49, LOW);
   
-  hardware::LimitMotorController platformController(platformMotor, platformRaiseLimit, platformLowerLimit);
+  FrequencySensor leftBeaconSensor(4);
+  FrequencySensor rightBeaconSensor(5);
 
-  hardware::Drivetrain drive(leftMotor, rightMotor, leftEncoder, rightEncoder, tapeSensor);
+  LineSensor tapeSensor = mirror ? LineSensor(3,2,1,0) : LineSensor(0,1,2,3);
+  
+  Drivetrain drive(insideMotor, outsideMotor, insideEncoder, outsideEncoder, tapeSensor);
 
 
   enableEncoderInterrupts();
   
-  /*while (true) {
+  while (true) {
     startButton.tick();
     stopButton.tick();
     leftEncoder.tick();
     rightEncoder.tick();
     LCD.setCursor(0,0);
-    LCD.print(leftEncoder.getDisplacement());
+    LCD.print(getEncoderCount(0));
     LCD.print("  ");
     LCD.setCursor(8,0);
-    LCD.print(rightEncoder.getDisplacement());
+    LCD.print(getEncoderCount(1));
     LCD.print("  ");
     LCD.setCursor(0,1);
     LCD.print(leftEncoder.getVelocity());
@@ -98,8 +123,8 @@ void setup(){
     LCD.setCursor(8,1);
     LCD.print(rightEncoder.getVelocity());
     LCD.print("  ");
-    delay(50);
-  }*/
+    delay(100);
+  }
   
   /*int buttonPressCount = 0;
   while (true) {

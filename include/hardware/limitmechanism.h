@@ -1,26 +1,27 @@
 #pragma once
 #include <stdint.h>
-#include "hardware/motorcontroller.h"
+#include "hardware/dcmotor.h"
 #include "hardware/switch.h"
 
 namespace hardware {
 
-class LimitMotorController {
+class LimitMechanism {
 public:
-  LimitMotorController(MotorController& motor, const Switch& extendLimit, const Switch& retractLimit);
+  LimitMechanism(DCMotor& motor, const Switch& extendLimit, const Switch& retractLimit);
 
+  enum State { INACTIVE, EXTEND, RETRACT };
   bool extend(int16_t power);
   bool retract(int16_t power);
+  void setState(State state, int16_t power);
   void stop();
   void tick();
 
 private:
-  MotorController& m_motor;
+  DCMotor& m_motor;
   const Switch& m_extendLimit;
   const Switch& m_retractLimit;
   int16_t m_motorPower;
-  enum state { INACTIVE, EXTEND, RETRACT };
-  state m_state;
+  State m_state;
 
 };
 

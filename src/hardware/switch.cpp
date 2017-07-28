@@ -6,6 +6,7 @@ namespace hardware {
 Switch::Switch(uint8_t pin, uint8_t pressedState) {
   m_pin = pin;
   m_pressedState = pressedState;
+  pinMode(pin, INPUT);
   m_prevState = digitalRead(pin);
   m_pressEvent = false;
   m_releaseEvent = false;

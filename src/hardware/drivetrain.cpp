@@ -2,7 +2,7 @@
 
 namespace hardware {
 
-Drivetrain::Drivetrain(MotorController& leftMotor, MotorController& rightMotor, const Encoder& leftEncoder, const Encoder& rightEncoder, const LineSensor& lineSensor) :
+Drivetrain::Drivetrain(DCMotor& leftMotor, DCMotor& rightMotor, const Encoder& leftEncoder, const Encoder& rightEncoder, const LineSensor& lineSensor) :
   m_leftMotor(leftMotor), m_rightMotor(rightMotor), m_leftEncoder(leftEncoder), m_rightEncoder(rightEncoder), m_lineSensor(lineSensor)
 {
   stop();

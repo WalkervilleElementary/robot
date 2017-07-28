@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hardware/motorcontroller.h"
+#include "hardware/dcmotor.h"
 #include "hardware/encoder.h"
 #include "hardware/linesensor.h"
 
@@ -8,7 +8,7 @@ namespace hardware {
 
 class Drivetrain {
 public:
-  Drivetrain(MotorController& leftMotor, MotorController& rightMotor, const Encoder& leftEncoder, const Encoder& rightEncoder, const LineSensor& LineSensor);
+  Drivetrain(DCMotor& leftMotor, DCMotor& rightMotor, const Encoder& leftEncoder, const Encoder& rightEncoder, const LineSensor& LineSensor);
 
   void commandLineFollowDistance();
   void commandLineFollowIntersection();
@@ -22,8 +22,8 @@ public:
   void rampMotors();
 
 private:
-  MotorController& m_leftMotor;
-  MotorController& m_rightMotor;
+  DCMotor& m_leftMotor;
+  DCMotor& m_rightMotor;
 
   int16_t m_leftMotorCurrent;
   int16_t m_leftMotorSetpoint;
