@@ -76,16 +76,15 @@ bool Pickup::loop(){
       }
     }
     case 0:  // going into the tub
-    case 3:  // Travelling to next agent
       LCD.setCursor(0,1); LCD.print("tape follow");
       claw_.loop();
       if (qrd_.isIntersection()){
         follower_.stop();
-        state_++;
+        state_ = 1;
       }else{
         follower_.loop();
+        break;
       }
-      break;
     case 1:  // Turning at the tub
       LCD.setCursor(0,0); LCD.print("turning");
       if (side_) maneuver_.turn(turn_degree_);
@@ -103,6 +102,11 @@ bool Pickup::loop(){
         follower_.loop();
       }
       break;
+    case 3:  // Travelling to next agent by basket hugging
+      if (side_) motor_.sendWheelVelocities(130,40);
+      else motor_.sendWheelVelocities(40,130);
+      if (qrd_.isIntersection2(!side_)) state_ = 4;
+      else break;
     case 4:  // Aligning the Claw
       LCD.setCursor(0,0); LCD.print("align");
       if (side_) {
