@@ -92,6 +92,11 @@ bool Qrd::isIntersection(){
   return false;
 }
 
+bool Qrd::isIntersection2(bool isLeft){
+  if (isLeft) return (analogRead(LL_QRD_SENSOR_) > tape_threshold_) && (analogRead(LC_QRD_SENSOR_) > tape_threshold_);
+  else return (analogRead(RR_QRD_SENSOR_) > tape_threshold_) && (analogRead(RC_QRD_SENSOR_) > tape_threshold_);
+}
+
 #if USE_UPDATE()
 void Qrd::update(){
   delay(1000);

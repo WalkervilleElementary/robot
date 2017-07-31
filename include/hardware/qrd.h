@@ -28,6 +28,7 @@ public:
 
   static int8_t getTapeError();
   static bool isIntersection();
+  static bool isIntersection2(bool isLeft);
 #if USE_UPDATE()
   static void update();
 #endif  // USE_UPDATE()
