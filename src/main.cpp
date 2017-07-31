@@ -70,8 +70,8 @@ void setup(){
   ClawMechanism& primaryClaw = mirror ? rightClaw : leftClaw;
   ClawMechanism& secondaryClaw = mirror ? leftClaw : rightClaw;
 
-  DCMotor leftDCMotor(2);
-  DCMotor rightDCMotor(3, true);
+  DCMotor leftDCMotor(3, true);
+  DCMotor rightDCMotor(2, false);
   Encoder leftEncoder(0);
   Encoder rightEncoder(1, true);
 
@@ -84,7 +84,7 @@ void setup(){
 
   Switch platformRaiseLimit(6, LOW);
   Switch platformLowerLimit(7, LOW);
-  DCMotor platformMotor(0);
+  DCMotor platformMotor(0, false);
   LimitMechanism platform(platformMotor, platformRaiseLimit, platformLowerLimit);
 
   Switch startButton(50, LOW);
@@ -99,24 +99,29 @@ void setup(){
 
 
   enableEncoderInterrupts();
-  
+  int32_t target = 0;
   while (true) {
     startButton.tick();
     stopButton.tick();
     leftEncoder.tick();
     rightEncoder.tick();
+    
+    if (leftMotor.setPosition(target, 50)) {
+      target += 1000;
+    }
+    /*leftMotor.setVelocity(45);*/
+
+    leftMotor.tick();
+
+    LCD.clear();
     LCD.setCursor(0,0);
-    LCD.print(getEncoderCount(0));
-    LCD.print("  ");
-    LCD.setCursor(8,0);
-    LCD.print(getEncoderCount(1));
-    LCD.print("  ");
+    leftEncoder.printTo(LCD);
     LCD.setCursor(0,1);
-    LCD.print(leftEncoder.getVelocity());
-    LCD.print("  ");
-    LCD.setCursor(8,1);
-    LCD.print(rightEncoder.getVelocity());
-    LCD.print("  ");
+    rightEncoder.printTo(LCD);
+    /*LCD.print(digitalRead(0));
+    LCD.print(digitalRead(1));
+    LCD.print(digitalRead(2));
+    LCD.print(digitalRead(3));*/
     /*Serial.print(getEncoderCount(0));
     Serial.print(",");
     Serial.print(getEncoderCount(1));*/

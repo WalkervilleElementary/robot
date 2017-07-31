@@ -11,9 +11,10 @@ DCMotor::DCMotor(uint8_t directionPin, uint8_t enablePin, bool reversed) {
   m_reversed = reversed;
 }
 
-DCMotor::DCMotor(uint8_t output) {
+DCMotor::DCMotor(uint8_t output, bool reversed) {
   m_directionPin = Motor_Direction[output];
   m_enablePin = Motor_EnableDigital[output];
+  m_reversed = reversed;
 }
  
  void DCMotor::setPower(int16_t power) {

@@ -25,8 +25,8 @@ int32_t getEncoderCount(uint8_t id) {
 	return count;
 }
 
-uint8_t getEncoderPin(uint8_t pin) {
-	return ENCODER_READ(pin);
+uint8_t getEncoderPin(uint8_t id, uint8_t pin) {
+	return ENCODER_READ(id * 2 + pin);
 }
 
 void setEncoderCount(uint8_t id, int32_t value) {

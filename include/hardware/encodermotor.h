@@ -21,6 +21,8 @@ private:
   DCMotor& m_motor;
   Encoder& m_encoder;
 
+  int32_t deadZone = 8;
+
   enum ControlMode { IDLE, POWER, VELOCITY, POSITION };
   ControlMode m_controlMode;
   int16_t m_powerTarget;

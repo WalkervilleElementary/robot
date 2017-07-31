@@ -3,7 +3,7 @@
 namespace hardware {
 
 EncoderMotor::EncoderMotor(DCMotor& motor, Encoder& encoder) :
-  m_motor(motor), m_encoder(encoder), m_velocityPid(1,0,0), m_positionPid(1,0,0)
+  m_motor(motor), m_encoder(encoder), m_velocityPid(-2,0.5,-0.25), m_positionPid(-0.5,0.0,-0.5)
 {
 
 }
@@ -25,7 +25,7 @@ bool EncoderMotor::setPosition(int32_t position, int16_t speed) {
   m_maxVelocity = speed;
   m_maxPower = 255;
   if (m_encoder.getVelocity() == 0 
-    && m_encoder.getPosition() == m_positionTarget) {
+    && abs(m_encoder.getPosition() - m_positionTarget) < deadZone) {
     return true;
   }
   else return false;

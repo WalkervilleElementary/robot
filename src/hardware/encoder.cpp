@@ -29,6 +29,15 @@ void Encoder::tick() {
   }
 }
 
+void Encoder::printTo(Print& p) {
+  p.print(getEncoderPin(m_encoderId, 0));
+  p.print(getEncoderPin(m_encoderId, 1));
+  p.print(' ');
+  p.print(getPosition());
+  p.print(' ');
+  p.print(getVelocity());
+}
+
 
 
 }
