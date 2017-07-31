@@ -18,6 +18,7 @@ class Pickup : public templates::Sequence{
 private:
   const hardware::Qrd& qrd_;
   const hardware::Encoder& encoder_;
+  const hardware::Driver& motor_;
   sequences::Claw& claw_;
   sequences::Maneuver& maneuver_;
   sequences::Tape& follower_;
@@ -39,9 +40,11 @@ private:
   static const int8_t height[];
 
 public:
-  Pickup(hardware::Qrd qrd, hardware::Encoder& encoder,
-    sequences::Claw claw, sequences::Maneuver maneuver, sequences::Tape follower):
-              qrd_(qrd), encoder_(encoder), claw_(claw), maneuver_(maneuver), follower_(follower) {};
+  Pickup(const hardware::Qrd& qrd, const hardware::Encoder& encoder,
+          const hardware::Driver& driver, sequences::Claw& claw,
+          sequences::Maneuver& maneuver, sequences::Tape& follower):
+              qrd_(qrd), encoder_(encoder), motor_(driver),
+              claw_(claw), maneuver_(maneuver), follower_(follower) {};
   inline ~Pickup(){};
 
   bool loop();

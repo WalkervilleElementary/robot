@@ -28,7 +28,7 @@ sequences::Platform platform(driver);
 sequences::Tape tape(qrd, beacon, driver);
 
 stages::Gate gate(tape, beacon, encoder);
-stages::Pickup pickup(qrd, encoder, claw, maneuver, tape);
+stages::Pickup pickup(qrd, encoder, driver, claw, maneuver, tape);
 stages::Zipline zipline(tape, platform, maneuver, beacon, driver, encoder, qrd);
 
 bool left_surface;
