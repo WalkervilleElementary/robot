@@ -11,14 +11,13 @@ int8_t Pickup::agents_ = 0;
 uint32_t Pickup::start_encoder_;
 uint32_t Pickup::current_encoder_;
 
-uint32_t Pickup::to_ramp_ = hardware::Encoder::cmToTicks(230);
-uint32_t Pickup::to_intersection_ = hardware::Encoder::cmToTicks(560);
+uint32_t Pickup::to_ramp_ = hardware::Encoder::cmToTicks(PICKUP_TO_RAMP());
+uint32_t Pickup::to_intersection_ = hardware::Encoder::cmToTicks(PICKUP_TO_INTERSECTION());
 
-uint32_t Pickup::drive_distance_ = 20;  // TODO make this configurable
-uint32_t Pickup::turn_degree_ = 40;  // TODO make this configurable
+uint32_t Pickup::turn_degree_ = PICKUP_TURN_DEGREE();
 bool Pickup::side_ = false;  // TODO
 
-const int8_t Pickup::height[] = {2,0,1,2,0,1,1}; // TODO actual values
+const int8_t Pickup::height[] = PICKUP_HEIGHT();
 
 bool Pickup::loop(){
   // States Description
@@ -28,14 +27,15 @@ bool Pickup::loop(){
   // -1     go up ramp; decrease speed at the top
   // 0      tape follow until tub
   // 1      turn towards the direction we want
-  // 2      tape follow until agent
-  // 3      align with the claw
-  // 4      wait for claw; intialize grab
-  // 5      wait for claw; initialize release turn back on tape
-  // 6      wait for claw; wait for realign with tape;
+  // 2      backup to increase time to correctly tape follow
+  // 3      tape follow until agent
+  // 4      align with the claw
+  // 5      wait for claw; intialize grab
+  // 6      wait for claw; initialize release turn back on tape
+  // 7      wait for claw; wait for realign with tape;
   //             wait for release to finish or return to state 2
-  // 7      tape follow until intersection
-  // 8
+  // 8      wait for release to finish
+  // 9      wait for raise to finish
 
   switch (state_){
     case -4:  // start
@@ -50,13 +50,11 @@ bool Pickup::loop(){
       if (side_) current_encoder_ = encoder_.get(hardware::L_ENCODER_);
       else current_encoder_ = encoder_.get(hardware::R_ENCODER_);
 
-      if (current_encoder_ > start_encoder_ + to_ramp_)
-        state_ = -2;
-      else
-        break;
+      if (current_encoder_ > start_encoder_ + to_ramp_) state_ = -2;
+      else break;
     }
     case -2:  // getting ready to go up the ramp
-      follower_.update_vel(110); // TODO update value
+      follower_.update_vel(PICKUP_RAMP_SPEED());
       if (side_) claw_.raise(sequences::LEFT_CLAW);
       else claw_.raise(sequences::RIGHT_CLAW);
       state_ = -1;
@@ -69,17 +67,16 @@ bool Pickup::loop(){
       else current_encoder_ = encoder_.get(hardware::R_ENCODER_);
 
       if (current_encoder_ > start_encoder_ + to_intersection_){
-        follower_.update_vel(60);  // TODO update value
-        follower_.update_p(11);
-        qrd_.isIntersection();
+        follower_.update_vel(PICKUP_INTERSECTION_SPEED());
+        follower_.update_p(PICKUP_INTERSECTION_P());
+        qrd_.isIntersection(); // This is to reset QRD state
         state_ = 0;
       }else{
         break;
       }
     }
     case 0:  // going into the tub
-    case 2:  // Travelling to next agent
-    case 7:  // ignore the the intersection
+    case 3:  // Travelling to next agent
       LCD.setCursor(0,1); LCD.print("tape follow");
       claw_.loop();
       if (qrd_.isIntersection()){
@@ -94,75 +91,72 @@ bool Pickup::loop(){
       if (side_) maneuver_.turn(turn_degree_);
       else maneuver_.turn(-turn_degree_);
       if (maneuver_.loop()){
+        maneuver_.straight(PICKUP_TURN_BACKWARD_DISTANCE());
         state_ = 2;
         follower_.loop();
       }
       break;
-    case 3:  // Aligning the Claw
-      LCD.setCursor(0,0); LCD.print("straight");
-      //if (side_) maneuver_.turn(-drive_distance_);
-      //else maneuver_.turn(drive_distance_);
-      // if (side_) maneuver_.straight(-7);
-      // else maneuver_.straight(-7);
-      if (agents_ == 0) maneuver_.straight(-4);
-      else maneuver_.straight(-7);
-      if (maneuver_.loop()){
-        state_ = 4;
-      }else{
-        break;
+    case 2:
+      LCD.setCursor(0,0); LCD.print("backing up");
+      if (maneuver_.loop()) {
+        state_ = 3;
+        follower_.loop();
       }
-    case 4:  // Waiting for claw to be ready
+      break;
+    case 4:  // Aligning the Claw
+      LCD.setCursor(0,0); LCD.print("align");
+      if (side_) {
+        if (agents_ == 0) maneuver_.straight(PICKUP_BACKWARD_DISTANCE_FIRST_AGENT());
+        else maneuver_.straight(PICKUP_BACKWARD_DISTANCE());
+      } else {
+        if (agents_ == 0) maneuver_.straight(PICKUP_BACKWARD_DISTANCE_FIRST_AGENT());
+        else maneuver_.straight(PICKUP_BACKWARD_DISTANCE());
+      }
+
+      if (maneuver_.loop()) state_ = 5;
+      else break;
+    case 5:  // Waiting for claw to be ready
       LCD.setCursor(0,0); LCD.print("waiting");
       if (claw_.loop()){
-        state_ = 5;
-        if (side_) claw_.grab(sequences::RIGHT_CLAW, height[agents_]);  // TODO This should be the claw on the right side
+        state_ = 6;
+        if (side_) claw_.grab(sequences::RIGHT_CLAW, height[agents_]);
         else claw_.grab(sequences::LEFT_CLAW, height[agents_]);
       }else{
         break;
       }
-    case 5:  // Waiting for claw to grab
+    case 6:  // Waiting for claw to grab
       LCD.setCursor(0,0); LCD.print("grab");
       if (claw_.loop()){
-        if (side_) {
-          claw_.release(sequences::RIGHT_CLAW);
-  //        maneuver_.turn(drive_distance_);
-     maneuver_.straight(10);
-
-        } else {
-          claw_.release(sequences::LEFT_CLAW);
-    //      maneuver_.turn(-drive_distance_);
-    maneuver_.straight(10);
-
-        }
+        if (side_) claw_.release(sequences::RIGHT_CLAW);
+        else claw_.release(sequences::LEFT_CLAW);
+        maneuver_.straight(PICKUP_FORWARD_DISTANCE());
         agents_++;
-        state_ = 6;
+        state_ = 7;
       }else{
         break;
       }
-    case 6:  // Return back to tape followin
-      LCD.setCursor(0,0); LCD.print("going straight");
+    case 7:  // Return back to tape following
+      LCD.setCursor(0,0); LCD.print("return to tape");
       claw_.loop();
       if (maneuver_.loop()){
-        if (agents_ == 5) state_ = 7;
-        else if (agents_ == 7) state_ = 9;
+        if (agents_ == 6) state_ = 8;
         else state_ = 2;
+      }else{
+        break;
       }
-      break;
-    case 8:
-      maneuver_.straight(5);
-      agents_++;
-      state_ = 6;
-      break;
-    case 9:
+    case 8:  // wait for claw to finish before next stage
+      LCD.setCursor(0,0); LCD.print("releasing");
       if (claw_.loop()) {
         if (side_) claw_.raise(sequences::RIGHT_CLAW);
         else claw_.raise(sequences::LEFT_CLAW);
-        state_ = 10;
+        state_ = 9;
+      } else {
+        break;
       }
-      break;
-    case 10:
+    case 9:
+      LCD.setCursor(0,0); LCD.print("Raising");
       if (claw_.loop()) return true;
-      break;
+      else break;
   }
 
   return false;
@@ -177,7 +171,7 @@ bool Pickup::update(){
   while (startbutton());
   while (!startbutton()){
     if (stopbutton()) update_state_ ++;
-    if (update_state_ > 4) update_state_ = 0;
+    if (update_state_ > 3) update_state_ = 0;
 
     LCD.clear(); LCD.home();
     int tune_val = knob(7);
@@ -190,13 +184,12 @@ bool Pickup::update(){
     LCD.clear(); LCD.home();
 
     switch (update_state_){
-      SWITCH_CASES(0, drive_distance_)
-      SWITCH_CASES(1, turn_degree_)
-        case 2:
+      SWITCH_CASES(0, turn_degree_)
+        case 1:
           to_ramp_ += change / 50;
           LCD.setCursor(0,0); LCD.print("to_ramp_");
           LCD.setCursor(0,1); LCD.print(to_ramp_);
-        case 3:
+        case 2:
           to_intersection_ += change / 50;
           LCD.setCursor(0,0); LCD.print("to intersection");
           LCD.setCursor(0,1); LCD.print(to_intersection_);

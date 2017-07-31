@@ -97,6 +97,19 @@
 #define AXLE_LENGTH() 21.59 // cm
 #define MANEUVER_GAIN() 2
 
+// Pickup values
+#define PICKUP_TO_RAMP() 200
+#define PICKUP_TO_INTERSECTION() 550
+#define PICKUP_RAMP_SPEED() 110
+#define PICKUP_INTERSECTION_SPEED() 60
+#define PICKUP_INTERSECTION_P() 11
+#define PICKUP_TURN_DEGREE() 54
+#define PICKUP_TURN_BACKWARD_DISTANCE() -5
+#define PICKUP_HEIGHT() {1,2,0,1,2,0}
+#define PICKUP_BACKWARD_DISTANCE_FIRST_AGENT() -1
+#define PICKUP_BACKWARD_DISTANCE() -7
+#define PICKUP_FORWARD_DISTANCE() 10
+
 //macro to make switch code more concise
 #define MACRO_VARIABLE_TO_STRING(Variable) (void(Variable),#Variable) //supposed to convert variable name to a string
 #define SWITCH_CASES(case_state, variable)\
