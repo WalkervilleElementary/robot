@@ -1,66 +1,38 @@
 #pragma once
 
-#include "hardware/dcmotor.h"
-#include "hardware/encoder.h"
+#include "hardware/encodermotor.h"
 #include "hardware/linesensor.h"
+#include "utils/pid.h"
 
 namespace hardware {
 
 class Drivetrain {
 public:
-  Drivetrain(DCMotor& leftMotor, DCMotor& rightMotor, const Encoder& leftEncoder, const Encoder& rightEncoder, const LineSensor& LineSensor);
+  Drivetrain(EncoderMotor& leftMotor, EncoderMotor& rightMotor);
 
-  void commandLineFollowDistance();
-  void commandLineFollowIntersection();
-  void commandDriveStraight(int32_t distance, int16_t speed);
-  void commandTurnLeft();
-  void commandTurnRight();
-  void commandTurnBoth();
+  //void commandLineFollowDistance();
+  //void commandLineFollowIntersection();
+  void commandDriveStraight(int32_t distance, int16_t speed = 255);
+  void commandTurnLeft(int32_t distance, int16_t speed = 255);
+  void commandTurnRight(int32_t distance, int16_t speed = 255);
+  void commandTurnPivot(int32_t distance, int16_t speed = 255);
   void stop();
   bool readyForCommand();
   void tick();
-  void rampMotors();
 
 private:
-  DCMotor& m_leftMotor;
-  DCMotor& m_rightMotor;
+  EncoderMotor& m_leftMotor;
+  EncoderMotor& m_rightMotor;
 
-  int16_t m_leftMotorCurrent;
-  int16_t m_leftMotorSetpoint;
-  int16_t m_rightMotorCurrent;
-  int16_t m_rightMotorSetpoint;
-
-
-  const Encoder& m_leftEncoder;
-  const Encoder& m_rightEncoder;
-  const LineSensor& m_lineSensor;
-
-  int32_t m_leftEncoderSetpoint;
-  int32_t m_rightEncoderSetpoint;
-
-  int32_t leftEncoderError();
-  int32_t rightEncoderError();
+  int32_t m_leftMotorTarget;
+  int32_t m_rightMotorTarget;
+  int16_t m_speed;
 
   enum Command { IDLE, DRIVE_ENCODER };
   Command m_command;
-  int16_t m_power;
 
-  class PIDController {
-  public:
-    float run(float error);
-    void setParameters(float P, float I, float D);
-    void init(float error);
-    float kP;
-    float kI;
-    float kD;
-  private:
-    float prevError;
-    float integral;
-  };
-
-  PIDController m_leftEncoderPID;
-  PIDController m_rightEncoderPID;
-  //PIDController m_lineFollowPID;
+  //PidController m_lineFollowPid;
+  //PidController m_beaconFollowPid;
 
 };
 

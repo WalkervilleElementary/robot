@@ -19,13 +19,13 @@ void EncoderMotor::setVelocity(int16_t velocity, int16_t power) {
   m_maxPower = power;
 }
 
-bool EncoderMotor::setDisplacement(int32_t position, int16_t speed) {
-  m_controlMode = DISPLACEMENT;
-  m_displacementTarget = position;
+bool EncoderMotor::setPosition(int32_t position, int16_t speed) {
+  m_controlMode = POSITION;
+  m_positionTarget = position;
   m_maxVelocity = speed;
   m_maxPower = 255;
   if (m_encoder.getVelocity() == 0 
-    && m_encoder.getDisplacement() == m_displacementTarget) {
+    && m_encoder.getPosition() == m_positionTarget) {
     return true;
   }
   else return false;
@@ -37,15 +37,15 @@ void EncoderMotor::stop() {
 }
 
 void EncoderMotor::hold() {
-  setDisplacement(m_encoder.getDisplacement(), 20);
+  setPosition(m_encoder.getPosition(), 20);
 }
 
 #define median(a,b,c) max(min(a,b), min(max(a,b),c))
 
 void EncoderMotor::tick() {
   switch (m_controlMode) {
-    case DISPLACEMENT:
-      m_velocityTarget = m_positionPid.run(m_encoder.getDisplacement() - m_displacementTarget);
+    case POSITION:
+      m_velocityTarget = m_positionPid.run(m_encoder.getPosition() - m_positionTarget);
       if (m_velocityTarget > m_maxVelocity) m_velocityTarget = m_maxVelocity;
       if (m_velocityTarget < -m_maxVelocity) m_velocityTarget = -m_maxVelocity;
       //fall through
@@ -61,6 +61,10 @@ void EncoderMotor::tick() {
       m_motor.stop();
       break;
   }
+}
+
+int32_t EncoderMotor::getPosition() {
+  return m_encoder.getPosition();
 }
 
 }

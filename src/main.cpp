@@ -70,15 +70,17 @@ void setup(){
   ClawMechanism& primaryClaw = mirror ? rightClaw : leftClaw;
   ClawMechanism& secondaryClaw = mirror ? leftClaw : rightClaw;
 
-  DCMotor leftMotor(2);
-  DCMotor rightMotor(3, true);
+  DCMotor leftDCMotor(2);
+  DCMotor rightDCMotor(3, true);
   Encoder leftEncoder(0);
   Encoder rightEncoder(1, true);
 
-  DCMotor& insideMotor = mirror ? rightMotor : leftMotor;
-  DCMotor& outsideMotor = mirror ? leftMotor : rightMotor;
-  Encoder& insideEncoder = mirror ? rightEncoder : leftEncoder;
-  Encoder& outsideEncoder = mirror ? leftEncoder : rightEncoder;
+  EncoderMotor leftMotor(leftDCMotor, leftEncoder);
+  EncoderMotor rightMotor(rightDCMotor, rightEncoder);
+
+  EncoderMotor& insideMotor = mirror ? rightMotor : leftMotor;
+  EncoderMotor& outsideMotor = mirror ? leftMotor : rightMotor;
+  Drivetrain drive(insideMotor, outsideMotor);
 
   Switch platformRaiseLimit(6, LOW);
   Switch platformLowerLimit(7, LOW);
@@ -93,7 +95,7 @@ void setup(){
 
   LineSensor tapeSensor = mirror ? LineSensor(3,2,1,0) : LineSensor(0,1,2,3);
   
-  Drivetrain drive(insideMotor, outsideMotor, insideEncoder, outsideEncoder, tapeSensor);
+
 
 
   enableEncoderInterrupts();
