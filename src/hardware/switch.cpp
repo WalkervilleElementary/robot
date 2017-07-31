@@ -42,4 +42,8 @@ void Switch::tick() {
   m_prevState = currentState;
 }
 
+void Switch::printTo(Print& p) {
+  p.print(get());
+}
+
 }

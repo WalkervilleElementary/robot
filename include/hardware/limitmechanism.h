@@ -9,9 +9,10 @@ class LimitMechanism {
 public:
   LimitMechanism(DCMotor& motor, const Switch& extendLimit, const Switch& retractLimit);
 
-  enum State { INACTIVE, EXTEND, RETRACT };
+  enum State { INACTIVE, EXTEND, RETRACT, BACKOFF };
   bool extend(int16_t power);
   bool retract(int16_t power);
+  bool backOff(int16_t power);
   void setState(State state, int16_t power);
   void stop();
   void tick();

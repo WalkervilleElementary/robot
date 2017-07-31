@@ -55,15 +55,15 @@ void setup(){
   
   bool mirror = false;
 
-  ServoMotor leftGrabServo(SERVO_0(), 10);
-  ServoMotor leftRaiseServo(SERVO_1(), 10);
-  ServoMotor rightGrabServo(SERVO_2(), 10);
-  ServoMotor rightRaiseServo(SERVO_3(), 10);
+  ServoMotor leftRaiseServo(SERVO_0(), 11);
+  ServoMotor leftGrabServo(SERVO_2(), 11);
+  ServoMotor rightRaiseServo(SERVO_1(), 11);
+  ServoMotor rightGrabServo(SERVO_3(), 11);
 
-  int16_t leftClawLiftPositions[5] = {0,0,0,0,0};
-  int16_t leftClawGrabPositions[2] = {0,0};
-  int16_t rightClawLiftPositions[5] = {0,0,0,0,0};
-  int16_t rightClawGrabPositions[2] = {0,0};
+  int16_t leftClawLiftPositions[5] = {L_C_REST(),L_C_VERTICAL(),L_C_TOP(),L_C_MIDDLE(),L_C_BOTTOM()};
+  int16_t leftClawGrabPositions[2] = {L_OPEN(),L_CLOSE()};
+  int16_t rightClawLiftPositions[5] = {R_C_REST(),R_C_VERTICAL(),R_C_TOP(),R_C_MIDDLE(),R_C_BOTTOM()};
+  int16_t rightClawGrabPositions[2] = {R_OPEN(),R_CLOSE()};
   ClawMechanism leftClaw(leftRaiseServo, leftGrabServo, leftClawLiftPositions, leftClawGrabPositions);
   ClawMechanism rightClaw(rightRaiseServo, rightGrabServo, rightClawLiftPositions, rightClawGrabPositions);
 
@@ -82,9 +82,9 @@ void setup(){
   EncoderMotor& outsideMotor = mirror ? leftMotor : rightMotor;
   Drivetrain drive(insideMotor, outsideMotor);
 
-  Switch platformRaiseLimit(6, LOW);
-  Switch platformLowerLimit(7, LOW);
-  DCMotor platformMotor(0, false);
+  Switch platformRaiseLimit(7, LOW);
+  Switch platformLowerLimit(6, LOW);
+  DCMotor platformMotor(0, true);
   LimitMechanism platform(platformMotor, platformRaiseLimit, platformLowerLimit);
 
   Switch startButton(50, LOW);
@@ -94,30 +94,90 @@ void setup(){
   FrequencySensor rightBeaconSensor(5);
 
   LineSensor tapeSensor = mirror ? LineSensor(3,2,1,0) : LineSensor(0,1,2,3);
-  
-
-
 
   enableEncoderInterrupts();
-  int32_t target = 0;
+  uint32_t loopDelay = 50;
+  uint32_t waitUntil = millis() + loopDelay;
+  int state = 0;
   while (true) {
+    //sensors
     startButton.tick();
     stopButton.tick();
     leftEncoder.tick();
     rightEncoder.tick();
+    platformRaiseLimit.tick();
+    platformLowerLimit.tick();
     
-    if (leftMotor.setPosition(target, 50)) {
-      target += 1000;
-    }
-    /*leftMotor.setVelocity(45);*/
+    //control code
+    /*switch (state) {
+      case 0:
+        leftClaw.setLift(ClawMechanism::VERTICAL);
+        rightClaw.setLift(ClawMechanism::VERTICAL);
+        leftClaw.setGrab(ClawMechanism::CLOSED);
+        rightClaw.setGrab(ClawMechanism::OPEN);
+        if (startButton.get()) state++;
+        break;
+      case 1:
+        if (leftClaw.setGrab(ClawMechanism::OPEN) &&
+        leftClaw.setLift(ClawMechanism::VERTICAL)) state++;
+        break;
+      case 2:
+        if (leftClaw.setLift(ClawMechanism::MIDDLE)) state++;
+        break;
+      case 3:
+        if (leftClaw.setGrab(ClawMechanism::CLOSED)) state++;
+        break;
+      case 4:
+        if (leftClaw.setLift(ClawMechanism::FOLDED)) state++;
+        break;
+      case 5:
+        if (leftClaw.setGrab(ClawMechanism::OPEN)) state++;
+        break;
+      default:
+        state = 0;
+        break;
+    }*/
 
-    leftMotor.tick();
+    bool complete = true;
+    switch (state) {
+      case 0:
+        complete = leftClaw.setLift(ClawMechanism::VERTICAL) && complete;
+        complete = rightClaw.setLift(ClawMechanism::VERTICAL) && complete;
+        complete = leftClaw.setGrab(ClawMechanism::OPEN) && complete;
+        complete = rightClaw.setGrab(ClawMechanism::OPEN) && complete;
+        if (complete && startButton.get()) state++;
+        break;
+      case 1:
+        if (leftClaw.setLift(ClawMechanism::MIDDLE)) state++;
+        break;
+      case 2:
+        if (leftClaw.setGrab(ClawMechanism::CLOSED)) state++;
+        break;
+      case 3:
+        if (startButton.get()) state++;
+        break;
+      default:
+        state = 0;
+        break;
+    }
+    
+    
+    //actuators
+    leftRaiseServo.tick();
+    rightRaiseServo.tick();
+    leftGrabServo.tick();
+    rightGrabServo.tick();
+    platform.tick();
 
     LCD.clear();
     LCD.setCursor(0,0);
-    leftEncoder.printTo(LCD);
+    leftRaiseServo.printTo(LCD);
+    LCD.setCursor(8,0);
+    rightRaiseServo.printTo(LCD);
     LCD.setCursor(0,1);
-    rightEncoder.printTo(LCD);
+    leftGrabServo.printTo(LCD);
+    LCD.setCursor(8,1);
+    rightGrabServo.printTo(LCD);
     /*LCD.print(digitalRead(0));
     LCD.print(digitalRead(1));
     LCD.print(digitalRead(2));
@@ -130,7 +190,8 @@ void setup(){
     Serial.print(getEncoderState(1,1));
     Serial.print(getEncoderState(1,0));*/
     //Serial.print("\n");
-    delay(50);
+    while (millis() < waitUntil);
+    waitUntil += loopDelay;
   }
   
   /*int buttonPressCount = 0;

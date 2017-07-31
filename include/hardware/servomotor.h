@@ -1,6 +1,7 @@
 #pragma once
 #include <stdint.h>
 #include <ServoTINAH.h>
+#include <Print.h>
 
 namespace hardware {
 
@@ -10,6 +11,7 @@ public:
   bool setPosition(int16_t position);
   void stop();
   void tick();
+  void printTo(Print& p);
 private:
   uint8_t m_pin;
   int16_t m_speed;

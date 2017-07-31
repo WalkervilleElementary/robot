@@ -13,17 +13,23 @@
 #define GAIN_D() 0
 
 // claw
-#define L_C_EXTEND() 10  // 5
-#define L_C_REST() 160  // 170
-#define L_C_VERTICAL() 100
-#define L_OPEN() 30  //20
-#define L_CLOSE() 80  // 90
-// THe right claw needs to be tested
-#define R_C_EXTEND() 177
-#define R_C_REST() 5
+#define L_C_EXTEND() 23
+#define L_C_REST() 180
+#define L_C_VERTICAL() 105
+#define L_C_TOP() 20
+#define L_C_MIDDLE() 10
+#define L_C_BOTTOM() 9
+#define L_OPEN() 75
+#define L_CLOSE() 165
+
+#define R_C_EXTEND() 168
+#define R_C_REST() 4
 #define R_C_VERTICAL() 60
-#define R_OPEN() 140
-#define R_CLOSE() 40
+#define R_C_TOP() 168
+#define R_C_MIDDLE() 172
+#define R_C_BOTTOM() 180
+#define R_OPEN() 161
+#define R_CLOSE() 30
 
 // motor
 #define ACCEL_LIMIT() 50 // This is not the correct value

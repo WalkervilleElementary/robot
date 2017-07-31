@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include <Print.h>
 
 namespace hardware {
 
@@ -11,6 +12,7 @@ public:
   bool pressed() const;
   bool released() const;
   void tick();
+  void printTo(Print& p);
 
 private:
   uint8_t m_pin;

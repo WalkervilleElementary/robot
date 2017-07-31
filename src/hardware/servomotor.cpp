@@ -6,6 +6,8 @@ ServoMotor::ServoMotor(uint8_t pin, int16_t speed) {
   m_pin = pin;
   m_speed = speed;
   m_attached = false;
+  m_target = -180;
+  m_currentPosition = -180; 
 }
 
 bool ServoMotor::setPosition(int16_t position) {
@@ -33,6 +35,12 @@ void ServoMotor::tick() {
   else {
     m_currentPosition = m_target;
   }
+}
+
+void ServoMotor::printTo(Print& p) {
+  p.print(m_target);
+  p.print(' ');
+  p.print(m_currentPosition);
 }
 
 }

@@ -23,8 +23,13 @@ void LimitMechanism::stop() {
   m_motor.stop();
 }
 
+bool LimitMechanism::backOff(int16_t power) {
+  setState(BACKOFF, power);
+  return !m_retractLimit.get() && !m_extendLimit.get();
+}
+
 void LimitMechanism::setState(State state, int16_t power) {
-  m_motorPower = power;
+  m_motorPower = abs(power);
   m_state = state;
 }
 
@@ -39,6 +44,12 @@ void LimitMechanism::tick() {
   else if (m_state == RETRACT) {
     if (m_retractLimit.get()) m_motor.stop();
     else m_motor.setPower(-m_motorPower);
+  }
+  else if (m_state == BACKOFF) {
+    if (m_retractLimit.get() && !m_extendLimit.get()) m_motor.setPower(m_motorPower);
+    if (m_extendLimit.get() && !m_retractLimit.get()) m_motor.setPower(-m_motorPower);
+    else m_motor.stop();
+
   }
 }
 
