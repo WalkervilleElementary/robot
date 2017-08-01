@@ -17,11 +17,11 @@
 #define L_OFFSET() {-3, -13, -14}
 
 #define R_C_EXTEND() 160
-#define R_C_REST() 3
-#define R_C_VERTICAL() 96
-#define R_OPEN() 150
-#define R_CLOSE() 7
-#define R_OFFSET() {0, 4, 12}
+#define R_C_REST() 2
+#define R_C_VERTICAL() 100
+#define R_OPEN() 105
+#define R_CLOSE() 8
+#define R_OFFSET() {-8, 0, 5}
 
 // distances (cm)
 #define GATE_WAITING_DISTANCE() 205
