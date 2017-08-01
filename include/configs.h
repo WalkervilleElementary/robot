@@ -16,11 +16,11 @@
 #define L_CLOSE() 175
 #define L_OFFSET() {-3, -13, -14}
 
-#define R_C_EXTEND() 168
-#define R_C_REST() 4
-#define R_C_VERTICAL() 103
-#define R_OPEN() 161
-#define R_CLOSE() 30
+#define R_C_EXTEND() 160
+#define R_C_REST() 3
+#define R_C_VERTICAL() 96
+#define R_OPEN() 150
+#define R_CLOSE() 7
 #define R_OFFSET() {0, 4, 12}
 
 // distances (cm)
