@@ -61,8 +61,6 @@ uint32_t uint_sqrt(uint32_t n) {
 }
 
 void sample_signal(uint8_t pin, size_t num_samples, uint8_t* out) {
-    cli();
-
     //save ADCSRA to restore later
     uint8_t old_ADCSRA = ADCSRA;
 
@@ -82,7 +80,6 @@ void sample_signal(uint8_t pin, size_t num_samples, uint8_t* out) {
 
     //restore previous state of ADCSRA
     ADCSRA = old_ADCSRA;
-    sei();
 }
 
 uint32_t detect_frequency(uint8_t* samples, size_t num_samples, uint32_t detection_frequency, uint32_t sample_rate) {
