@@ -6,7 +6,7 @@
 #include "templates/sequence.h"
 #include "hardware/beacon.h"
 #include "hardware/encoder.h"
-#include "sequences/tape.h"
+#include "sequences/drivetrain.h"
 
 #include <stdint.h>
 
@@ -15,12 +15,12 @@ namespace stages{
 class Gate : public templates::Sequence{
 
 private:
-  sequences::Tape& follower_;
+  sequences::Drivetrain& driver_;
   hardware::Beacon& beacon_;
   hardware::Encoder& encoder_;
 
-  static uint32_t  encoder_start_;
-  static uint32_t distance_;  // configurable
+  static int32_t  encoder_start_;
+  static int32_t distance_;  // configurable
   static int8_t state_;
   static uint32_t threshold_;
 
@@ -30,8 +30,8 @@ private:
 #endif  // CAUTIOUS_GATE_ROUTINE()
 
 public:
-  inline Gate(sequences::Tape& follower, hardware::Beacon& beacon, hardware::Encoder& encoder):
-              follower_(follower), beacon_(beacon), encoder_(encoder) {};
+  inline Gate(sequences::Drivetrain& driver, hardware::Beacon& beacon, hardware::Encoder& encoder):
+              driver_(driver), beacon_(beacon), encoder_(encoder) {};
   inline ~Gate(){};
   bool loop();
 #if USE_UPDATE()

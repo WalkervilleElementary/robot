@@ -6,12 +6,12 @@ namespace stages{
 
 int Zipline::forward_speed_ = SLOW_FORWARD_SPEED();
 
-uint32_t Zipline::turn_distance_ = ZIPLINE_TURN_DISTANCE();
-uint32_t Zipline::turn_degrees_ = ZIPLINE_TURN_DEGREES();
-uint32_t Zipline::tape_distance_ = ZIPLINE_TAPE_DISTANCE();
-uint32_t Zipline::backup_distance_ = ZIPLINE_BACKUP_DISTANCE();
-uint32_t Zipline::encoder_start_;
-uint32_t Zipline::ticks_;
+int32_t Zipline::turn_distance_ = ZIPLINE_TURN_DISTANCE();
+int32_t Zipline::turn_degrees_ = ZIPLINE_TURN_DEGREES();
+int32_t Zipline::tape_distance_ = ZIPLINE_TAPE_DISTANCE();
+int32_t Zipline::backup_distance_ = ZIPLINE_BACKUP_DISTANCE();
+int32_t Zipline::encoder_start_;
+int32_t Zipline::ticks_;
 
 bool Zipline::left_surface_ = true;  // TODO read this from the switch
 uint8_t Zipline::state_ = 0;
@@ -20,7 +20,7 @@ bool Zipline::loop() {
   switch (state_) {
     case 0:  // initialization
       // LCD.setCursor(0,0); LCD.print("initialize");
-      follower_.loop();
+      driver_.commandLineFollow(0);
       qrd_.isIntersection();  // clear intersection state
       state_++;
       break;
@@ -28,19 +28,18 @@ bool Zipline::loop() {
       // ticks_ = hardware::Encoder::cmToTicks(turn_distance_);
       // encoder_start_ = encoder_.get(hardware::R_ENCODER_);
       // LCD.setCursor(0,0); LCD.print("follow tape");
-      follower_.loop();
+      driver_.commandLineFollow(0);
       if (qrd_.isIntersection()) {
-        encoder_start_ = encoder_.get(hardware::R_ENCODER_);
+        encoder_start_ = encoder_.getPosition();
         ticks_ = hardware::Encoder::cmToTicks(tape_distance_);
         state_++;
       }
       break;
     case 2:  // follow tape a little further
       // LCD.setCursor(0,0); LCD.print("follow tape");
-      follower_.loop();
-      if (encoder_.get(hardware::R_ENCODER_) - encoder_start_ > ticks_) {
-        encoder_start_ = encoder_.get(hardware::R_ENCODER_);
-        follower_.followIr();
+      driver_.commandLineFollow(0);
+      if (encoder_.getPosition() - encoder_start_ > ticks_) {
+        encoder_start_ = encoder_.getPosition();
         ticks_ = hardware::Encoder::cmToTicks(turn_distance_);
         state_++;
       }
@@ -48,19 +47,20 @@ bool Zipline::loop() {
     case 3:  // follow beacon for predetermined number of ticks
       //LCD.setCursor(0,0); LCD.print("toward beacon");
       // LCD.setCursor(0,0); LCD.print("follow beacon");
-      follower_.loop();
-      if (encoder_.get(hardware::R_ENCODER_) - encoder_start_ > ticks_) {
+      driver_.commandBeaconFollow();
+      if (encoder_.getPosition() - encoder_start_ > ticks_) {
         // turn toward zipline
-        maneuver_.turn(left_surface_ ? (-1 * turn_degrees_) : turn_degrees_);
+        if (left_surface_) driver_.commandTurnRight(turn_degrees_);
+        else driver_.commandTurnLeft(turn_degrees_);
         state_++;
       } else {
         break;
       }
     case 4:  // turn toward zipline
       //LCD.setCursor(0,0); LCD.print("turning");
-      if (maneuver_.loop()) {
+      if (driver_.readyForCommand()) {
         // drive backwards so we are not underneath the zipline
-        maneuver_.straight(-1 * backup_distance_);
+        driver_.commandDriveStraight(-1 * backup_distance_);
         platform_.raise();
         state_++;
       } else {
@@ -68,11 +68,11 @@ bool Zipline::loop() {
       }
     case 5:  // backup and raise platform
       //LCD.setCursor(0,0); LCD.print("back raise");
-      if (maneuver_.loop() && platform_.loop()) state_++;
+      if (driver_.readyForCommand() && platform_.loop()) state_++;
       else break;
     case 6:  // dead reckoning stage, drive slowly until zipline is hit
       //LCD.setCursor(0,0); LCD.print("Ramming the zipline");
-      driver_.sendWheelVelocities(forward_speed_, forward_speed_);
+      driver_.setPower(forward_speed_, forward_speed_); // TODO use send velocity
       if (!digitalRead(PLATFORM_UPPER_SWITCH())) {
         platform_.lower();
         state_++;
@@ -82,7 +82,7 @@ bool Zipline::loop() {
       if (platform_.loop()) return true;
       break;
     default:  // oh noes, we didn't find the zipline
-      follower_.stop();
+      driver_.stop();
       LCD.home(); LCD.setCursor(0,0); LCD.print("SOMETHING WENT WRONG");
       delay(1000);
   }
@@ -91,7 +91,6 @@ bool Zipline::loop() {
 
 void Zipline::stop() {
   driver_.stop();
-  follower_.stop();
   platform_.stop();
 }
 

@@ -8,13 +8,13 @@ namespace stages{
 int8_t Pickup::state_ = -4;
 int8_t Pickup::agents_ = 0;
 
-uint32_t Pickup::start_encoder_;
-uint32_t Pickup::current_encoder_;
+int32_t Pickup::start_encoder_;
+int32_t Pickup::current_encoder_;
 
-uint32_t Pickup::to_ramp_ = hardware::Encoder::cmToTicks(PICKUP_TO_RAMP());
-uint32_t Pickup::to_intersection_ = hardware::Encoder::cmToTicks(PICKUP_TO_INTERSECTION());
+int32_t Pickup::to_ramp_ = hardware::Encoder::cmToTicks(PICKUP_TO_RAMP());
+int32_t Pickup::to_intersection_ = hardware::Encoder::cmToTicks(PICKUP_TO_INTERSECTION());
 
-uint32_t Pickup::turn_degree_ = PICKUP_TURN_DEGREE();
+int32_t Pickup::turn_degree_ = PICKUP_TURN_DEGREE();
 bool Pickup::side_ = false;  // TODO
 
 const int8_t Pickup::height[] = PICKUP_HEIGHT();
@@ -40,35 +40,29 @@ bool Pickup::loop(){
   switch (state_){
     case -4:  // start
       // side_ = digitalRead(0); TODO
-      if (side_) start_encoder_ = encoder_.get(hardware::L_ENCODER_);
-      else start_encoder_ = encoder_.get(hardware::R_ENCODER_);
+      start_encoder_ = encoder_.getPosition();
       state_ = -3;
     case -3:  // first turn
     {
-      LCD.setCursor(0,1); LCD.print("first turn");
-      follower_.loop();
-      if (side_) current_encoder_ = encoder_.get(hardware::L_ENCODER_);
-      else current_encoder_ = encoder_.get(hardware::R_ENCODER_);
+      //LCD.setCursor(0,1); LCD.print("first turn");
+      driver_.commandLineFollow(1);
+      current_encoder_ = encoder_.getPosition();
 
       if (current_encoder_ > start_encoder_ + to_ramp_) state_ = -2;
       else break;
     }
     case -2:  // getting ready to go up the ramp
-      follower_.update_vel(PICKUP_RAMP_SPEED());
       if (side_) claw_.raise(sequences::LEFT_CLAW);
       else claw_.raise(sequences::RIGHT_CLAW);
       state_ = -1;
     case -1:  // going up the ramp
     {
-      LCD.setCursor(0,1); LCD.print("the ramp");
-      follower_.loop();
+      //LCD.setCursor(0,1); LCD.print("the ramp");
+      driver_.commandLineFollow(2);
       claw_.loop();
-      if (side_) current_encoder_ = encoder_.get(hardware::L_ENCODER_);
-      else current_encoder_ = encoder_.get(hardware::R_ENCODER_);
+      current_encoder_ = encoder_.getPosition();
 
       if (current_encoder_ > start_encoder_ + to_intersection_){
-        follower_.update_vel(PICKUP_INTERSECTION_SPEED());
-        follower_.update_p(PICKUP_INTERSECTION_P());
         qrd_.isIntersection(); // This is to reset QRD state
         state_ = 0;
       }else{
@@ -76,85 +70,86 @@ bool Pickup::loop(){
       }
     }
     case 0:  // going into the tub
-    case 3:  // Travelling to next agent
-      LCD.setCursor(0,1); LCD.print("tape follow");
+    case 4:  // Travelling to next agent
+      //LCD.setCursor(0,1); LCD.print("tape follow");
       claw_.loop();
       if (qrd_.isIntersection()){
-        follower_.stop();
+        driver_.stop();
         state_++;
       }else{
-        follower_.loop();
+        driver_.commandLineFollow(0);
       }
       break;
     case 1:  // Turning at the tub
-      LCD.setCursor(0,0); LCD.print("turning");
-      if (side_) maneuver_.turn(turn_degree_);
-      else maneuver_.turn(-turn_degree_);
-      if (maneuver_.loop()){
-        maneuver_.straight(PICKUP_TURN_BACKWARD_DISTANCE());
-        state_ = 2;
-        follower_.loop();
-      }
-      break;
+      if (side_) driver_.commandTurnLeft(turn_degree_);
+      else driver_.commandTurnRight(turn_degree_);
+      state_ = 2;
     case 2:
-      LCD.setCursor(0,0); LCD.print("backing up");
-      if (maneuver_.loop()) {
+      //LCD.setCursor(0,0); LCD.print("turning");
+      if (driver_.readyForCommand()){
+        driver_.commandDriveStraight(PICKUP_TURN_BACKWARD_DISTANCE());
         state_ = 3;
-        follower_.loop();
+      } else {
+        break;
+      }
+    case 3:
+      //LCD.setCursor(0,0); LCD.print("backing up");
+      if (driver_.readyForCommand()) {
+        state_ = 4;
+        driver_.commandLineFollow(0);
       }
       break;
-    case 4:  // Aligning the Claw
-      LCD.setCursor(0,0); LCD.print("align");
+    case 5:  // Aligning the Claw
+      //LCD.setCursor(0,0); LCD.print("align");
       if (side_) {
-        if (agents_ == 0) maneuver_.straight(PICKUP_BACKWARD_DISTANCE_FIRST_AGENT());
-        else maneuver_.straight(PICKUP_BACKWARD_DISTANCE());
+        if (agents_ == 0) driver_.commandDriveStraight(PICKUP_BACKWARD_DISTANCE_FIRST_AGENT());
+        else driver_.commandDriveStraight(PICKUP_BACKWARD_DISTANCE());
       } else {
-        if (agents_ == 0) maneuver_.straight(PICKUP_BACKWARD_DISTANCE_FIRST_AGENT());
-        else maneuver_.straight(PICKUP_BACKWARD_DISTANCE());
+        if (agents_ == 0) driver_.commandDriveStraight(PICKUP_BACKWARD_DISTANCE_FIRST_AGENT());
+        else driver_.commandDriveStraight(PICKUP_BACKWARD_DISTANCE());
       }
 
-      if (maneuver_.loop()) state_ = 5;
-      else break;
-    case 5:  // Waiting for claw to be ready
-      LCD.setCursor(0,0); LCD.print("waiting");
-      if (claw_.loop()){
-        state_ = 6;
+      state_ = 6;
+    case 6:  // Waiting for claw to be ready
+      //LCD.setCursor(0,0); LCD.print("waiting");
+      if (claw_.loop() && driver_.readyForCommand()){
+        state_ = 7;
         if (side_) claw_.grab(sequences::RIGHT_CLAW, height[agents_]);
         else claw_.grab(sequences::LEFT_CLAW, height[agents_]);
       }else{
         break;
       }
-    case 6:  // Waiting for claw to grab
-      LCD.setCursor(0,0); LCD.print("grab");
+    case 7:  // Waiting for claw to grab
+      //LCD.setCursor(0,0); LCD.print("grab");
       if (claw_.loop()){
         if (side_) claw_.release(sequences::RIGHT_CLAW);
         else claw_.release(sequences::LEFT_CLAW);
-        maneuver_.straight(PICKUP_FORWARD_DISTANCE());
+        driver_.commandDriveStraight(PICKUP_FORWARD_DISTANCE());
         agents_++;
-        state_ = 7;
+        state_ = 8;
       }else{
         break;
       }
-    case 7:  // Return back to tape following
-      LCD.setCursor(0,0); LCD.print("return to tape");
+    case 8:  // Return back to tape following
+      //LCD.setCursor(0,0); LCD.print("return to tape");
       claw_.loop();
-      if (maneuver_.loop()){
-        if (agents_ == 6) state_ = 8;
-        else state_ = 2;
+      if (driver_.readyForCommand()){
+        if (agents_ == 6) state_ = 9;
+        else state_ = 3;
       }else{
         break;
       }
-    case 8:  // wait for claw to finish before next stage
-      LCD.setCursor(0,0); LCD.print("releasing");
+    case 9:  // wait for claw to finish before next stage
+      //LCD.setCursor(0,0); LCD.print("releasing");
       if (claw_.loop()) {
         if (side_) claw_.raise(sequences::RIGHT_CLAW);
         else claw_.raise(sequences::LEFT_CLAW);
-        state_ = 9;
+        state_ = 10;
       } else {
         break;
       }
-    case 9:
-      LCD.setCursor(0,0); LCD.print("Raising");
+    case 10:
+      //LCD.setCursor(0,0); LCD.print("Raising");
       if (claw_.loop()) return true;
       else break;
   }
@@ -166,7 +161,7 @@ bool Pickup::loop(){
 bool Pickup::update(){
   int8_t update_state_ = 0;
   int change = 0;
-  follower_.stop();
+  driver_.stop();
   delay(1000);
   while (startbutton());
   while (!startbutton()){

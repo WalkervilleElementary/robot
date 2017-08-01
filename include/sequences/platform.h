@@ -2,7 +2,7 @@
 
 #include "configs.h"
 
-#include "hardware/driver.h"
+#include "sequences/drivetrain.h"
 #include "templates/sequence.h"
 
 #include <stdint.h>
@@ -35,10 +35,10 @@ private:
   static const uint8_t lower_switch_;
   static const uint8_t motor_number_;
 
-  const hardware::Driver& driver_;
+  Drivetrain& driver_;
 
 public:
-  inline Platform(const hardware::Driver &driver): driver_(driver) {};
+  inline Platform(Drivetrain &driver): driver_(driver) {};
   inline ~Platform(){};
   bool loop();
   void stop();

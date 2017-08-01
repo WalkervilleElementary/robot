@@ -1,9 +1,12 @@
 #pragma once
 #include <Print.h>
 
+namespace utils {
+
 class PidController {
 public:
   PidController(float kP, float kI, float kD, float kDecay = 0.9);
+  inline ~PidController() {};
   float kP;
   float kI;
   float kD;
@@ -15,3 +18,5 @@ private:
   float integral;
   float prevOutput;
 };
+
+}
