@@ -12,7 +12,7 @@ static volatile uint8_t encoderPrevState[2];
 #define ENCODER_1_A_PIN 2
 #define ENCODER_1_B_PIN 3
 
-#define ENCODER_READ(pin) ((PIND >> pin) & 0b1)
+#define ENCODER_READ(pin) ((PIND >> (pin)) & 0b1)
 
 #define ENCODER_0_READ() ((ENCODER_READ(ENCODER_0_B_PIN) << 1) | ENCODER_READ(ENCODER_0_A_PIN))
 #define ENCODER_1_READ() ((ENCODER_READ(ENCODER_1_B_PIN) << 1) | ENCODER_READ(ENCODER_1_A_PIN))

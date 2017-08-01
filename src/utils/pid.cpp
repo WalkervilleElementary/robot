@@ -1,5 +1,7 @@
 #include "utils/pid.h"
 
+namespace utils {
+
 PidController::PidController(float kP, float kI, float kD, float kDecay) : 
   kP(kP), kI(kI), kD(kD), kDecay(kDecay)
 {
@@ -23,4 +25,6 @@ void PidController::printTo(Print& p) {
   p.print(integral);
   p.print(' ');
   //p.print(prevOutput);
+}
+
 }

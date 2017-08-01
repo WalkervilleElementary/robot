@@ -3,7 +3,7 @@
 
 // debug and generation use
 #define USE_UPDATE() 1
-#define DEBUG() 1
+#define DEBUG() 0
 #define LOOP_DELAY() 10
 #define TUNE_THRESHOLD() 500 //for determining if spinning knob 6 should do anything
 #define CAUTIOUS_GATE_ROUTINE() 1 // only cross on signal rise
@@ -24,7 +24,7 @@
 #define R_OFFSET() {-8, 0, 5}
 
 // distances (cm)
-#define GATE_WAITING_DISTANCE() 205
+#define GATE_WAITING_DISTANCE() 150
 #define ZIPLINE_TURN_DISTANCE() 140
 #define ZIPLINE_TAPE_DISTANCE() 25  // after first intersection, follow a bit more
 #define ZIPLINE_BACKUP_DISTANCE() 50
@@ -91,14 +91,15 @@
 #define LEFT_RIGHT_SWITCH() 5
 
 // maneuver
-#define WHEEL_DIAMETER() 6.0 // cm
+#define WHEEL_DIAMETER() 6.75 // cm
 #define GEAR_RATIO() 2.0
+#define ENCODER_TICKS_PER_REVOLUTION() 96.0
 #define AXLE_LENGTH() 21.59 // cm
 #define MANEUVER_GAIN() 2
 
 // Pickup values
-#define PICKUP_TO_RAMP() 200
-#define PICKUP_TO_INTERSECTION() 550
+#define PICKUP_TO_RAMP() 150
+#define PICKUP_TO_INTERSECTION() 450
 #define PICKUP_RAMP_SPEED() 110
 #define PICKUP_INTERSECTION_SPEED() 60
 #define PICKUP_INTERSECTION_P() 11
@@ -108,6 +109,21 @@
 #define PICKUP_BACKWARD_DISTANCE_FIRST_AGENT() -1
 #define PICKUP_BACKWARD_DISTANCE() -7
 #define PICKUP_FORWARD_DISTANCE() 10
+
+#define LINE_FOLLOW_0_SPEED() 120
+#define LINE_FOLLOW_0_GAIN() 24
+#define LINE_FOLLOW_1_SPEED() 255
+#define LINE_FOLLOW_1_GAIN() 50
+#define LINE_FOLLOW_2_SPEED() 255
+#define LINE_FOLLOW_2_GAIN() 50
+
+/*#define LINE_FOLLOW_0_SPEED() 80
+#define LINE_FOLLOW_0_GAIN() 22
+#define LINE_FOLLOW_1_SPEED() 120
+#define LINE_FOLLOW_1_GAIN() 24
+#define LINE_FOLLOW_2_SPEED() 255
+#define LINE_FOLLOW_2_GAIN() 50*/
+
 
 //macro to make switch code more concise
 #define MACRO_VARIABLE_TO_STRING(Variable) (void(Variable),#Variable) //supposed to convert variable name to a string

@@ -1,12 +1,19 @@
 #include "hardware/encodermotor.h"
 #include "phys253.h"
+#include "configs.h"
+
+using namespace utils;
 
 namespace hardware {
 
 EncoderMotor::EncoderMotor(int motor_num, Encoder& encoder, bool backward) :
   m_motor_num(motor_num), m_encoder(encoder), m_backward(backward), 
-  m_velocityPid(-2,0.5,-0.25), m_positionPid(-0.5,0.0,-0.5)
-{}
+  m_velocityPid(-0.4,0.0,0.0), m_positionPid(-0.2,0.0,-0.2)
+{
+  m_powerTarget = 0;
+  m_velocityTarget = 0;
+  m_positionTarget = m_encoder.getPosition();
+}
 
 void EncoderMotor::setPower(int16_t power) {
   m_controlMode = POWER;
@@ -14,18 +21,20 @@ void EncoderMotor::setPower(int16_t power) {
 }
 
 void EncoderMotor::setVelocity(int16_t velocity, int16_t power) {
+  if (m_controlMode != VELOCITY) m_powerTarget = 0;
   m_controlMode = VELOCITY;
   m_velocityTarget = velocity;
   m_maxPower = power;
 }
 
 bool EncoderMotor::setPosition(int32_t position, int16_t speed) {
+  if (m_controlMode != POSITION) m_powerTarget = 0;
   m_controlMode = POSITION;
   m_positionTarget = position;
   m_maxVelocity = speed;
   m_maxPower = 255;
-  if (m_encoder.getVelocity() == 0 
-    && abs(m_encoder.getPosition() - m_positionTarget) < deadZone) {
+  if (//m_encoder.getVelocity() == 0 &&
+    abs(m_encoder.getPosition() - m_positionTarget) < deadZone) {
     return true;
   }
   else return false;
@@ -45,10 +54,15 @@ void EncoderMotor::hold() {
 void EncoderMotor::tick() {
   switch (m_controlMode) {
     case POSITION:
-      m_velocityTarget = m_positionPid.run(m_encoder.getPosition() - m_positionTarget);
-      if (m_velocityTarget > m_maxVelocity) m_velocityTarget = m_maxVelocity;
-      if (m_velocityTarget < -m_maxVelocity) m_velocityTarget = -m_maxVelocity;
+    {
+      int32_t error = m_encoder.getPosition() - m_positionTarget;
+      int16_t velocity = m_maxVelocity;
+      if (abs(error) < 100) velocity = 5;
+      if (abs(error) < 5) velocity = 0;
+      if (error < 0) m_velocityTarget = velocity;
+      if (error > 0) m_velocityTarget = -velocity;
       //fall through
+    }
     case VELOCITY:
       m_powerTarget += m_velocityPid.run(m_encoder.getVelocity() - m_velocityTarget);
       if (m_powerTarget > m_maxPower) m_powerTarget = m_maxPower;
@@ -68,4 +82,4 @@ int32_t EncoderMotor::getPosition() {
   return m_encoder.getPosition();
 }
 
-}
+} // namespace hardware

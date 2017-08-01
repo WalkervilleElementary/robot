@@ -55,7 +55,7 @@ bool Platform::loop(){
       }
     case 3:  // slowly lower while backing up
       if (millis() < start_time_ + backup_time_){
-        driver_.sendWheelVelocities(backup_speed_, backup_speed_);
+        driver_.setPower(backup_speed_, backup_speed_); // TODO change to use setVelocity
       }else{
         driver_.stop();
       }
