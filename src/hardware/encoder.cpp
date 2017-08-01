@@ -1,86 +1,44 @@
 #include "hardware/encoder.h"
+#include "utils/encoderinterrupts.h"
 
-#include <phys253.h>
-#include <avr/interrupt.h>
+namespace hardware {
 
-namespace hardware{
-
-  volatile uint32_t counts[4];
-  volatile unsigned long prevTime[4];
-  const unsigned long WAITTIME = ENCODER_WAIT_TIME();
-
-Encoder::Encoder(){
-  start(R_ENCODER_);
-  start(L_ENCODER_);
+Encoder::Encoder(uint8_t encoderId, bool reverse) {
+  m_encoderId = encoderId;
+  m_reverse = reverse;
+  setEncoderCount(m_encoderId, 0);
+  m_previousPosition = 0;
+  m_currentPosition = 0;
 }
 
-void Encoder::enableExternalInterrupt(unsigned int INTX, unsigned int mode){
-  if (INTX > 3 || mode > 3 || mode == 1) return;
-  cli();
-  /* Allow pin to trigger interrupts        */
-  EIMSK |= (1 << INTX);
-  /* Clear the interrupt configuration bits */
-  EICRA &= ~(1 << (INTX*2+0));
-  EICRA &= ~(1 << (INTX*2+1));
-  /* Set new interrupt configuration bits   */
-  EICRA |= mode << (INTX*2);
-  sei();
+int32_t Encoder::getPosition() const {
+  return m_currentPosition;
 }
 
-void Encoder::disableExternalInterrupt(unsigned int INTX){
-  if (INTX > 3) return;
-  EIMSK &= ~(1 << INTX);
+int32_t Encoder::getVelocity() const {
+  return m_currentPosition - m_previousPosition;
 }
 
-void Encoder::start(unsigned int INTX){
-  counts[INTX] = 0;
-  enableExternalInterrupt(INTX, RISING);
-}
-
-uint32_t Encoder::stop(unsigned int INTX){
-  disableExternalInterrupt(INTX);
-  return counts[INTX];
-}
-
-uint32_t Encoder::get(unsigned int INTX){
-  return counts[INTX];
-}
-
-uint32_t Encoder::cmToTicks(unsigned int distance) {
-  return distance * GEAR_RATIO() * 24 / (WHEEL_DIAMETER() * PI);
-}
-
-}  // namespace hardware
-
-ISR(INT0_vect){
-  if (millis() > hardware::prevTime[0] + hardware::WAITTIME)
-  {
-    hardware::counts[0]++;
-    hardware::prevTime[0] = millis();
+void Encoder::tick() {
+  m_previousPosition = m_currentPosition;
+  if (m_reverse) {
+    m_currentPosition = -getEncoderCount(m_encoderId);
   }
-};
-
-ISR(INT1_vect){
-  if (millis() > hardware::prevTime[1] + hardware::WAITTIME)
-  {
-    hardware::counts[1]++;
-    hardware::prevTime[1] = millis();
+  else {
+    m_currentPosition = getEncoderCount(m_encoderId);
   }
-};
+}
 
-ISR(INT2_vect){
-  if (millis() > hardware::prevTime[2] + hardware::WAITTIME)
-  {
-    hardware::counts[2]++;
-    hardware::prevTime[2] = millis();
-  }
-};
+void Encoder::printTo(Print& p) {
+  p.print(getEncoderPin(m_encoderId, 0));
+  p.print(getEncoderPin(m_encoderId, 1));
+  p.print(' ');
+  p.print(getPosition());
+  p.print(' ');
+  p.print(getVelocity());
+}
 
-ISR(INT3_vect){
-  if (millis() > hardware::prevTime[3] + hardware::WAITTIME)
-  {
-    hardware::counts[3]++;
-    hardware::prevTime[3] = millis();
-  }
-};
+
+
+}
 

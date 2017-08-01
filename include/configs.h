@@ -33,10 +33,9 @@
 #define ZIPLINE_TURN_DEGREES() 75
 
 // PID initial values
-#define GAIN_T() 1
-#define GAIN_P() 12
-#define GAIN_I() 0
-#define GAIN_D() 0
+#define GAIN_P() 12.0
+#define GAIN_I() 0.0
+#define GAIN_D() 0.0
 
 // beacon following initial values
 #define BEACON_GAIN_P() 6  // 12

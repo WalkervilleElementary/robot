@@ -3,33 +3,33 @@
 #include <phys253.h>
 #include <LiquidCrystal.h>
 
-#include "hardware/driver.h"
+//#include "hardware/driver.h"
 #include "hardware/qrd.h"
-#include "hardware/encoder.h"
+//#include "hardware/encoder.h"
 #include "hardware/beacon.h"
 
 #include "sequences/claw.h"
-#include "sequences/tape.h"
-#include "sequences/platform.h"
-#include "sequences/maneuver.h"
+//#include "sequences/tape.h"
+//#include "sequences/platform.h"
+//#include "sequences/maneuver.h"
 
-#include "stages/gate.h"
-#include "stages/pickup.h"
-#include "stages/zipline.h"
+//#include "stages/gate.h"
+//#include "stages/pickup.h"
+//#include "stages/zipline.h"
 
-hardware::Driver driver;
+//hardware::Driver driver;
 hardware::Qrd qrd;
-hardware::Encoder encoder;
+//hardware::Encoder encoder;
 hardware::Beacon beacon;
 
 sequences::Claw claw;
-sequences::Maneuver maneuver(driver, encoder);
-sequences::Platform platform(driver);
-sequences::Tape tape(qrd, beacon, driver);
+//sequences::Maneuver maneuver(driver, encoder);
+//sequences::Platform platform(driver);
+//sequences::Tape tape(qrd, beacon, driver);
 
-stages::Gate gate(tape, beacon, encoder);
-stages::Pickup pickup(qrd, encoder, claw, maneuver, tape);
-stages::Zipline zipline(tape, platform, maneuver, beacon, driver, encoder, qrd);
+//stages::Gate gate(tape, beacon, encoder);
+//stages::Pickup pickup(qrd, encoder, claw, maneuver, tape);
+//stages::Zipline zipline(tape, platform, maneuver, beacon, driver, encoder, qrd);
 
 bool left_surface;
 unsigned long loop_delay = LOOP_DELAY();
@@ -40,7 +40,7 @@ void setup(){
 
   LCD.begin(16,2) ;
 
-  Serial.begin(9600) ;
+  //Serial.begin(9600) ;
 
   RCServo0.attach(SERVO_0());
   RCServo1.attach(SERVO_1());
@@ -86,7 +86,7 @@ void loop() {
 }
 */
 
-// void loop() {}
+void loop() {}
 
 // real loop
 /*
