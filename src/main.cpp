@@ -47,7 +47,7 @@ void setup(){
   RCServo2.attach(SERVO_2());
   RCServo3.attach(SERVO_3());
 
-  left_surface = true;  // TODO read the switch
+  left_surface = false;  // TODO read the switch
   // left_surface = digitalRead(LEFT_RIGHT_SWITCH());
   claw.fold(left_surface);
   delay(1000);
@@ -57,6 +57,20 @@ void setup(){
   // claw.raise(left_surface ? sequences::LEFT_CLAW : sequences::RIGHT_CLAW);
   // while(!claw.loop()) delay(100);
 }
+
+/*
+// loop for finding right servo positions
+void loop() {
+  int height = knob(6) / 4;
+  int open = knob(7) / 4;
+  LCD.clear(); LCD.home(); LCD.setCursor(0,0);
+  LCD.print("height "); LCD.print(height);
+  LCD.setCursor(0,1); LCD.print("open "); LCD.print(open);
+  RCServo1.write(height);
+  RCServo3.write(open);
+  delay(50);
+}
+*/
 
 /*
 // loop for finding right servo positions
@@ -349,7 +363,7 @@ void loop(){
 */
 
 // loop for claw testing
-/*
+
 void loop() {
   int state = 0;
   int left = 0;
@@ -392,4 +406,3 @@ void loop() {
   while (!claw.loop());
   delay(500);
 }
-*/
