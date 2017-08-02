@@ -15,7 +15,7 @@ unsigned long Claw::delay_ = 0;
 unsigned long Claw::raise_pause = 1000; //ms
 unsigned long Claw::grab_pause = 1000;
 unsigned long Claw::retrieve_pause = 1000;
-unsigned long Claw::fold_delay = 1000;
+unsigned long Claw::fold_delay = 600;
 
 int16_t Claw::left_claw_extended = L_C_EXTEND();
 int16_t Claw::left_claw_rest = L_C_REST();
@@ -61,10 +61,11 @@ void Claw::set_arm_position(int8_t side, int8_t position) {
 }
 
 void Claw::fold(bool left_surface) {
-  if (left_surface) {
-    set_arm_position(RIGHT_CLAW, EXTENDED);
-    delay(fold_delay);
-  }
+  // open both claws simultaneously and hope they don't collide
+  set_arm_position(LEFT_CLAW, EXTENDED);
+  set_arm_position(RIGHT_CLAW, EXTENDED);
+  delay(fold_delay);
+
   set_arm_position(left_surface ? RIGHT_CLAW : LEFT_CLAW, CLOSED);
   delay(fold_delay);
   set_arm_position(left_surface ? LEFT_CLAW : RIGHT_CLAW, OPEN);
