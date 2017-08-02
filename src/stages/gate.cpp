@@ -23,7 +23,7 @@ bool Gate::loop(){
       ++state_;
     case 1:  // going towards gate
       if (encoder_.getPosition() - encoder_start_ < distance_){
-        driver_.commandLineFollow(true);
+        driver_.commandLineFollow(1);
       }else{
         driver_.stop();
         ++state_;
@@ -47,7 +47,7 @@ bool Gate::loop(){
           return false;
         }
 #endif  // CAUTIOUS_GATE_ROUTINE()
-        driver_.commandLineFollow(true);
+        driver_.commandLineFollow(1);
         return true;
       }else{
         driver_.stop();

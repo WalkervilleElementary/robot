@@ -38,13 +38,18 @@ private:
   /**
    * States:
    *  0 = Initialization
-   *  1 = Follow tape until first intersection
-   *  2 = Follow tape a little more
-   *  3 = Follow beacon
-   *  4 = Turn toward zipline
-   *  5 = Backup and raise platform
-   *  6 = Dead reckoning
-   *  7 = Backup while lowering platform
+   *  1 = Follow tape until intersection
+   *  2 = Drive forward a distance
+   *  3 = Follow tape until intersection
+   *  4 = Drive forward a distance
+   *  5 = Follow tape until intersection
+   *  6 = Drive forward a distance
+   *  7 = Follow tape a little more
+   *  8 = Follow beacon
+   *  9 = Turn toward zipline
+   *  10 = Backup and raise platform
+   *  11 = Dead reckoning
+   *  12 = Backup while lowering platform
    */
   static uint8_t state_;
 
