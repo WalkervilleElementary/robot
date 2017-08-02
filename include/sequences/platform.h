@@ -28,6 +28,9 @@ private:
   static unsigned long backup_time_;
   static unsigned long start_time_;
 
+  static unsigned long lower_time_;
+  static int lower_speed_modifier_;
+
   static const uint8_t upper_switch_;
   static const uint8_t lower_switch_;
   static const uint8_t motor_number_;

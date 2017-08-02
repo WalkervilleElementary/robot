@@ -16,12 +16,12 @@
 #define L_CLOSE() 175
 #define L_OFFSET() {-3, -13, -14}
 
-#define R_C_EXTEND() 168
-#define R_C_REST() 4
-#define R_C_VERTICAL() 103
-#define R_OPEN() 161
-#define R_CLOSE() 30
-#define R_OFFSET() {0, 4, 12}
+#define R_C_EXTEND() 160
+#define R_C_REST() 2
+#define R_C_VERTICAL() 90
+#define R_OPEN() 105
+#define R_CLOSE() 8
+#define R_OFFSET() {-8, 0, 5}
 
 // distances (cm)
 #define GATE_WAITING_DISTANCE() 205
@@ -49,13 +49,13 @@
 #define ACCEL_LIMIT() 50 // This is not the correct value
 #define VELOCITY() 90 // 80 to 100
 
-#define PLATFORM_RAISE_SPEED() -255
-#define PLATFORM_LOWER_SPEED_TOP() 40  // 40
+#define PLATFORM_RAISE_SPEED() -210
+#define PLATFORM_LOWER_SPEED_TOP() 34  // 40
 #define PLATFORM_LOWER_SPEED_BOTTOM() 60
 
 #define SLOW_FORWARD_SPEED() 50 // for e.g. dead reckoning
 #define BACKUP_SPEED() -40  // for backing up after getting zipline
-#define PLATFORM_MAINTAIN_SPEED() -15
+#define PLATFORM_MAINTAIN_SPEED() -50
 #define BACKUP_TIME() 3000
 
 // thresholds

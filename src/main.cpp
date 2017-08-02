@@ -52,16 +52,30 @@ void setup(){
   claw.fold(left_surface);
   delay(1000);
 
-//claw.raise(sequences::RIGHT_CLAW);
-//while(!claw.loop()) delay(100);
-//claw.raise(sequences::LEFT_CLAW);
-//while(!claw.loop()) delay(100);
+  // claw.raise(left_surface ? sequences::RIGHT_CLAW : sequences::LEFT_CLAW);
+  // while(!claw.loop()) delay(100);
+  // claw.raise(left_surface ? sequences::LEFT_CLAW : sequences::RIGHT_CLAW);
+  // while(!claw.loop()) delay(100);
 }
+
+/*
+// loop for finding right servo positions
+void loop() {
+  int height = knob(6) / 4;
+  int open = knob(7) / 4;
+  LCD.clear(); LCD.home(); LCD.setCursor(0,0);
+  LCD.print("height "); LCD.print(height);
+  LCD.setCursor(0,1); LCD.print("open "); LCD.print(open);
+  RCServo1.write(height);
+  RCServo3.write(open);
+  delay(50);
+}
+*/
 
 // void loop() {}
 
 // real loop
-
+/*
 uint8_t state = 0;
 void loop() {
 #if DEBUG()
@@ -89,10 +103,10 @@ void loop() {
 
   delay(loop_delay);
 }
-
+*/
 
 // loop for testing platform
-/*
+
 //claw.raise(sequences::RIGHT_CLAW);
 //while(!claw.loop()) delay(100);
 //claw.raise(sequences::LEFT_CLAW);
@@ -102,11 +116,11 @@ int state = 0;
 void loop()
 {
 #if DEBUG()
-  LCD.clear(); LCD.home();
-  LCD.setCursor(0,0);
-  LCD.print(digitalRead(PLATFORM_UPPER_SWITCH()));
-  LCD.print(digitalRead(PLATFORM_LOWER_SWITCH()));
-  LCD.setCursor(0, 1); LCD.print(state);
+  // LCD.clear(); LCD.home();
+  // LCD.setCursor(0,0);
+  // LCD.print(digitalRead(PLATFORM_UPPER_SWITCH()));
+  // LCD.print(digitalRead(PLATFORM_LOWER_SWITCH()));
+  // LCD.setCursor(0, 1); LCD.print(state);
 #endif  // DEBUG()
   if (stopbutton())
   {
@@ -134,10 +148,11 @@ void loop()
       if (platform.loop())
         state++;
       break;
+    default:  // do nothing
+      break;
   }
   delay(LOOP_DELAY());
 }
-*/
 
 // loop for testing gate routine
 /*

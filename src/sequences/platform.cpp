@@ -13,6 +13,10 @@ int Platform::backup_speed_ = BACKUP_SPEED();
 unsigned long Platform::backup_time_ = BACKUP_TIME();
 unsigned long Platform::start_time_;
 
+// these variables are used in state 2
+unsigned long Platform::lower_time_;
+int Platform::lower_speed_modifier_;
+
 const uint8_t Platform::upper_switch_ = PLATFORM_UPPER_SWITCH();
 const uint8_t Platform::lower_switch_ = PLATFORM_LOWER_SWITCH();
 const uint8_t Platform::motor_number_ = PLATFORM_MOTOR();
@@ -22,14 +26,28 @@ bool Platform::loop(){
     case 0:
       break;
     case 1:  // raising platform
-      if (digitalRead(upper_switch_))
+#if DEBUG()
+      LCD.setCursor(0, 0); LCD.print("Raise ");
+#endif  // DEBUG()
+      if (digitalRead(upper_switch_)) {
         motor.speed(motor_number_, raise_speed_);
-      else
+      } else {
+        lower_speed_modifier_ = 0;  // start at 0
+        lower_time_ = millis();  // record the time state 2 began
         state_++;
+      }
       return false;
     case 2:  // lower just enough so switch is no longer active
+#if DEBUG()
+      LCD.setCursor(0, 0); LCD.print("Lower");
+#endif  // DEBUG()
       if (!digitalRead(upper_switch_)){
-        motor.speed(motor_number_, lower_speed_top_);
+        // every 1.5 seconds, increment the lowering speed by 1
+        if (millis() - lower_time_ > 1500) {
+          lower_speed_modifier_++;
+          lower_time_ = millis();
+        }
+        motor.speed(motor_number_, lower_speed_top_ + lower_speed_modifier_);
         return false;
       }else{
         motor.speed(motor_number_, maintain_speed_);
