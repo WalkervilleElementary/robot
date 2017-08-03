@@ -2,7 +2,7 @@
 #define WALKERVILLE_ROBOT_CONFIGS_H
 
 // debug and generation use
-#define USE_UPDATE() 1
+#define USE_UPDATE() 0
 #define DEBUG() 0
 #define LOOP_DELAY() 10
 #define TUNE_THRESHOLD() 500 //for determining if spinning knob 6 should do anything
@@ -24,13 +24,23 @@
 #define R_OFFSET() {-8, 2, 7}
 
 // distances (cm)
-#define GATE_WAITING_DISTANCE() 120
+#define GATE_WAITING_DISTANCE() 80
 #define ZIPLINE_TURN_DISTANCE() 70
 #define ZIPLINE_TAPE_DISTANCE() 25  // after first intersection, follow a bit more
 #define ZIPLINE_BACKUP_DISTANCE() 50
 
 // angles (degrees)
 #define ZIPLINE_TURN_DEGREES() 70
+
+// Pickup values
+#define PICKUP_TO_RAMP() 115
+#define PICKUP_TO_INTERSECTION() 320
+#define PICKUP_TURN_DEGREE() 54
+#define PICKUP_TURN_BACKWARD_DISTANCE() -5
+#define PICKUP_HEIGHT() {1,2,0,1,2,0}
+#define PICKUP_BACKWARD_DISTANCE_FIRST_AGENT() 9
+#define PICKUP_BACKWARD_DISTANCE() -4
+#define PICKUP_FORWARD_DISTANCE() 3
 
 // PID initial values
 #define GAIN_P() 12.0
@@ -49,12 +59,12 @@
 #define VELOCITY() 90 // 80 to 100
 
 #define PLATFORM_RAISE_SPEED() -210
-#define PLATFORM_LOWER_SPEED_TOP() 34  // 40
+#define PLATFORM_LOWER_SPEED_TOP() 38  // 40
 #define PLATFORM_LOWER_SPEED_BOTTOM() 60
 
 #define SLOW_FORWARD_SPEED() 50 // for e.g. dead reckoning
 #define BACKUP_SPEED() -40  // for backing up after getting zipline
-#define PLATFORM_MAINTAIN_SPEED() -50
+#define PLATFORM_MAINTAIN_SPEED() -80
 #define BACKUP_TIME() 3000
 
 // thresholds
@@ -96,16 +106,6 @@
 #define ENCODER_TICKS_PER_REVOLUTION() 96.0
 #define AXLE_LENGTH() 21.59 // cm
 #define MANEUVER_GAIN() 2
-
-// Pickup values
-#define PICKUP_TO_RAMP() 115
-#define PICKUP_TO_INTERSECTION() 330
-#define PICKUP_TURN_DEGREE() 54
-#define PICKUP_TURN_BACKWARD_DISTANCE() -5
-#define PICKUP_HEIGHT() {1,2,0,1,2,0}
-#define PICKUP_BACKWARD_DISTANCE_FIRST_AGENT() 2
-#define PICKUP_BACKWARD_DISTANCE() -4
-#define PICKUP_FORWARD_DISTANCE() 3
 
 #define LINE_FOLLOW_0_SPEED() 120
 #define LINE_FOLLOW_0_GAIN() 24
