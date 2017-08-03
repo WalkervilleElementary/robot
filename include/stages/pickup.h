@@ -35,13 +35,13 @@ private:
   static const int8_t height[];
 
 public:
-  Pickup(const hardware::Qrd& qrd, const hardware::Encoder& encoder,
+  inline Pickup(const hardware::Qrd& qrd, const hardware::Encoder& encoder,
     sequences::Claw& claw, sequences::Drivetrain& driver):
     qrd_(qrd), encoder_(encoder), claw_(claw), driver_(driver) {};
   inline ~Pickup(){};
 
   bool loop();
-
+  void side(bool left_surface);
 #if USE_UPDATE()
   bool update();
 #endif  // USE_UPDATE()

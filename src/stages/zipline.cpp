@@ -13,7 +13,7 @@ int32_t Zipline::backup_distance_ = ZIPLINE_BACKUP_DISTANCE();
 int32_t Zipline::encoder_start_;
 int32_t Zipline::ticks_;
 
-bool Zipline::left_surface_ = true;  // TODO read this from the switch
+bool Zipline::left_surface_ = true;
 uint8_t Zipline::state_ = 0;
 
 bool Zipline::loop() {
@@ -100,6 +100,10 @@ bool Zipline::loop() {
 void Zipline::stop() {
   driver_.stop();
   platform_.stop();
+}
+
+void Zipline::side(bool left_surface) {
+  left_surface_ = left_surface;
 }
 
 #if DEBUG()

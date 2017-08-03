@@ -88,7 +88,7 @@
 // switches
 #define PLATFORM_UPPER_SWITCH() 7
 #define PLATFORM_LOWER_SWITCH() 6
-#define LEFT_RIGHT_SWITCH() 5
+#define LEFT_RIGHT_SWITCH() 4
 
 // maneuver
 #define WHEEL_DIAMETER() 6.75 // cm
