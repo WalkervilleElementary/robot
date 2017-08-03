@@ -34,8 +34,6 @@ void setup(){
   RCServo2.attach(SERVO_2());
   RCServo3.attach(SERVO_3());
   
-  left_surface = true;  // TODO read the switch
-  // left_surface = digitalRead(LEFT_RIGHT_SWITCH());
 
   hardware::Qrd qrd;
   hardware::Beacon beacon;
@@ -49,9 +47,9 @@ void setup(){
   sequences::Drivetrain driver(l_motor, r_motor, qrd);
   sequences::Platform platform(driver);
 
-  stages::Gate gate(driver, beacon, r_encoder); // TODO change encoder dynamically
-  stages::Pickup pickup(qrd, r_encoder, claw, driver);
-  stages::Zipline zipline(driver, platform, beacon, r_encoder, qrd);
+  stages::Gate gate(driver, beacon, (left_surface ? r_encoder : l_encoder));
+  stages::Pickup pickup(qrd, (left_surface ? r_encoder : l_encoder), claw, driver);
+  stages::Zipline zipline(driver, platform, beacon, (left_surface ? r_encoder : l_encoder), qrd);
 
   claw.fold(left_surface);
   delay(1000);
@@ -71,8 +69,14 @@ void setup(){
     ////////////////////////////////
     switch (state) {
       case 0:  // wait for start button
-        if (!startbutton()) break;
-        else state++;
+        if (!startbutton()) {
+          break;
+        } else {
+          state++;
+          left_surface = digitalRead(LEFT_RIGHT_SWITCH());
+          pickup.side(left_surface);
+          zipline.side(left_surface);
+        }
       case 1:  // going through gate
         if (gate.loop())
           state++;

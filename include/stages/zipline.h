@@ -62,6 +62,7 @@ public:
   inline ~Zipline(){};
   bool loop();
   void stop();
+  void side(bool left_surface);
 #if DEBUG()
   void set_state(uint8_t state);
 #endif  // DEBUG()

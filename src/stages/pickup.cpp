@@ -16,7 +16,7 @@ int32_t Pickup::to_ramp_ = hardware::Encoder::cmToTicks(PICKUP_TO_RAMP());
 int32_t Pickup::to_intersection_ = hardware::Encoder::cmToTicks(PICKUP_TO_INTERSECTION());
 int32_t Pickup::turn_degree_ = PICKUP_TURN_DEGREE();
 
-bool Pickup::side_ = false;  // TODO
+bool Pickup::side_ = false;
 
 const int8_t Pickup::height[] = PICKUP_HEIGHT();
 
@@ -40,7 +40,6 @@ bool Pickup::loop(){
 
   switch (state_){
     case -4:  // start
-      // side_ = digitalRead(0); TODO
       start_encoder_ = encoder_.getPosition();
       state_ = -3;
     case -3:  // first turn
@@ -156,6 +155,10 @@ bool Pickup::loop(){
   }
 
   return false;
+}
+
+void Pickup::side(bool left_surface) {
+  side_ = !left_surface;
 }
 
 #if USE_UPDATE()
