@@ -21,7 +21,7 @@
 #define R_C_VERTICAL() 90
 #define R_OPEN() 105
 #define R_CLOSE() 8
-#define R_OFFSET() {-8, 0, 5}
+#define R_OFFSET() {-8, 2, 7}
 
 // distances (cm)
 #define GATE_WAITING_DISTANCE() 120
