@@ -4,12 +4,15 @@
 
 namespace hardware {
 
+float Encoder::distance_to_ticks = GEAR_RATIO() * ENCODER_TICKS_PER_REVOLUTION() / (WHEEL_DIAMETER() * M_PI);
+float Encoder::degrees_to_ticks = AXLE_LENGTH() * M_PI / 180.0;
+
 int32_t Encoder::cmToTicks(float cm) {
-  return cm * GEAR_RATIO() * ENCODER_TICKS_PER_REVOLUTION() / (WHEEL_DIAMETER() * M_PI);
+  return cm * distance_to_ticks;
 }
 
 int32_t Encoder::degToTicks(float deg) {
-  return cmToTicks((deg / 180.) * AXLE_LENGTH() * M_PI);
+  return cmToTicks(deg * degrees_to_ticks);
 }
 
 Encoder::Encoder(uint8_t encoderId, bool reverse) {
@@ -40,6 +43,7 @@ void Encoder::tick() {
   if (m_currentVelocitySample >= m_numVelocitySamples) m_currentVelocitySample = 0;
 }
 
+#if DEBUG()
 void Encoder::printTo(Print& p) {
   p.print(getEncoderPin(m_encoderId, 0));
   p.print(getEncoderPin(m_encoderId, 1));
@@ -48,16 +52,13 @@ void Encoder::printTo(Print& p) {
   p.print(' ');
   p.print(getVelocity());
 }
+#endif  // DEBUG
 
 int32_t Encoder::getPositionPrivate() {
-  if (m_reverse) {
-    return -getEncoderCount(m_encoderId);
-  }
-  else {
-    return getEncoderCount(m_encoderId);
-  }
+  if (m_reverse) return -getEncoderCount(m_encoderId);
+  else return getEncoderCount(m_encoderId);
 }
 
 
-}
+}  // namespace hardawre
 

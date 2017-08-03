@@ -1,9 +1,13 @@
 #pragma once
+#include "configs.h"
 
 #include "hardware/encodermotor.h"
 #include "hardware/qrd.h"
 #include "utils/pid.h"
+
+#if DEBUG()
 #include <Print.h>
+#endif  // DEBUG
 
 namespace sequences {
 
@@ -19,16 +23,20 @@ public:
   //void commandTurnPivot(int32_t distance, int16_t speed = 255);
   void commandLineFollow(uint8_t speedSetting);
   void commandBeaconFollow();
+  
   void stop();
   bool readyForCommand();
   void setPower(int16_t left, int16_t right);
   void setVelocity(int16_t left, int16_t right);
   void tick();
+
+#if DEBUG()
   void printTo(Print& p);
-  utils::PidController m_lineFollowPid;
-  utils::PidController m_beaconFollowPid;
+#endif  // DEBUG
 
 private:
+  utils::PidController m_beaconFollowPid;
+
   hardware::EncoderMotor& m_leftMotor;
   hardware::EncoderMotor& m_rightMotor;
   hardware::Qrd& m_lineSensor;
@@ -48,6 +56,6 @@ private:
   enum Command { IDLE, DRIVE_VELOCITY, DRIVE_POWER, DRIVE_ENCODER, DRIVE_LINE_FOLLOW, DRIVE_BEACON_FOLLOW };
   Command m_command;
 
-};
+};  // Class Drivetrain
 
-}
+}  // namespace sequences
