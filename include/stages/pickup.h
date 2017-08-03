@@ -24,14 +24,13 @@ private:
   static bool side_;
   static int8_t agents_;
 
-  static int32_t start_encoder_;
-  static int32_t current_encoder_;
-
   static int32_t to_ramp_;
   static int32_t to_intersection_;
-
   static int32_t turn_degree_;
-  static int32_t drive_distance_;
+
+  static int32_t start_encoder_;
+  static int32_t current_encoder_;
+  static int32_t alignment_distance_;
 
   static const int8_t height[];
 
