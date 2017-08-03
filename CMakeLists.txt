@@ -39,7 +39,7 @@ project(MagicSchoolBot C CXX ASM)
 
 # Compiler flags
 set(CSTANDARD "-std=c99")
-set(CXXSTANDARD "-std=c++11")
+set(CXXSTANDARD "-std=c++98")
 set(CDEBUG    "-gstabs -g -ggdb")
 set(CWARN     "-Wall -Wstrict-prototypes -Wl,--gc-sections -Wl,--relax")
 set(CXXWARN     "-Wall -Wl,--gc-sections -Wl,--relax")
