@@ -24,9 +24,10 @@ void setup(){
   portMode(0, INPUT);
   portMode(1, OUTPUT);
 
+#if DEBUG()
   LCD.begin(16,2) ;
-
   Serial.begin(115200) ;
+#endif  // DEBUG()
 
   RCServo0.attach(SERVO_0());
   RCServo1.attach(SERVO_1());
@@ -55,21 +56,19 @@ void setup(){
   claw.fold(left_surface);
   delay(1000);
 
-  unsigned long waitUntil = millis() + loop_delay;
-  
   enableEncoderInterrupts();
 
   ////////////////////////////////
   // Insert extra variable here //
   ////////////////////////////////
   uint8_t state = 0;
-
+  unsigned long delayTime;
   ////////////////////////////////
+  unsigned long waitUntil = millis() + loop_delay;
   for (;;) {//////////////////////
-  ////////////////////////////////
-  //// Insert code here //////////
-  ////////////////////////////////
-
+    ////////////////////////////////
+    //// Insert code here //////////
+    ////////////////////////////////
     switch (state) {
       case 0:  // wait for start button
         if (!startbutton()) break;
@@ -87,11 +86,11 @@ void setup(){
            state++;
          break;
     }
-  ///////////////////////////////
-  //// Do not touch /////////////
-  ///////////////////////////////
+    ///////////////////////////////
+    //// Do not touch /////////////
+    ///////////////////////////////
     while (millis() < waitUntil) continue;
-    waitUntil += loop_delay;
+    waitUntil = millis() + loop_delay;
 
     driver.tick();
     l_encoder.tick();
@@ -334,6 +333,39 @@ void loop(){
       else driver.commandTurnLeft(distance);
     }
    
+*/
+
+// loop for testing Drivetrain.setPower and motor ramping
+/*
+// EXTRA VARIABLES
+  int state = 0;
+  unsigned long delayTime;
+
+// CODE
+    const int16_t power = 255;
+    if (stopbutton()) {
+      driver.stop();
+      state = 0;
+    }
+    if (state == 0) {
+      if (startbutton()) {
+        state++;
+      }
+    }
+    if (state == 1) {
+      if (millis() > delayTime) {
+        driver.setPower(power, power);
+        delayTime = millis() + 2000;
+        state = 2;
+      }
+    }
+    if (state == 2) {
+      if (millis() > delayTime) {
+        driver.setPower(-power, -power);
+        delayTime = millis() + 2000;
+        state = 1;
+      }
+    }
 */
 
 // loop for claw testing

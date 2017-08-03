@@ -8,7 +8,7 @@ namespace hardware {
 class EncoderMotor {
 public:
   EncoderMotor(int motor_num, Encoder& encoder, bool backward=false);
-  void setPower(int16_t power);
+  void setPower(int16_t power, bool useRamp = true);
   void setVelocity(int16_t velocity, int16_t power = 255);
   bool setPosition(int32_t position, int16_t speed);
   void stop();
@@ -21,11 +21,12 @@ private:
   int m_motor_num;
   Encoder& m_encoder;
 
-  const static int32_t deadZone = 5;
+  const int32_t m_deadZone;
 
   enum ControlMode { IDLE, POWER, VELOCITY, POSITION };
   ControlMode m_controlMode;
-  static const int16_t m_accelerationLimit = 20;
+  const int16_t m_accelerationLimit;
+  int16_t m_currentPower;
   int16_t m_powerTarget;
   int16_t m_velocityTarget;
   int32_t m_positionTarget;
@@ -34,6 +35,6 @@ private:
   utils::PidController m_velocityPid;
   utils::PidController m_positionPid;
   
-};
+};  // Class Encodermotor
 
-}
+}  // namespace hardware

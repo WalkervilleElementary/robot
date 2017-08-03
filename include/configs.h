@@ -24,8 +24,8 @@
 #define R_OFFSET() {-8, 0, 5}
 
 // distances (cm)
-#define GATE_WAITING_DISTANCE() 150
-#define ZIPLINE_TURN_DISTANCE() 140
+#define GATE_WAITING_DISTANCE() 100
+#define ZIPLINE_TURN_DISTANCE() 70
 #define ZIPLINE_TAPE_DISTANCE() 25  // after first intersection, follow a bit more
 #define ZIPLINE_BACKUP_DISTANCE() 50
 
@@ -98,11 +98,8 @@
 #define MANEUVER_GAIN() 2
 
 // Pickup values
-#define PICKUP_TO_RAMP() 150
-#define PICKUP_TO_INTERSECTION() 450
-#define PICKUP_RAMP_SPEED() 110
-#define PICKUP_INTERSECTION_SPEED() 60
-#define PICKUP_INTERSECTION_P() 11
+#define PICKUP_TO_RAMP() 120
+#define PICKUP_TO_INTERSECTION() 225
 #define PICKUP_TURN_DEGREE() 54
 #define PICKUP_TURN_BACKWARD_DISTANCE() -5
 #define PICKUP_HEIGHT() {1,2,0,1,2,0}
@@ -117,12 +114,15 @@
 #define LINE_FOLLOW_2_SPEED() 255
 #define LINE_FOLLOW_2_GAIN() 50
 
-/*#define LINE_FOLLOW_0_SPEED() 80
+// Previous values
+/*
+#define LINE_FOLLOW_0_SPEED() 80
 #define LINE_FOLLOW_0_GAIN() 22
 #define LINE_FOLLOW_1_SPEED() 120
 #define LINE_FOLLOW_1_GAIN() 24
 #define LINE_FOLLOW_2_SPEED() 255
-#define LINE_FOLLOW_2_GAIN() 50*/
+#define LINE_FOLLOW_2_GAIN() 50
+*/
 
 
 //macro to make switch code more concise

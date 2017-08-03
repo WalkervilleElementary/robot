@@ -18,7 +18,7 @@ float PidController::run(float error) {
   prevOutput = output;
   return output;
 }
-
+#if DEBUG()
 void PidController::printTo(Print& p) {
   p.print(prevError);
   p.print(' ');
@@ -26,5 +26,6 @@ void PidController::printTo(Print& p) {
   p.print(' ');
   //p.print(prevOutput);
 }
+#endif  // DEBUG()
 
-}
+}  // namespace utils
