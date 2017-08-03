@@ -51,6 +51,10 @@ void setup(){
   stages::Pickup pickup(qrd, (left_surface ? r_encoder : l_encoder), claw, driver);
   stages::Zipline zipline(driver, platform, beacon, (left_surface ? r_encoder : l_encoder), qrd);
 
+  left_surface = digitalRead(LEFT_RIGHT_SWITCH());
+  pickup.side(left_surface);
+  zipline.side(left_surface);
+  
   claw.fold(left_surface);
   delay(1000);
 
@@ -73,9 +77,6 @@ void setup(){
           break;
         } else {
           state++;
-          left_surface = digitalRead(LEFT_RIGHT_SWITCH());
-          pickup.side(left_surface);
-          zipline.side(left_surface);
         }
       case 1:  // going through gate
         if (gate.loop())
