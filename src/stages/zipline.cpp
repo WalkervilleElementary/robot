@@ -58,8 +58,8 @@ bool Zipline::loop() {
       driver_.commandBeaconFollow();
       if (encoder_.getPosition() - encoder_start_ > ticks_) {
         // turn toward zipline
-        if (left_surface_) driver_.commandTurnRight(turn_degrees_);
-        else driver_.commandTurnLeft(turn_degrees_);
+        if (left_surface_) driver_.commandTurnRight(turn_degrees_, 15);
+        else driver_.commandTurnLeft(turn_degrees_, 15);
         state_++;
       } else {
         break;

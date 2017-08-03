@@ -24,13 +24,13 @@
 #define R_OFFSET() {-8, 0, 5}
 
 // distances (cm)
-#define GATE_WAITING_DISTANCE() 100
+#define GATE_WAITING_DISTANCE() 120
 #define ZIPLINE_TURN_DISTANCE() 70
 #define ZIPLINE_TAPE_DISTANCE() 25  // after first intersection, follow a bit more
 #define ZIPLINE_BACKUP_DISTANCE() 50
 
 // angles (degrees)
-#define ZIPLINE_TURN_DEGREES() 75
+#define ZIPLINE_TURN_DEGREES() 70
 
 // PID initial values
 #define GAIN_P() 12.0
@@ -98,14 +98,14 @@
 #define MANEUVER_GAIN() 2
 
 // Pickup values
-#define PICKUP_TO_RAMP() 120
-#define PICKUP_TO_INTERSECTION() 225
+#define PICKUP_TO_RAMP() 115
+#define PICKUP_TO_INTERSECTION() 330
 #define PICKUP_TURN_DEGREE() 54
 #define PICKUP_TURN_BACKWARD_DISTANCE() -5
 #define PICKUP_HEIGHT() {1,2,0,1,2,0}
-#define PICKUP_BACKWARD_DISTANCE_FIRST_AGENT() -1
-#define PICKUP_BACKWARD_DISTANCE() -7
-#define PICKUP_FORWARD_DISTANCE() 3
+#define PICKUP_BACKWARD_DISTANCE_FIRST_AGENT() 2
+#define PICKUP_BACKWARD_DISTANCE() -4
+#define PICKUP_FORWARD_DISTANCE() 3 
 
 #define LINE_FOLLOW_0_SPEED() 120
 #define LINE_FOLLOW_0_GAIN() 24
