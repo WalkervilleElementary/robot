@@ -10,11 +10,12 @@ int8_t Pickup::agents_ = 0;
 
 int32_t Pickup::start_encoder_;
 int32_t Pickup::current_encoder_;
+int32_t Pickup::alignment_distance_;
 
 int32_t Pickup::to_ramp_ = hardware::Encoder::cmToTicks(PICKUP_TO_RAMP());
 int32_t Pickup::to_intersection_ = hardware::Encoder::cmToTicks(PICKUP_TO_INTERSECTION());
-
 int32_t Pickup::turn_degree_ = PICKUP_TURN_DEGREE();
+
 bool Pickup::side_ = false;  // TODO
 
 const int8_t Pickup::height[] = PICKUP_HEIGHT();
@@ -102,13 +103,13 @@ bool Pickup::loop(){
     case 5:  // Aligning the Claw
       //LCD.setCursor(0,0); LCD.print("align");
       if (side_) {
-        if (agents_ == 0) driver_.commandDriveStraight(PICKUP_BACKWARD_DISTANCE_FIRST_AGENT());
-        else driver_.commandDriveStraight(PICKUP_BACKWARD_DISTANCE());
+        if (agents_ == 0) alignment_distance_ = PICKUP_BACKWARD_DISTANCE_FIRST_AGENT();
+        else alignment_distance_ = PICKUP_BACKWARD_DISTANCE();
       } else {
-        if (agents_ == 0) driver_.commandDriveStraight(PICKUP_BACKWARD_DISTANCE_FIRST_AGENT());
-        else driver_.commandDriveStraight(PICKUP_BACKWARD_DISTANCE());
+        if (agents_ == 0) alignment_distance_ = PICKUP_BACKWARD_DISTANCE_FIRST_AGENT();
+        else alignment_distance_ = PICKUP_BACKWARD_DISTANCE();
       }
-
+      driver_.commandDriveStraight(alignment_distance_);
       state_ = 6;
     case 6:  // Waiting for claw to be ready
       //LCD.setCursor(0,0); LCD.print("waiting");
@@ -124,7 +125,7 @@ bool Pickup::loop(){
       if (claw_.loop()){
         if (side_) claw_.release(sequences::RIGHT_CLAW);
         else claw_.release(sequences::LEFT_CLAW);
-        driver_.commandDriveStraight(PICKUP_FORWARD_DISTANCE());
+        driver_.commandDriveStraight(max(0, PICKUP_FORWARD_DISTANCE() - alignment_distance_));
         agents_++;
         state_ = 8;
       }else{
