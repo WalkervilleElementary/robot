@@ -25,14 +25,18 @@ private:
   static unsigned long fold_delay;
 
   static int16_t left_claw_extended;
-  static int16_t left_claw_rest;
+  static int16_t left_claw_folded;
+  static int16_t left_claw_drop;
   static int16_t left_claw_vertical;
   static int16_t left_open;
   static int16_t left_close;
   static int16_t left_offset[];
 
+  static int16_t open_offset;
+
   static int16_t right_claw_extended;
-  static int16_t right_claw_rest;
+  static int16_t right_claw_folded;
+  static int16_t right_claw_drop;
   static int16_t right_claw_vertical;
   static int16_t right_open;
   static int16_t right_close;
@@ -49,7 +53,7 @@ private:
    *  0 = extended
    *  1 = folded
    *  2 = vertical
-   *  3 = open
+   *  3 = mostly open
    *  4 = close
    */
   static void set_arm_position(int8_t side, int8_t position);
