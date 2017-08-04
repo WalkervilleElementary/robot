@@ -29,11 +29,8 @@ void setup(){
   Serial.begin(115200) ;
 #endif  // DEBUG()
 
-  RCServo0.attach(SERVO_0());
-  RCServo1.attach(SERVO_1());
-  RCServo2.attach(SERVO_2());
-  RCServo3.attach(SERVO_3());
-  
+  // Class Init
+  left_surface = digitalRead(LEFT_RIGHT_SWITCH());
 
   hardware::Qrd qrd;
   hardware::Beacon beacon;
@@ -51,10 +48,18 @@ void setup(){
   stages::Pickup pickup(qrd, (left_surface ? r_encoder : l_encoder), claw, driver);
   stages::Zipline zipline(driver, platform, beacon, (left_surface ? r_encoder : l_encoder), qrd);
 
-  left_surface = digitalRead(LEFT_RIGHT_SWITCH());
   pickup.side(left_surface);
   zipline.side(left_surface);
-  
+
+  // Setup sequence
+  platform.lower();
+  while (!platform.loop());
+
+  RCServo0.attach(SERVO_0());
+  RCServo1.attach(SERVO_1());
+  RCServo2.attach(SERVO_2());
+  RCServo3.attach(SERVO_3());
+
   claw.fold(left_surface);
   delay(1000);
 
@@ -65,6 +70,7 @@ void setup(){
   ////////////////////////////////
   uint8_t state = 0;
   unsigned long delayTime;
+
   ////////////////////////////////
   unsigned long waitUntil = millis() + loop_delay;
   for (;;) {//////////////////////
@@ -250,7 +256,7 @@ uint8_t state = 0;
 // EXTRA VARIABLE
   int state = 0;
   unsigned long delayTime;
-  
+
 // CODE
     if (state == 0) {
       driver.commandLineFollow(0);
@@ -268,7 +274,7 @@ uint8_t state = 0;
       if (driver.readyForCommand()) state = 0;
     }
 
-    
+
 
     if (stopbutton()){
       qrd.update();
@@ -324,20 +330,20 @@ void loop(){
         distance = knob(6) - 512;
         LCD.clear(); LCD.home();
         LCD.setCursor(0,0);
-        
+
         if (mode == 0) LCD.print("distance");
         else if (mode == 1) LCD.print("right");
         else if (mode == 2) LCD.print("left");
-        
+
         LCD.setCursor(0,1); LCD.print(distance);
         delay(50);
       }
- 
+
       if (mode == 0) driver.commandDriveStraight(distance);
       else if (mode == 1) driver.commandTurnRight(distance);
       else driver.commandTurnLeft(distance);
     }
-   
+
 */
 
 // loop for testing Drivetrain.setPower and motor ramping
