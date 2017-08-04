@@ -38,16 +38,18 @@ set(CMAKE_ASM_COMPILER   ${AVRC})
 project(MagicSchoolBot C CXX ASM)
 
 # Compiler flags
-set(CSTANDARD "-std=gnu99")
+set(CSTANDARD "-std=c99")
+set(CXXSTANDARD "-std=c++98")
 set(CDEBUG    "-gstabs -g -ggdb")
 set(CWARN     "-Wall -Wstrict-prototypes -Wl,--gc-sections -Wl,--relax")
+set(CXXWARN     "-Wall -Wl,--gc-sections -Wl,--relax")
 set(CTUNING   "-funsigned-char -funsigned-bitfields -fshort-enums -ffunction-sections -fdata-sections")
-set(COPT      "-Os -lm -lprintf_flt")
+set(COPT      "-O1 -lm -lprintf_flt")
 set(CMCU      "-mmcu=${MCU}")
 set(CDEFS     "-DF_CPU=${F_CPU}")
 
 set(CFLAGS   "${CMCU} ${CDEBUG} ${CDEFS} ${COPT} ${CWARN} ${CSTANDARD} ${CTUNING}")
-set(CXXFLAGS "${CMCU} ${CDEBUG} ${CDEFS} ${COPT} ${CTUNING}")
+set(CXXFLAGS "${CMCU} ${CDEBUG} ${CDEFS} ${COPT} ${CXXWARN} ${CXXSTANDARD} ${CTUNING}")
 
 set(CMAKE_C_FLAGS          "${CFLAGS}")
 set(CMAKE_CXX_FLAGS        "${CXXFLAGS}")
@@ -55,7 +57,7 @@ set(CMAKE_ASM_FLAGS   "${CFLAGS}")
 
 set(CORE_PATH "cores/arduino")
 set(VARIANT_PATH "variants/TINAH")
-file(GLOB CORE_SRC "${CORE_PATH}/*.cpp" "${CORE_PATH}/*.c")
+file(GLOB CORE_SRC "${CORE_PATH}/*.cpp" "${CORE_PATH}/*.c" "${CORE_PATH}/*.s")
 file(GLOB CORE_INC "${CORE_PATH}/*.h")
 file(GLOB VARIANT_INC "${VARIANT_PATH}/*.h")
 
