@@ -18,14 +18,18 @@ unsigned long Claw::retrieve_pause = 1000;
 unsigned long Claw::fold_delay = 600;
 
 int16_t Claw::left_claw_extended = L_C_EXTEND();
-int16_t Claw::left_claw_rest = L_C_REST();
+int16_t Claw::left_claw_folded = L_C_FOLD();
+int16_t Claw::left_claw_drop = L_C_DROP();
 int16_t Claw::left_claw_vertical = L_C_VERTICAL();
 int16_t Claw::left_open = L_OPEN();
 int16_t Claw::left_close = L_CLOSE();
 int16_t Claw::left_offset[] = L_OFFSET();
 
+int16_t Claw::open_offset = CLAW_OPEN_OFFSET();
+
 int16_t Claw::right_claw_extended = R_C_EXTEND();
-int16_t Claw::right_claw_rest = R_C_REST();
+int16_t Claw::right_claw_folded = R_C_FOLD();
+int16_t Claw::right_claw_drop = R_C_DROP();
 int16_t Claw::right_claw_vertical = R_C_VERTICAL();
 int16_t Claw::right_open = R_OPEN();
 int16_t Claw::right_close = R_CLOSE();
@@ -38,14 +42,13 @@ void Claw::set_arm_position(int8_t side, int8_t position) {
       val = (side == LEFT_CLAW) ? left_claw_extended : right_claw_extended;
       break;
     case 1:  // folded
-      val = (side == LEFT_CLAW) ? left_claw_rest : right_claw_rest;
+      val = (side == LEFT_CLAW) ? left_claw_folded : right_claw_folded;
       break;
     case 2:  // vertical
       val = (side == LEFT_CLAW) ? left_claw_vertical : right_claw_vertical;
       break;
-    case 3:  // open
-      // regular open position is a little too wide, reduce it a little
-      val = (side == LEFT_CLAW) ? left_open + 25 : right_open - 25;
+    case 3:  // open but not all the way
+      val = (side == LEFT_CLAW) ? left_open + open_offset : right_open - open_offset;
       break;
     case 4:  // closed
       val = (side == LEFT_CLAW) ? left_close : right_close;
@@ -104,11 +107,11 @@ bool Claw::release(int8_t side){
   if (state_ != 0) return false;
   state_ = 1;
   if (side == LEFT_CLAW){
-    RCServo0.write(left_claw_rest);
+    RCServo0.write(left_claw_drop);
     degree_ = left_open;
     left_ = true;
   }else{
-    RCServo1.write(right_claw_rest);
+    RCServo1.write(right_claw_drop);
     degree_ = right_open;
     left_ = false;
   }
@@ -168,12 +171,12 @@ bool Claw::update(){
 
     switch (state_){
       SWITCH_CASES(0, left_claw_extended)
-      SWITCH_CASES(1, left_claw_rest)
+      SWITCH_CASES(1, left_claw_drop)
       SWITCH_CASES(2, left_claw_vertical)
       SWITCH_CASES(3, left_open)
       SWITCH_CASES(4, left_close)
       SWITCH_CASES(5, right_claw_extended)
-      SWITCH_CASES(6, right_claw_rest)
+      SWITCH_CASES(6, right_claw_drop)
       SWITCH_CASES(7, right_claw_vertical)
       SWITCH_CASES(8, right_open)
       SWITCH_CASES(9, right_close)

@@ -10,18 +10,24 @@
 
 // claw servo positions
 #define L_C_EXTEND() 23
-#define L_C_REST() 180
+#define L_C_FOLD() 180  // folded position
+#define L_C_DROP() 170  // position for dropping agent
 #define L_C_VERTICAL() 75
 #define L_OPEN() 65
 #define L_CLOSE() 175
 #define L_OFFSET() {-3, -13, -14}
 
 #define R_C_EXTEND() 160
-#define R_C_REST() 2
+#define R_C_FOLD() 2
+#define R_C_DROP() 10
 #define R_C_VERTICAL() 90
 #define R_OPEN() 105
 #define R_CLOSE() 8
 #define R_OFFSET() {-8, 2, 7}
+
+// claw open position is a little too wide when folded, will
+// bump into things; reduce it by this much
+#define CLAW_OPEN_OFFSET() 25
 
 // distances (cm)
 #define GATE_WAITING_DISTANCE() 80
