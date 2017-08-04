@@ -80,6 +80,7 @@ void Drivetrain::setVelocity(int16_t left, int16_t right) {
 }
 
 void Drivetrain::tick() {
+  int16_t tapeError = m_lineSensor.getTapeError();
   if (m_command == IDLE) {
     stop();
   }
@@ -91,8 +92,7 @@ void Drivetrain::tick() {
   else if (m_command == DRIVE_LINE_FOLLOW) {
     m_lineFollowPower += 5;
     if (m_lineFollowPower > m_lineFollowMaxPower) m_lineFollowPower = m_lineFollowMaxPower;
-    int16_t error = m_lineSensor.getTapeError();
-    const int16_t steer = error * m_lineFollowGain;
+    const int16_t steer = tapeError * m_lineFollowGain;
     const int16_t leftPower = m_lineFollowPower - (steer > 0 ? steer : 0);
     const int16_t rightPower = m_lineFollowPower + (steer < 0 ? steer : 0);
     m_leftMotor.setPower(leftPower < 0 ? 0 : leftPower, false);
