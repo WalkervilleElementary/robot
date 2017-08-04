@@ -32,7 +32,7 @@
 // distances (cm)
 #define GATE_WAITING_DISTANCE() 70
 #define ZIPLINE_TURN_DISTANCE() 70
-#define ZIPLINE_TAPE_DISTANCE() 25  // after first intersection, follow a bit more
+#define ZIPLINE_TAPE_DISTANCE() 20  // after first intersection, follow a bit more
 #define ZIPLINE_BACKUP_DISTANCE() 50
 
 // angles (degrees)
