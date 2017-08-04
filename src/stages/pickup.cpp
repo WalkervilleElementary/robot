@@ -65,6 +65,8 @@ bool Pickup::loop(){
       if (current_encoder_ > start_encoder_ + to_intersection_){
         qrd_.isIntersection(); // This is to reset QRD state
         state_ = 0;
+        if (side_) claw_.release(sequences::RIGHT_CLAW);
+        else claw_.release(sequences::LEFT_CLAW);
       }else{
         break;
       }

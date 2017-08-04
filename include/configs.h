@@ -11,15 +11,15 @@
 // claw servo positions
 #define L_C_EXTEND() 23
 #define L_C_FOLD() 180  // folded position
-#define L_C_DROP() 170  // position for dropping agent
+#define L_C_DROP() 174  // position for dropping agent
 #define L_C_VERTICAL() 75
 #define L_OPEN() 65
 #define L_CLOSE() 175
-#define L_OFFSET() {-3, -13, -14}
+#define L_OFFSET() {-3, -15, -16}
 
 #define R_C_EXTEND() 160
 #define R_C_FOLD() 2
-#define R_C_DROP() 10
+#define R_C_DROP() 8
 #define R_C_VERTICAL() 90
 #define R_OPEN() 105
 #define R_CLOSE() 8
@@ -27,10 +27,10 @@
 
 // claw open position is a little too wide when folded, will
 // bump into things; reduce it by this much
-#define CLAW_OPEN_OFFSET() 25
+#define CLAW_OPEN_OFFSET() 28
 
 // distances (cm)
-#define GATE_WAITING_DISTANCE() 80
+#define GATE_WAITING_DISTANCE() 70
 #define ZIPLINE_TURN_DISTANCE() 70
 #define ZIPLINE_TAPE_DISTANCE() 25  // after first intersection, follow a bit more
 #define ZIPLINE_BACKUP_DISTANCE() 50
@@ -65,12 +65,12 @@
 #define VELOCITY() 90 // 80 to 100
 
 #define PLATFORM_RAISE_SPEED() -210
-#define PLATFORM_LOWER_SPEED_TOP() 38  // 40
+#define PLATFORM_LOWER_SPEED_TOP() 29  // 40
 #define PLATFORM_LOWER_SPEED_BOTTOM() 60
 
 #define SLOW_FORWARD_SPEED() 50 // for e.g. dead reckoning
-#define BACKUP_SPEED() -40  // for backing up after getting zipline
-#define PLATFORM_MAINTAIN_SPEED() -80
+#define BACKUP_SPEED() -35  // for backing up after getting zipline
+#define PLATFORM_MAINTAIN_SPEED() -100
 #define BACKUP_TIME() 3000
 
 // thresholds
