@@ -117,12 +117,4 @@ void Drivetrain::tick() {
   }
 }
 
-#if DEBUG()
-void Drivetrain::printTo(Print& p) {
-  p.print(m_lineFollowPid.kP);
-  p.print(' ');
-  p.print(m_lineFollowPid.kI);
-}
-#endif  // DEBUG
-
 }  // namespace sequences

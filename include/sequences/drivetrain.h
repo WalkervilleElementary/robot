@@ -5,10 +5,6 @@
 #include "hardware/qrd.h"
 #include "utils/pid.h"
 
-#if DEBUG()
-#include <Print.h>
-#endif  // DEBUG
-
 namespace sequences {
 
 class Drivetrain {
@@ -29,10 +25,6 @@ public:
   void setPower(int16_t left, int16_t right);
   void setVelocity(int16_t left, int16_t right);
   void tick();
-
-#if DEBUG()
-  void printTo(Print& p);
-#endif  // DEBUG
 
 private:
   utils::PidController m_beaconFollowPid;
