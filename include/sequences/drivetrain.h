@@ -16,7 +16,7 @@ public:
   void commandDriveStraight(float distance, int16_t speed = 20);
   void commandTurnLeft(float angle, int16_t speed = 20);
   void commandTurnRight(float angle, int16_t speed = 20);
-  //void commandTurnPivot(int32_t distance, int16_t speed = 255);
+  void commandTurnPivot(float angle, int16_t speed = 20);
   void commandLineFollow(uint8_t speedSetting);
   void commandBeaconFollow();
   

@@ -42,7 +42,7 @@ void setup(){
 
   sequences::Claw claw;
   sequences::Drivetrain driver(l_motor, r_motor, qrd);
-  sequences::Platform platform(driver);
+  sequences::Platform platform;
 
   stages::Gate gate(driver, beacon, (left_surface ? r_encoder : l_encoder));
   stages::Pickup pickup(qrd, (left_surface ? r_encoder : l_encoder), claw, driver);
@@ -55,7 +55,7 @@ void setup(){
   platform.lower();
   while (!platform.loop());
 
-  claw.fold(left_surface);
+  claw.fold(!left_surface);
   delay(1000);
 
   enableEncoderInterrupts();
@@ -64,7 +64,6 @@ void setup(){
   // Insert extra variable here //
   ////////////////////////////////
   uint8_t state = 0;
-  unsigned long delayTime;
 
   // claw.raise(sequences::RIGHT_CLAW);
   // while(!claw.loop()) delay(100);

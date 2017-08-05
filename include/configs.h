@@ -31,19 +31,15 @@
 
 // distances (cm)
 #define GATE_WAITING_DISTANCE() 70
-#define ZIPLINE_TURN_DISTANCE() 70
-#define ZIPLINE_TAPE_DISTANCE() 20  // after first intersection, follow a bit more
-#define ZIPLINE_BACKUP_DISTANCE() 50
-
-// angles (degrees)
-#define ZIPLINE_TURN_DEGREES() 70
+#define ZIPLINE_PAUSE_DISTANCE() 50.0
+#define ZIPLINE_BACKUP_DISTANCE() -30.0
 
 // Pickup values
-#define PICKUP_TO_RAMP() 115
+#define PICKUP_TO_RAMP() 300
 #define PICKUP_TO_INTERSECTION() 320
-#define PICKUP_TURN_DEGREE() 54
+#define PICKUP_TURN_DEGREE() 30
 #define PICKUP_TURN_BACKWARD_DISTANCE() -5
-#define PICKUP_HEIGHT() {1,2,0,1,2,0}
+#define PICKUP_HEIGHT() {2,1,0,2,1,0}  // {1,2,0,1,2,0}
 #define PICKUP_BACKWARD_DISTANCE_FIRST_AGENT() 9
 #define PICKUP_BACKWARD_DISTANCE() -4
 #define PICKUP_FORWARD_DISTANCE() 3
@@ -68,10 +64,10 @@
 #define PLATFORM_LOWER_SPEED_TOP() 29  // 40
 #define PLATFORM_LOWER_SPEED_BOTTOM() 60
 
-#define SLOW_FORWARD_SPEED() 50 // for e.g. dead reckoning
-#define BACKUP_SPEED() -35  // for backing up after getting zipline
-#define PLATFORM_MAINTAIN_SPEED() -100
-#define BACKUP_TIME() 3000
+#define ZIPLINE_FORWARD_SPEED() 15
+#define ZIPLINE_RAM_SPEED() 10
+#define ZIPLINE_BACKUP_SPEED() 10 // TODO check this speed
+#define PLATFORM_MAINTAIN_POWER() -60
 
 // thresholds
 #define TAPE_QRD_STRENGTH_THRESHOLD() 100

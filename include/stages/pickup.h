@@ -26,6 +26,7 @@ private:
 
   static int32_t to_ramp_;
   static int32_t to_intersection_;
+  static int32_t to_tick_;
   static int32_t turn_degree_;
 
   static int32_t start_encoder_;

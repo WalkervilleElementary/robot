@@ -20,13 +20,11 @@ private:
  *  3 = lower slowly while backing up
  */
   static int8_t state_;
+  static bool raised_;
   static int raise_speed_;
   static int lower_speed_top_;
   static int lower_speed_bottom_;
-  static int backup_speed_;
-  static int maintain_speed_;
-  static unsigned long backup_time_;
-  static unsigned long start_time_;
+  static int maintain_power_;
 
   static unsigned long lower_time_;
   static int lower_speed_modifier_;
@@ -35,10 +33,8 @@ private:
   static const uint8_t lower_switch_;
   static const uint8_t motor_number_;
 
-  Drivetrain& driver_;
-
 public:
-  inline Platform(Drivetrain &driver): driver_(driver) {};
+  inline Platform(){};
   inline ~Platform(){};
   bool loop();
   void stop();

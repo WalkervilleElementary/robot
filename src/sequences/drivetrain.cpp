@@ -36,6 +36,10 @@ void Drivetrain::commandTurnRight(float angle, int16_t speed) {
   m_command = DRIVE_ENCODER;
 }
 
+void Drivetrain::commandTurnPivot(float angle, int16_t speed) {
+  return;
+}
+
 void Drivetrain::commandLineFollow(uint8_t speedSetting) {
   if (speedSetting == 2) {
     m_lineFollowMaxPower = LINE_FOLLOW_2_SPEED();

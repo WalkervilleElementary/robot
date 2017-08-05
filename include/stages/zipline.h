@@ -22,34 +22,26 @@ private:
   hardware::Encoder& encoder_;
   hardware::Qrd& qrd_;
 
-  static int32_t encoder_start_;
-  static int32_t ticks_;
-
   // constants
-  static int32_t turn_distance_;
-  static int32_t turn_degrees_;
-  static int32_t tape_distance_;
-  static int32_t backup_distance_;
-  // static uint32_t distance_to_zipline_;
-  static int forward_speed_;  // for dead reckoning
+  static float pause_distance_;
+  static float backup_distance_;
+  static int16_t forward_speed_;
+  static int16_t ram_speed_;
+  static int16_t backup_speed_;
 
   static bool left_surface_;
+  static int8_t intersections_;
+  static int8_t count_;
 
   /**
    * States:
    *  0 = Initialization
    *  1 = Follow tape until intersection
    *  2 = Drive forward a distance
-   *  3 = Follow tape until intersection
-   *  4 = Drive forward a distance
-   *  5 = Follow tape until intersection
-   *  6 = Drive forward a distance
-   *  7 = Follow tape a little more
-   *  8 = Follow beacon
-   *  9 = Turn toward zipline
-   *  10 = Backup and raise platform
-   *  11 = Dead reckoning
-   *  12 = Backup while lowering platform
+   *  3 = Go straight (toward zipline)
+   *  4 = Check to make sure platform is fully raised
+   *  5 = Go straight again (ram into zipline)
+   *  6 = Lower platform & back up
    */
   static uint8_t state_;
 
