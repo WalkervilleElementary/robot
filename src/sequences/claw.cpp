@@ -64,23 +64,23 @@ void Claw::set_arm_position(int8_t side, int8_t position) {
 }
 
 void Claw::fold(bool left_surface) {
+  // extend both claws (almost) simultaneously, hope they don't collide
   RCServo0.attach(SERVO_0());
-  RCServo1.attach(SERVO_1());
-  RCServo2.attach(SERVO_2());
-  RCServo3.attach(SERVO_3());
-
-  // open both claws simultaneously and hope they don't collide
   set_arm_position(LEFT_CLAW, EXTENDED);
+  RCServo1.attach(SERVO_1());
   set_arm_position(RIGHT_CLAW, EXTENDED);
   delay(fold_delay);
 
-  set_arm_position(left_surface ? RIGHT_CLAW : LEFT_CLAW, CLOSED);
+  // attach "finger" servos & set positions
+  RCServo2.attach(SERVO_2());
+  RCServo3.attach(SERVO_3());
+  set_arm_position(left_surface ? LEFT_CLAW : RIGHT_CLAW, CLOSED);
+  set_arm_position(left_surface ? RIGHT_CLAW : LEFT_CLAW, OPEN);
   delay(fold_delay);
-  set_arm_position(left_surface ? LEFT_CLAW : RIGHT_CLAW, OPEN);
+
+  set_arm_position(left_surface ? RIGHT_CLAW : LEFT_CLAW, FOLDED);
   delay(fold_delay);
   set_arm_position(left_surface ? LEFT_CLAW : RIGHT_CLAW, FOLDED);
-  delay(fold_delay);
-  set_arm_position(left_surface ? RIGHT_CLAW : LEFT_CLAW, FOLDED);
   delay(fold_delay);
 }
 
