@@ -42,9 +42,7 @@ bool BeaconWatcher::safeToProceed() {
 }
 
 void BeaconWatcher::tick() {
-  unsigned long startTime = micros();
   uint8_t samples[154];
-  int32_t intensity10, intensity1;
 
   if (m_leftSide) {
     sample_signal(m_leftInput, 154, samples);
@@ -74,6 +72,7 @@ void BeaconWatcher::tick() {
     m_debouncedSignal = m_currentSignal;
   }
 #if DEBUG()
+  unsigned long startTime = micros();
   Serial.print(micros() - startTime);
   Serial.print(',');
   Serial.print(millis() - m_openedTime) ;

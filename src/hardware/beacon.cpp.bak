@@ -42,8 +42,8 @@ uint32_t Beacon::rightIntensity() {
 }
 
 int8_t Beacon::getTapeError() {
-  int left = leftIntensity();
-  int right = rightIntensity();
+  uint32_t left = leftIntensity();
+  uint32_t right = rightIntensity();
 #if DEBUG()
   LCD.setCursor(0,0); LCD.print(left);
   LCD.setCursor(0,1); LCD.print(right);

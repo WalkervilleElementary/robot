@@ -7,7 +7,7 @@ using namespace utils;
 namespace hardware {
 
 EncoderMotor::EncoderMotor(int motor_num, Encoder& encoder, bool backward) :
-  m_motor_num(motor_num), m_encoder(encoder), m_backward(backward), 
+  m_motor_num(motor_num), m_encoder(encoder), m_backward(backward),
   m_velocityPid(-0.4,0.0,0.0), m_positionPid(-0.8,0,2), // TODO make configurable
   m_deadZone(10), m_accelerationLimit(7)
 {

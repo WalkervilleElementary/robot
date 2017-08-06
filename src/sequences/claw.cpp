@@ -34,7 +34,7 @@ int16_t Claw::right_close = R_CLOSE();
 int16_t Claw::right_offset[] = R_OFFSET();
 
 void Claw::set_arm_position(int8_t side, int8_t position) {
-  uint16_t val;
+  uint16_t val = 0;
   switch (position) {
     case 0:  // extended
       val = (side == LEFT_CLAW) ? left_claw_extended : right_claw_extended;

@@ -30,7 +30,7 @@ private:
   unsigned long m_openedTime;
 
   const int UNKNOWN_THRESHOLD;
-  const int GATE_TIME;
+  const unsigned long GATE_TIME;
 };
 
 }

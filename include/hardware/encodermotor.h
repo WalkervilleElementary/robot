@@ -16,24 +16,25 @@ public:
   int32_t getPosition();
 
 private:
-  bool m_backward;
   int m_motor_num;
   Encoder& m_encoder;
+  bool m_backward;
+
+  utils::PidController m_velocityPid;
+  utils::PidController m_positionPid;
 
   const int32_t m_deadZone;
+  const int16_t m_accelerationLimit;
 
   enum ControlMode { OFF, POWER, VELOCITY, POSITION };
   ControlMode m_controlMode;
-  const int16_t m_accelerationLimit;
   int16_t m_currentPower;
   int16_t m_powerTarget;
   int16_t m_velocityTarget;
   int32_t m_positionTarget;
   int16_t m_maxPower;
   int16_t m_minPower;
-  utils::PidController m_velocityPid;
-  utils::PidController m_positionPid;
-  
+
 };  // Class Encodermotor
 
 }  // namespace hardware

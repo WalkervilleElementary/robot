@@ -17,7 +17,7 @@ public:
   //void commandTurnPivot(int32_t distance, int16_t speed = 255);
   void commandLineFollow(uint8_t speedSetting, bool useRamp = true);
   void commandBeaconFollow();
-  
+
   void stop();
   bool readyForCommand();
   void setPower(int16_t left, int16_t right, bool useRamp = true);
@@ -25,11 +25,10 @@ public:
   void tick();
 
 private:
-  utils::PidController m_beaconFollowPid;
-
   hardware::EncoderMotor& m_leftMotor;
   hardware::EncoderMotor& m_rightMotor;
   hardware::Qrd& m_lineSensor;
+  utils::PidController m_beaconFollowPid;
 
   int32_t m_leftMotorTarget;
   int32_t m_rightMotorTarget;
