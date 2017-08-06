@@ -55,11 +55,6 @@ void setup(){
   platform.lower();
   while (!platform.loop());
 
-  RCServo0.attach(SERVO_0());
-  RCServo1.attach(SERVO_1());
-  RCServo2.attach(SERVO_2());
-  RCServo3.attach(SERVO_3());
-
   claw.fold(left_surface);
   delay(1000);
 
@@ -70,6 +65,11 @@ void setup(){
   ////////////////////////////////
   uint8_t state = 0;
   unsigned long delayTime;
+
+  // claw.raise(sequences::RIGHT_CLAW);
+  // while(!claw.loop()) delay(100);
+  // claw.raise(sequences::LEFT_CLAW);
+  // while(!claw.loop()) delay(100);
 
   ////////////////////////////////
   unsigned long waitUntil = millis() + loop_delay;
@@ -96,6 +96,8 @@ void setup(){
          if (zipline.loop())
            state++;
          break;
+      default:
+        break;
     }
     ///////////////////////////////
     //// Do not touch /////////////

@@ -12,9 +12,9 @@ uint16_t Claw::degree_ = 0;
 bool Claw::left_ = false;
 
 unsigned long Claw::delay_ = 0;
-unsigned long Claw::raise_pause = 1000; //ms
-unsigned long Claw::grab_pause = 1000;
-unsigned long Claw::retrieve_pause = 1000;
+unsigned long Claw::raise_pause = 800; //ms
+unsigned long Claw::grab_pause = 800;
+unsigned long Claw::retrieve_pause = 800;
 unsigned long Claw::fold_delay = 600;
 
 int16_t Claw::left_claw_extended = L_C_EXTEND();
@@ -64,6 +64,11 @@ void Claw::set_arm_position(int8_t side, int8_t position) {
 }
 
 void Claw::fold(bool left_surface) {
+  RCServo0.attach(SERVO_0());
+  RCServo1.attach(SERVO_1());
+  RCServo2.attach(SERVO_2());
+  RCServo3.attach(SERVO_3());
+
   // open both claws simultaneously and hope they don't collide
   set_arm_position(LEFT_CLAW, EXTENDED);
   set_arm_position(RIGHT_CLAW, EXTENDED);
