@@ -58,6 +58,8 @@ int8_t Qrd::getTapeError(){
   if (rc_on) val |= 2;
   if (rr_on) val |= 1;
 
+  invalid_ = false;
+
   switch (error_array_[val])
   {
     case -3:  // tracking tape
@@ -84,12 +86,7 @@ int8_t Qrd::getTapeError(){
 }
 
 bool Qrd::isIntersection(){
-  if (invalid_)
-  {
-    invalid_ = false;
-    return true;
-  }
-  return false;
+  return invalid_;
 }
 
 #if USE_UPDATE()
