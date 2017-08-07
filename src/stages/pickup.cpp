@@ -138,14 +138,18 @@ bool Pickup::loop(){
       if (claw_.loop()){
         if (side_) claw_.release(sequences::RIGHT_CLAW);
         else claw_.release(sequences::LEFT_CLAW);
-        // driver_.commandDriveStraight(max(0, PICKUP_FORWARD_DISTANCE() - alignment_distance_));
-        if (PICKUP_FORWARD_DISTANCE() - alignment_distance_) {
-          if (side_) driver_.commandTurnRight(13);
-          else driver_.commandTurnLeft(13);
-        }
+        driver_.commandDriveStraight(max(0, PICKUP_FORWARD_DISTANCE() - alignment_distance_));
         agents_++;
-        state_ = 8;
+        state_ = 101;
       }else{
+        break;
+      }
+    case 101:
+      if (driver_.readyForCommand()) {
+        if (side_) driver_.commandTurnRight(13);
+        else driver_.commandTurnLeft(13);
+        state_ = 8;
+      } else {
         break;
       }
     case 8:  // Return back to tape following

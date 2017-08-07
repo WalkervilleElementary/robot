@@ -10,30 +10,37 @@ Drivetrain::Drivetrain(EncoderMotor& leftMotor, EncoderMotor& rightMotor, Qrd& l
   m_leftMotor(leftMotor), m_rightMotor(rightMotor), m_lineSensor(lineSensor), m_beaconFollowPid(BEACON_GAIN_P(), 0,0)
 {
   m_command = IDLE;
+  m_turning = false;
 }
 
-void Drivetrain::commandDriveStraight(float distance, int16_t speed) {
+void Drivetrain::commandDriveStraight(float distance, int16_t power) {
   const int32_t ticks = hardware::Encoder::cmToTicks(distance);
   m_leftMotorTarget = m_leftMotor.getPosition() + ticks;
   m_rightMotorTarget = m_rightMotor.getPosition() + ticks;
-  m_speed = speed;
+  m_positionPower = power;
+  m_positionMinPower = 80;
   m_command = DRIVE_ENCODER;
+  m_turning = false;
 }
 
-void Drivetrain::commandTurnLeft(float angle, int16_t speed) {
+void Drivetrain::commandTurnLeft(float angle, int16_t power) {
   const int32_t ticks = hardware::Encoder::degToTicks(angle);
   m_leftMotorTarget = m_leftMotor.getPosition();
   m_rightMotorTarget = m_rightMotor.getPosition() + ticks;
-  m_speed = speed;
+  m_positionPower = power;
+  m_positionMinPower = 200;
   m_command = DRIVE_ENCODER;
+  m_turning = true;
 }
 
-void Drivetrain::commandTurnRight(float angle, int16_t speed) {
+void Drivetrain::commandTurnRight(float angle, int16_t power) {
   const int32_t ticks = hardware::Encoder::degToTicks(angle);
   m_leftMotorTarget = m_leftMotor.getPosition() + ticks;
   m_rightMotorTarget = m_rightMotor.getPosition();
-  m_speed = speed;
+  m_positionPower = power;
+  m_positionMinPower = 200;
   m_command = DRIVE_ENCODER;
+  m_turning = true;
 }
 
 void Drivetrain::commandTurnPivot(float angle, int16_t speed) {
@@ -89,9 +96,14 @@ void Drivetrain::tick() {
     stop();
   }
   else if (m_command == DRIVE_ENCODER) {
-    const bool leftDone = m_leftMotor.setPosition(m_leftMotorTarget, m_speed);
-    const bool rightDone = m_rightMotor.setPosition(m_rightMotorTarget, m_speed);
-    if (leftDone && rightDone) m_command = IDLE;
+    const bool leftDone = m_leftMotor.setPosition(m_leftMotorTarget, m_positionPower, m_positionMinPower);
+    const bool rightDone = m_rightMotor.setPosition(m_rightMotorTarget, m_positionPower, m_positionMinPower);
+    if (m_turning) {
+      if (leftDone && rightDone) m_command = IDLE;
+    }
+    else {
+      if (leftDone || rightDone) m_command = IDLE;
+    }
   }
   else if (m_command == DRIVE_LINE_FOLLOW) {
     m_lineFollowPower += 5;
