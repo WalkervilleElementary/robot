@@ -81,6 +81,11 @@
 #define SERVO_2() 14
 #define SERVO_3() 15
 
+#define CLAW_L_RAISE_SERVO() RCServo0
+#define CLAW_L_GRAB_SERVO() RCServo2
+#define CLAW_R_RAISE_SERVO() RCServo1
+#define CLAW_R_GRAB_SERVO() RCServo3
+
 // qrd sensors
 #define RR_QRD_SENSOR() 0
 #define RC_QRD_SENSOR() 1

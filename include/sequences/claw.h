@@ -11,12 +11,14 @@ namespace sequences{
   static const int8_t LEFT_CLAW = 0;
   static const int8_t RIGHT_CLAW = 1;
 
-class Claw : public templates::Sequence{
+class Claw : public templates::Sequence {
 
 private:
-  static unsigned long delay_;
+  enum ClawSequence { NONE = 0, RAISE, GRAB, RELEASE };
+  static ClawSequence currentSequence_;
+  static unsigned long delayUntil_;
+  static uint8_t grabOffset_;
   static int8_t state_;
-  static uint16_t degree_;
   static bool left_;
 
   static unsigned long raise_pause;
@@ -64,15 +66,12 @@ public:
 
   static bool raise(int8_t side);
   static bool grab(int8_t side, int8_t offset = 1);
-
   static bool release(int8_t side);
   static void fold(bool left_surface);
 
   bool loop();
 
-#if USE_UPDATE()
-  bool update();
-#endif  // USE_UPDATE()
+private:
 
 };  // class Claw
 
