@@ -30,17 +30,16 @@
 #define CLAW_OPEN_OFFSET() 28
 
 // distances (cm)
-#define GATE_WAITING_DISTANCE() 70
-#define ZIPLINE_PAUSE_DISTANCE() 50.0
-#define ZIPLINE_BACKUP_DISTANCE() -30.0
+#define GATE_WAITING_DISTANCE() 75.0
+#define ZIPLINE_CHECKPOINT_DISTANCE() 55.0
 
 // Pickup values
 #define PICKUP_TO_RAMP() 300
 #define PICKUP_TO_INTERSECTION() 320
 #define PICKUP_TURN_DEGREE() 30
-#define PICKUP_TURN_BACKWARD_DISTANCE() -5
+#define PICKUP_TURN_FORWARD_DISTANCE() -5
+#define PICKUP_DISTANCE_FIRST_AGENT() 20
 #define PICKUP_HEIGHT() {2,1,0,2,1,0}  // {1,2,0,1,2,0}
-#define PICKUP_BACKWARD_DISTANCE_FIRST_AGENT() 9
 #define PICKUP_BACKWARD_DISTANCE() -4
 #define PICKUP_FORWARD_DISTANCE() 3
 
@@ -54,7 +53,7 @@
 #define BEACON_GAIN_I() 0
 #define BEACON_GAIN_D() 0
 #define BEACON_UNCERTAINTY() 70 // 50
-#define BEACON_THRESHOLD() 150  // Beacon is undetected below this value
+#define BEACON_THRESHOLD() 100  // Beacon is undetected below this value
 
 // motor
 #define ACCEL_LIMIT() 50 // This is not the correct value
@@ -64,9 +63,8 @@
 #define PLATFORM_LOWER_SPEED_TOP() 29  // 40
 #define PLATFORM_LOWER_SPEED_BOTTOM() 60
 
-#define ZIPLINE_FORWARD_SPEED() 15
-#define ZIPLINE_RAM_SPEED() 10
-#define ZIPLINE_BACKUP_SPEED() 10 // TODO check this speed
+#define ZIPLINE_FORWARD_SPEED() 80
+#define ZIPLINE_BACKUP_POWER() -36
 #define PLATFORM_MAINTAIN_POWER() -60
 
 // thresholds
@@ -109,8 +107,8 @@
 #define AXLE_LENGTH() 21.59 // cm
 #define MANEUVER_GAIN() 2
 
-#define LINE_FOLLOW_0_SPEED() 120
-#define LINE_FOLLOW_0_GAIN() 24
+#define LINE_FOLLOW_0_SPEED() 180
+#define LINE_FOLLOW_0_GAIN() 45
 #define LINE_FOLLOW_1_SPEED() 255
 #define LINE_FOLLOW_1_GAIN() 50
 #define LINE_FOLLOW_2_SPEED() 255

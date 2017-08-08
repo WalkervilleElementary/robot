@@ -23,15 +23,14 @@ private:
   hardware::Qrd& qrd_;
 
   // constants
-  static float pause_distance_;
-  static float backup_distance_;
+  static int32_t checkpoint_;
   static int16_t forward_speed_;
-  static int16_t ram_speed_;
-  static int16_t backup_speed_;
+  static int16_t backup_power_;
 
   static bool left_surface_;
   static int8_t intersections_;
   static int8_t count_;
+  static int32_t encoder_start_;
 
   /**
    * States:

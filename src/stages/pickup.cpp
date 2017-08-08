@@ -91,7 +91,7 @@ bool Pickup::loop(){
     case 2:
       //LCD.setCursor(0,0); LCD.print("turning");
       if (driver_.readyForCommand()){
-        driver_.commandDriveStraight(-PICKUP_TURN_BACKWARD_DISTANCE());
+        driver_.commandDriveStraight(PICKUP_TURN_FORWARD_DISTANCE());
         state_ = 100;
       } else {
         break;
@@ -99,13 +99,13 @@ bool Pickup::loop(){
     case 100:
       if (driver_.readyForCommand()) {
         driver_.commandLineFollow(0);
-        to_tick_ = encoder_.getPosition() + hardware::Encoder::cmToTicks(20);
+        to_tick_ = encoder_.getPosition()
+                 + hardware::Encoder::cmToTicks(PICKUP_DISTANCE_FIRST_AGENT());
         state_ = 3;
       } else {
         break;
        }
     case 3:
-      //LCD.setCursor(0,0); LCD.print("backing up");
       if (encoder_.getPosition() > to_tick_) {
         state_ = 4;
         driver_.commandLineFollow(0);
@@ -114,14 +114,6 @@ bool Pickup::loop(){
     case 5:  // Aligning the Claw
       //LCD.setCursor(0,0); LCD.print("align");
       alignment_distance_ = PICKUP_BACKWARD_DISTANCE();
-      // if (side_) {
-      //   
-      //   if (agents_ == 0) alignment_distance_ = PICKUP_BACKWARD_DISTANCE_FIRST_AGENT();
-      //   else alignment_distance_ = PICKUP_BACKWARD_DISTANCE();
-      // } else {
-      //   if (agents_ == 0) alignment_distance_ = PICKUP_BACKWARD_DISTANCE_FIRST_AGENT();
-      //   else alignment_distance_ = PICKUP_BACKWARD_DISTANCE();
-      // }
       driver_.commandDriveStraight(alignment_distance_);
       state_ = 6;
     case 6:  // Waiting for claw to be ready
@@ -157,12 +149,13 @@ bool Pickup::loop(){
       claw_.loop();
       if (driver_.readyForCommand()){
         if (agents_ == 5) {
-          //driver_.commandLineFollow(0,true);
           driver_.commandLineFollow(0);
+          //driver_.commandLineFollow(0,true);
           state_ = 9;
         } else if (agents_ == 6) {
           state_ = 11;
         } else {
+          driver_.commandLineFollow(0);
           state_ = 4;
         }
       }else{
