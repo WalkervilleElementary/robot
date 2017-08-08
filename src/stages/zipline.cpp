@@ -21,7 +21,6 @@ bool Zipline::loop() {
     case 0:  // initialization
       // LCD.setCursor(0,0); LCD.print("initialize");
       driver_.commandLineFollow(0);
-      qrd_.isIntersection();  // clear intersection state
       state_++;
       break;
     case 1:  // follow tape until first intersection
