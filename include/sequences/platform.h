@@ -1,5 +1,4 @@
 #pragma once
-
 #include "configs.h"
 
 #include "sequences/drivetrain.h"
@@ -7,26 +6,24 @@
 
 #include <stdint.h>
 
-namespace sequences{
+namespace sequences {
 
-class Platform : public templates::Sequence{
+class Platform : public templates::Sequence {
 
 private:
 /**
  * States:
- *  0 = stopped
+ *  0 = do nothing
  *  1 = raising platform
  *  2 = lower slightly so limit switch is no longer active
- *  3 = lower slowly while backing up
+ *  3 = lower fully
  */
   static int8_t state_;
+  static bool raised_;
   static int raise_speed_;
   static int lower_speed_top_;
   static int lower_speed_bottom_;
-  static int backup_speed_;
-  static int maintain_speed_;
-  static unsigned long backup_time_;
-  static unsigned long start_time_;
+  static int maintain_power_;
 
   static unsigned long lower_time_;
   static int lower_speed_modifier_;
@@ -35,10 +32,8 @@ private:
   static const uint8_t lower_switch_;
   static const uint8_t motor_number_;
 
-  Drivetrain& driver_;
-
 public:
-  inline Platform(Drivetrain &driver): driver_(driver) {};
+  inline Platform(){};
   inline ~Platform(){};
   bool loop();
   void stop();

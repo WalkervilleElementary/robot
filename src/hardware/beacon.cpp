@@ -12,7 +12,7 @@ const unsigned char PS_32 = (1 << ADPS2) | (1 << ADPS0);
 const unsigned char PS_64 = (1 << ADPS2) | (1 << ADPS1);
 const unsigned char PS_128 = (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);
 
-namespace hardware{
+namespace hardware {
 
 uint8_t Beacon::uncertainty_ = BEACON_UNCERTAINTY();
 uint32_t Beacon::threshold_ = BEACON_THRESHOLD();
@@ -55,15 +55,15 @@ int8_t Beacon::getTapeError() {
 }
 
 #if USE_UPDATE()
-void Beacon::update(){
+void Beacon::update() {
   delay(1000);
   while(startbutton());
-  while(!startbutton()){
+  while(!startbutton()) {
     int tune_val = knob(7);
     int start_val = knob(6);
     delay(100);
     int end_val = knob(6);
-    if (tune_val > TUNE_THRESHOLD()){
+    if (tune_val > TUNE_THRESHOLD()) {
       uncertainty_ += (end_val - start_val)/15;
     }
     LCD.clear();  LCD.home() ;

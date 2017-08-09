@@ -4,7 +4,7 @@
 
 #include "stages/gate.h"
 
-namespace stages{
+namespace stages {
 
 int8_t Gate::state_ = 0;
 #if CAUTIOUS_GATE_ROUTINE()
@@ -16,33 +16,26 @@ int32_t Gate::distance_ = hardware::Encoder::cmToTicks(GATE_WAITING_DISTANCE());
 
 int32_t Gate::encoder_start_;
 
-bool Gate::loop(){
-  switch (state_){
-    case 0:  // save encoder's start value as reference
+bool Gate::loop() {
+  switch (state_) {
+    case 0:
       encoder_start_ = encoder_.getPosition();
       ++state_;
     case 1:  // going towards gate
       if (encoder_.getPosition() - encoder_start_ < distance_){
-        driver_.commandLineFollow(1);
+        driver_.commandLineFollow(0);
       }else{
         driver_.stop();
         ++state_;
       }
-#if DEBUG()
-      // LCD.println(encoder_.getPosition() - encoder_start_);
-#endif  // DEBUG()
       break;
     case 2:  // waiting at the gate
     {
       uint32_t left = beacon_.leftIntensity();
       uint32_t right = beacon_.rightIntensity();
-#if DEBUG()
-      // LCD.setCursor(0,0); LCD.print(left);
-      // LCD.setCursor(0,1); LCD.print(right);
-#endif  // DEBUG()
       if (left + right < threshold_) {
 #if CAUTIOUS_GATE_ROUTINE()
-        if (!gate_high_){
+        if (!gate_high_) {
           driver_.stop();
           return false;
         }
@@ -60,7 +53,6 @@ bool Gate::loop(){
     default:
       // this should never happen
 #if DEBUG()
-      driver_.stop();
       LCD.clear(); LCD.home();
       LCD.setCursor(0,0); LCD.print("Gate invalid state");
       delay(1000);
@@ -71,7 +63,7 @@ bool Gate::loop(){
 }
 
 #if USE_UPDATE()
-bool Gate::update(){
+bool Gate::update() {
   int8_t update_state_ = 0;
   int change = 0;
   while (!startbutton()){

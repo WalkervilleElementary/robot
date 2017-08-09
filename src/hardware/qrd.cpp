@@ -7,7 +7,7 @@
 #endif  // DEBUG()
 #include <phys253.h>
 
-namespace hardware{
+namespace hardware {
 
 int Qrd::tape_threshold_ = TAPE_QRD_STRENGTH_THRESHOLD();
 int8_t Qrd::error_ = 0;
@@ -15,7 +15,7 @@ bool Qrd::invalid_ = false;
 
 const int Qrd::error_array_[] = {-4, -3, -1, -2, 1, -6, 0, -6, 3, -5, -5, -5, 2, -5, -6, -7};
 
-int8_t Qrd::getTapeError(){
+int8_t Qrd::getTapeError() {
   const int ll_val = analogRead(LL_QRD_SENSOR_);
   const int lc_val = analogRead(LC_QRD_SENSOR_);
   const int rc_val = analogRead(RC_QRD_SENSOR_);
@@ -60,8 +60,7 @@ int8_t Qrd::getTapeError(){
 
   invalid_ = false;
 
-  switch (error_array_[val])
-  {
+  switch (error_array_[val]) {
     case -3:  // tracking tape
     case -2:
     case -1:
@@ -85,15 +84,15 @@ int8_t Qrd::getTapeError(){
   return error_;
 }
 
-bool Qrd::isIntersection(){
+bool Qrd::isIntersection() {
   return invalid_;
 }
 
 #if USE_UPDATE()
-void Qrd::update(){
+void Qrd::update() {
   delay(1000);
   while(startbutton());
-  while(!startbutton()){
+  while(!startbutton()) {
     int tune_val = knob(7);
     int start_val = knob(6);
     delay(100);

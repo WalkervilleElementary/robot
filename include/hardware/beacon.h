@@ -3,12 +3,12 @@
 
 #include "configs.h"
 
-namespace hardware{
+namespace hardware {
 
 static const int L_BEACON_SENSOR_ = L_BEACON_SENSOR();
 static const int R_BEACON_SENSOR_ = R_BEACON_SENSOR();
 
-class Beacon{
+class Beacon {
 
 private:
   static const uint8_t num_samples_ = 67;
@@ -25,8 +25,8 @@ private:
   static uint32_t threshold_;
 
 public:
-  inline Beacon(){};
-  inline ~Beacon(){};
+  inline Beacon() {};
+  inline ~Beacon() {};
 
   static int8_t getTapeError();
   static void updateIntensities();

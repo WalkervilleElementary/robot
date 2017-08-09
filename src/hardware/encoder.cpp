@@ -59,6 +59,4 @@ int32_t Encoder::getPositionPrivate() {
   else return getEncoderCount(m_encoderId);
 }
 
-
 }  // namespace hardawre
-

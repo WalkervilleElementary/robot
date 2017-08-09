@@ -11,55 +11,43 @@
 
 #include <stdint.h>
 
-namespace stages{
+namespace stages {
 
-class Zipline : public templates::Sequence{
+class Zipline : public templates::Sequence {
 
 private:
   sequences::Drivetrain& driver_;
   sequences::Platform& platform_;
-  hardware::Beacon& beacon_;
   hardware::Encoder& encoder_;
   hardware::Qrd& qrd_;
 
-  static int32_t encoder_start_;
-  static int32_t ticks_;
-
   // constants
-  static int32_t turn_distance_;
-  static int32_t turn_degrees_;
-  static int32_t tape_distance_;
-  static int32_t backup_distance_;
-  // static uint32_t distance_to_zipline_;
-  static int forward_speed_;  // for dead reckoning
+  static int32_t checkpoint_;
+  static int16_t forward_power_;
+  static int16_t backup_power_;
 
   static bool left_surface_;
+  static int8_t intersections_;
+  static int8_t count_;
+  static int32_t encoder_start_;
 
   /**
    * States:
    *  0 = Initialization
    *  1 = Follow tape until intersection
    *  2 = Drive forward a distance
-   *  3 = Follow tape until intersection
-   *  4 = Drive forward a distance
-   *  5 = Follow tape until intersection
-   *  6 = Drive forward a distance
-   *  7 = Follow tape a little more
-   *  8 = Follow beacon
-   *  9 = Turn toward zipline
-   *  10 = Backup and raise platform
-   *  11 = Dead reckoning
-   *  12 = Backup while lowering platform
+   *  3 = Go straight until checkpoint
+   *  4 = Ram into zipline
+   *  5 = Lower platform
    */
   static uint8_t state_;
 
 public:
   inline Zipline(sequences::Drivetrain& driver, sequences::Platform& platform,
-                hardware::Beacon& beacon, hardware::Encoder& encoder,
-                hardware::Qrd& qrd)
+                hardware::Encoder& encoder, hardware::Qrd& qrd)
                 : driver_(driver), platform_(platform),
-                  beacon_(beacon), encoder_(encoder), qrd_(qrd) {};
-  inline ~Zipline(){};
+                  encoder_(encoder), qrd_(qrd) {};
+  inline ~Zipline() {};
   bool loop();
   void stop();
   void side(bool left_surface);

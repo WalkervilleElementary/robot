@@ -42,11 +42,11 @@ void setup(){
 
   sequences::Claw claw;
   sequences::Drivetrain driver(l_motor, r_motor, qrd);
-  sequences::Platform platform(driver);
+  sequences::Platform platform;
 
   stages::Gate gate(driver, beacon, (left_surface ? r_encoder : l_encoder));
   stages::Pickup pickup(qrd, (left_surface ? r_encoder : l_encoder), claw, driver);
-  stages::Zipline zipline(driver, platform, beacon, (left_surface ? r_encoder : l_encoder), qrd);
+  stages::Zipline zipline(driver, platform, (left_surface ? r_encoder : l_encoder), qrd);
 
   pickup.side(left_surface);
   zipline.side(left_surface);
@@ -55,25 +55,25 @@ void setup(){
   platform.lower();
   while (!platform.loop());
 
-  RCServo0.attach(SERVO_0());
-  RCServo1.attach(SERVO_1());
-  RCServo2.attach(SERVO_2());
-  RCServo3.attach(SERVO_3());
-
-  claw.fold(left_surface);
+  claw.fold(!left_surface);
   delay(1000);
 
   enableEncoderInterrupts();
 
-  ////////////////////////////////
-  // Insert extra variable here //
-  ////////////////////////////////
+  /////////////////////////////////
+  // Insert extra variables here //
+  /////////////////////////////////
+
   uint8_t state = 0;
-  unsigned long delayTime;
+
+  //  claw.raise(sequences::RIGHT_CLAW);
+  //  while(!claw.loop()) delay(100);
+  //  claw.raise(sequences::LEFT_CLAW);
+  //  while(!claw.loop()) delay(100);
 
   ////////////////////////////////
   unsigned long waitUntil = millis() + loop_delay;
-  for (;;) {//////////////////////
+  for (;;) {
     ////////////////////////////////
     //// Insert code here //////////
     ////////////////////////////////
@@ -96,7 +96,10 @@ void setup(){
          if (zipline.loop())
            state++;
          break;
+      default:
+        break;
     }
+
     ///////////////////////////////
     //// Do not touch /////////////
     ///////////////////////////////
@@ -438,4 +441,3 @@ void loop() {
   delay(50);
 }
 */
-

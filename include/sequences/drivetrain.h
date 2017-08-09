@@ -11,11 +11,9 @@ class Drivetrain {
 public:
   Drivetrain(hardware::EncoderMotor& leftMotor, hardware::EncoderMotor& rightMotor, hardware::Qrd& lineSensor);
   inline ~Drivetrain() {};
-  //void commandLineFollowDistance();
-  //void commandLineFollowIntersection();
-  void commandDriveStraight(float distance, int16_t speed = 20);
-  void commandTurnLeft(float angle, int16_t speed = 20);
-  void commandTurnRight(float angle, int16_t speed = 20);
+  void commandDriveStraight(float distance, int16_t power = 255);
+  void commandTurnLeft(float angle, int16_t power = 255);
+  void commandTurnRight(float angle, int16_t power = 255);
   //void commandTurnPivot(int32_t distance, int16_t speed = 255);
   void commandLineFollow(uint8_t speedSetting);
   void commandBeaconFollow();
@@ -35,7 +33,9 @@ private:
 
   int32_t m_leftMotorTarget;
   int32_t m_rightMotorTarget;
-  int16_t m_speed;
+  int16_t m_positionPower;
+  int16_t m_positionMinPower;
+  bool m_turning;
   int16_t m_lineFollowPower;
   int16_t m_lineFollowMaxPower;
   int16_t m_lineFollowGain;
