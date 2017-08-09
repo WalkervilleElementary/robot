@@ -83,7 +83,7 @@ void Claw::fold(bool left_surface) {
 }
 
 bool Claw::raise(int8_t side) {
-  //if (currentSequence_ != NONE) return false;
+  // if (currentSequence_ != NONE) return false;
   currentSequence_ = RAISE;
   state_ = 0;
   left_ = (side == LEFT_CLAW) ? true : false;
@@ -91,7 +91,7 @@ bool Claw::raise(int8_t side) {
 }
 
 bool Claw::grab(int8_t side, int8_t offset) {
-  //if (currentSequence_ != NONE) return false;
+  // if (currentSequence_ != NONE) return false;
   currentSequence_ = GRAB;
   state_ = 0;
   left_ = (side == LEFT_CLAW) ? true : false;
@@ -100,7 +100,7 @@ bool Claw::grab(int8_t side, int8_t offset) {
 }
 
 bool Claw::release(int8_t side) {
-  //if (currentSequence_ != NONE) return false;
+  // if (currentSequence_ != NONE) return false;
   currentSequence_ = RELEASE;
   state_ = 0;
   left_ = (side == LEFT_CLAW) ? true : false;

@@ -60,11 +60,9 @@ bool Pickup::loop() {
       driver_.commandLineFollow(2);
       claw_.loop();
       current_encoder_ = encoder_.getPosition();
-
       if (current_encoder_ > start_encoder_ + to_intersection_) {
         state_ = 0;
-        if (side_) claw_.release(sequences::RIGHT_CLAW);
-        else claw_.release(sequences::LEFT_CLAW);
+
       } else {
         break;
       }
@@ -80,10 +78,13 @@ bool Pickup::loop() {
       }
       break;
     case 1:  // Turning at the tub
+      if (side_) claw_.release(sequences::RIGHT_CLAW);
+      else claw_.release(sequences::LEFT_CLAW);
       if (side_) driver_.commandTurnRight(-turn_degree_);
       else driver_.commandTurnLeft(-turn_degree_);
       state_ = 2;
     case 2:
+      claw_.loop();
       if (driver_.readyForCommand()) {
         driver_.commandDriveStraight(PICKUP_TURN_FORWARD_DISTANCE());
         state_ = 100;
@@ -91,6 +92,7 @@ bool Pickup::loop() {
         break;
       }
     case 100:
+      claw_.loop();
       if (driver_.readyForCommand()) {
         driver_.commandLineFollow(0);
         to_tick_ = encoder_.getPosition()
@@ -100,6 +102,7 @@ bool Pickup::loop() {
         break;
        }
     case 3:
+      claw_.loop();
       if (encoder_.getPosition() > to_tick_) {
         state_ = 4;
         driver_.commandLineFollow(0);
@@ -123,7 +126,8 @@ bool Pickup::loop() {
         else claw_.release(sequences::LEFT_CLAW);
         driver_.commandDriveStraight(max(0, PICKUP_FORWARD_DISTANCE() - alignment_distance_));
         agents_++;
-        state_ = 101;
+        state_ = 8; // TODO 101
+        break;
       }else{
         break;
       }
