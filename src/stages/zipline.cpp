@@ -21,12 +21,6 @@ bool Zipline::loop() {
   switch (state_) {
     case 0:  // initialization
       driver_.commandLineFollow(0);
-      if (left_surface_) {
-        claw_.raise(sequences::RIGHT_CLAW);
-      }
-      else {
-        claw_.raise(sequences::LEFT_CLAW);
-      }
       state_++;
     case 1:  // follow tape
       driver_.commandLineFollow(0);
@@ -39,14 +33,8 @@ bool Zipline::loop() {
       }
       break;
     case 2:
-      if (left_surface_) {
-        claw_.raise(sequences::LEFT_CLAW);
-      }
-      else {
-        claw_.raise(sequences::RIGHT_CLAW);
-      }
       if (encoder_.getPosition() >= encoder_start_ + hardware::Encoder::cmToTicks(3)) {
-        if (count_ == intersections_) {
+        if (count_ == intersections_ && claw_.loop()) {
           encoder_start_ = encoder_.getPosition();
           driver_.setPower(forward_power_, forward_power_, false);
           platform_.raise();

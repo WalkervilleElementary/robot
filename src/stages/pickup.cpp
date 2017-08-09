@@ -139,13 +139,12 @@ bool Pickup::loop() {
     case 8:  // Return back to tape following
       claw_.loop();
       if (driver_.readyForCommand()){
+        driver_.commandLineFollow(0);
         if (agents_ == 5) {
-          driver_.commandLineFollow(0);
           state_ = 9;
         } else if (agents_ == 6) {
           state_ = 11;
         } else {
-          driver_.commandLineFollow(0);
           state_ = 4;
         }
       }else{
@@ -167,14 +166,7 @@ bool Pickup::loop() {
       }
       break;
     case 11:  // wait for claw to finish before next stage
-      if (claw_.loop()) {
-        //if (side_) claw_.raise(sequences::RIGHT_CLAW);
-        //else claw_.raise(sequences::LEFT_CLAW);
-        //state_ = 12;
-        return true;
-      } else {
-        break;
-      }
+      return true;
     /*case 12:
       if (claw_.loop()) return true;
       else break;*/
