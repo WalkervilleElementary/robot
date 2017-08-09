@@ -64,12 +64,12 @@ void setup(){
   // Insert extra variables here //
   /////////////////////////////////
 
-  uint8_t state = 3;
+  uint8_t state = 0;
 
-   claw.raise(sequences::RIGHT_CLAW);
-   while(!claw.loop()) delay(100);
-   claw.raise(sequences::LEFT_CLAW);
-   while(!claw.loop()) delay(100);
+  //  claw.raise(sequences::RIGHT_CLAW);
+  //  while(!claw.loop()) delay(100);
+  //  claw.raise(sequences::LEFT_CLAW);
+  //  while(!claw.loop()) delay(100);
 
   ////////////////////////////////
   unsigned long waitUntil = millis() + loop_delay;

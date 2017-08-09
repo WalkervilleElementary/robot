@@ -62,7 +62,7 @@ bool Zipline::loop() {
         break;
       }
     case 5:  // lower while backing up
-      if (platform_.loop() && (encoder_.getPosition() - encoder_start_ > backup_distance_)) {
+      if (platform_.loop() && (abs(encoder_.getPosition() - encoder_start_) > backup_distance_)) {
         driver_.stop();
         return true;
       } else {

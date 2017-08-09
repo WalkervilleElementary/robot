@@ -15,7 +15,7 @@
 #define L_C_VERTICAL() 75
 #define L_OPEN() 55
 #define L_CLOSE() 180
-#define L_OFFSET() {-3, -15, -16}
+#define L_OFFSET() {-6, -15, -20}
 
 #define R_C_EXTEND() 160
 #define R_C_FOLD() 2
@@ -30,7 +30,7 @@
 
 // distances (cm)
 #define GATE_WAITING_DISTANCE() 100
-#define ZIPLINE_CHECKPOINT_DISTANCE() 55.0
+#define ZIPLINE_CHECKPOINT_DISTANCE() 50.0
 #define ZIPLINE_BACKUP_DISTANCE() 40.0
 
 // Pickup values
