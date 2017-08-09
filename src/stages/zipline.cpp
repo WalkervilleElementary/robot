@@ -19,7 +19,6 @@ bool Zipline::loop() {
   switch (state_) {
     case 0:  // initialization
       driver_.commandLineFollow(0);
-      qrd_.isIntersection();  // clear intersection state
       state_++;
     case 1:  // follow tape
       driver_.commandLineFollow(0);
