@@ -168,15 +168,16 @@ bool Pickup::loop() {
       break;
     case 11:  // wait for claw to finish before next stage
       if (claw_.loop()) {
-        if (side_) claw_.raise(sequences::RIGHT_CLAW);
-        else claw_.raise(sequences::LEFT_CLAW);
-        state_ = 12;
+        //if (side_) claw_.raise(sequences::RIGHT_CLAW);
+        //else claw_.raise(sequences::LEFT_CLAW);
+        //state_ = 12;
+        return true;
       } else {
         break;
       }
-    case 12:
+    /*case 12:
       if (claw_.loop()) return true;
-      else break;
+      else break;*/
   }
 
   return false;

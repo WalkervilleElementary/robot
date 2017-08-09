@@ -43,7 +43,7 @@ void Drivetrain::commandTurnRight(float angle, int16_t power) {
   m_turning = true;
 }
 
-void Drivetrain::commandLineFollow(uint8_t speedSetting) {
+void Drivetrain::commandLineFollow(uint8_t speedSetting, bool useRamp) {
   if (speedSetting == 2) {
     m_lineFollowMaxPower = LINE_FOLLOW_2_SPEED();
     m_lineFollowGain = LINE_FOLLOW_2_GAIN();
@@ -57,6 +57,7 @@ void Drivetrain::commandLineFollow(uint8_t speedSetting) {
     m_lineFollowGain = LINE_FOLLOW_0_GAIN();
   }
   if (m_command != DRIVE_LINE_FOLLOW) m_lineFollowPower = 0;
+  if (!useRamp) m_lineFollowPower = m_lineFollowMaxPower;
   m_command = DRIVE_LINE_FOLLOW;
 }
 
@@ -74,9 +75,11 @@ void Drivetrain::stop() {
   m_command = IDLE;
 }
 
-void Drivetrain::setPower(int16_t left, int16_t right) {
+void Drivetrain::setPower(int16_t left, int16_t right, bool useRamp) {
   m_leftPower = left;
   m_rightPower = right;
+  m_leftMotor.setPower(left, useRamp);
+  m_rightMotor.setPower(right, useRamp);
   m_command = DRIVE_POWER;
 }
 
@@ -115,8 +118,8 @@ void Drivetrain::tick() {
     m_rightMotor.setVelocity(m_rightVelocity);
   }
   else if (m_command == DRIVE_POWER) {
-    m_leftMotor.setPower(m_leftPower);
-    m_rightMotor.setPower(m_rightPower);
+    //m_leftMotor.setPower(m_leftPower);
+    //m_rightMotor.setPower(m_rightPower);
   }
   else if (m_command == DRIVE_BEACON_FOLLOW) {
     const int32_t left10k = detect_10khz(L_BEACON_SENSOR());
