@@ -31,6 +31,7 @@
 // distances (cm)
 #define GATE_WAITING_DISTANCE() 100
 #define ZIPLINE_CHECKPOINT_DISTANCE() 55.0
+#define ZIPLINE_BACKUP_DISTANCE() 40.0
 
 // Pickup values
 #define PICKUP_TO_RAMP() 280
@@ -63,7 +64,7 @@
 #define PLATFORM_LOWER_SPEED_BOTTOM() 60
 
 #define ZIPLINE_FORWARD_POWER() 80
-#define ZIPLINE_BACKUP_POWER() -36
+#define ZIPLINE_BACKUP_POWER() -40
 #define PLATFORM_MAINTAIN_POWER() -50
 
 // thresholds
