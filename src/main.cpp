@@ -46,7 +46,7 @@ void setup(){
 
   stages::Gate gate(driver, beacon, (left_surface ? r_encoder : l_encoder));
   stages::Pickup pickup(qrd, (left_surface ? r_encoder : l_encoder), claw, driver);
-  stages::Zipline zipline(driver, platform, beacon, (left_surface ? r_encoder : l_encoder), qrd);
+  stages::Zipline zipline(driver, platform, (left_surface ? r_encoder : l_encoder), qrd);
 
   pickup.side(left_surface);
   zipline.side(left_surface);
@@ -60,19 +60,20 @@ void setup(){
 
   enableEncoderInterrupts();
 
-  ////////////////////////////////
-  // Insert extra variable here //
-  ////////////////////////////////
-  uint8_t state = 3;
+  /////////////////////////////////
+  // Insert extra variables here //
+  /////////////////////////////////
 
-  claw.raise(sequences::RIGHT_CLAW);
-  while(!claw.loop()) delay(100);
-  claw.raise(sequences::LEFT_CLAW);
-  while(!claw.loop()) delay(100);
+  uint8_t state = 0;
+
+  // claw.raise(sequences::RIGHT_CLAW);
+  // while(!claw.loop()) delay(100);
+  // claw.raise(sequences::LEFT_CLAW);
+  // while(!claw.loop()) delay(100);
 
   ////////////////////////////////
   unsigned long waitUntil = millis() + loop_delay;
-  for (;;) {//////////////////////
+  for (;;) {
     ////////////////////////////////
     //// Insert code here //////////
     ////////////////////////////////
@@ -98,6 +99,7 @@ void setup(){
       default:
         break;
     }
+
     ///////////////////////////////
     //// Do not touch /////////////
     ///////////////////////////////
@@ -439,4 +441,3 @@ void loop() {
   delay(50);
 }
 */
-

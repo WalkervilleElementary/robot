@@ -83,10 +83,6 @@ static inline void updateEncoders(void) {
 	}
 }
 
-/*ISR(INT0_vect) {
-	updateEncoders();
-}*/
-
 ISR(INT0_vect) {
 	toggleInterruptMode(0);
 	updateEncoders();

@@ -11,20 +11,19 @@
 
 #include <stdint.h>
 
-namespace stages{
+namespace stages {
 
-class Zipline : public templates::Sequence{
+class Zipline : public templates::Sequence {
 
 private:
   sequences::Drivetrain& driver_;
   sequences::Platform& platform_;
-  hardware::Beacon& beacon_;
   hardware::Encoder& encoder_;
   hardware::Qrd& qrd_;
 
   // constants
   static int32_t checkpoint_;
-  static int16_t forward_speed_;
+  static int16_t forward_power_;
   static int16_t backup_power_;
 
   static bool left_surface_;
@@ -37,20 +36,18 @@ private:
    *  0 = Initialization
    *  1 = Follow tape until intersection
    *  2 = Drive forward a distance
-   *  3 = Go straight (toward zipline)
-   *  4 = Check to make sure platform is fully raised
-   *  5 = Go straight again (ram into zipline)
-   *  6 = Lower platform & back up
+   *  3 = Go straight until checkpoint
+   *  4 = Ram into zipline
+   *  5 = Lower platform
    */
   static uint8_t state_;
 
 public:
   inline Zipline(sequences::Drivetrain& driver, sequences::Platform& platform,
-                hardware::Beacon& beacon, hardware::Encoder& encoder,
-                hardware::Qrd& qrd)
+                hardware::Encoder& encoder, hardware::Qrd& qrd)
                 : driver_(driver), platform_(platform),
-                  beacon_(beacon), encoder_(encoder), qrd_(qrd) {};
-  inline ~Zipline(){};
+                  encoder_(encoder), qrd_(qrd) {};
+  inline ~Zipline() {};
   bool loop();
   void stop();
   void side(bool left_surface);

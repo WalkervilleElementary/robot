@@ -1,8 +1,10 @@
 #include "sequences/platform.h"
 #include <phys253.h>
+#if DEBUG()
 #include <LiquidCrystal.h>
+#endif  // DEBUG()
 
-namespace sequences{
+namespace sequences {
 
 int8_t Platform::state_ = 0;
 bool Platform::raised_ = false;
@@ -20,8 +22,8 @@ const uint8_t Platform::upper_switch_ = PLATFORM_UPPER_SWITCH();
 const uint8_t Platform::lower_switch_ = PLATFORM_LOWER_SWITCH();
 const uint8_t Platform::motor_number_ = PLATFORM_MOTOR();
 
-bool Platform::loop(){
-  switch (state_){
+bool Platform::loop() {
+  switch (state_) {
     case 0:
       break;
     case 1:  // raising platform
@@ -53,7 +55,7 @@ bool Platform::loop(){
         raised_ = true;
         break;
       }
-    case 3:  // slowly lower
+    case 3:  // lower fully
       if (digitalRead(lower_switch_)){
         motor.speed(motor_number_, lower_speed_bottom_);
         return false;
@@ -80,24 +82,24 @@ void Platform::lower() {
 }
 
 #if USE_UPDATE()
-void Platform::update(){
+void Platform::update() {
   int8_t update_state_ = 0;
   int change = 0;
   stop();
   delay(200);
-  while (!startbutton()){
+  while (!startbutton()) {
     if (stopbutton()) update_state_ += 1;
     if (update_state_ > 5) update_state_ = 0;
     int tune_val = knob(7);
     int start_val = knob(6);
     delay(100);
     int end_val = knob(6);
-    if (tune_val > TUNE_THRESHOLD()){
+    if (tune_val > TUNE_THRESHOLD()) {
       change = (start_val - end_val)/4 ;
     }
     LCD.clear();  LCD.home() ;
 
-    switch (update_state_){
+    switch (update_state_) {
     SWITCH_CASES(0, raise_speed_)
     SWITCH_CASES(1, lower_speed_top_)
     SWITCH_CASES(2,backup_speed_)

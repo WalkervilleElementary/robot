@@ -5,22 +5,20 @@
 
 #include <stdint.h>
 
-namespace hardware{
+namespace hardware {
 
 static const uint8_t LL_QRD_SENSOR_ = LL_QRD_SENSOR();
 static const uint8_t LC_QRD_SENSOR_ = LC_QRD_SENSOR();
 static const uint8_t RC_QRD_SENSOR_ = RC_QRD_SENSOR();
 static const uint8_t RR_QRD_SENSOR_ = RR_QRD_SENSOR();
 
-
-class Qrd{
+class Qrd {
 
 private:
   static const int error_array_[];
   static bool invalid_;
-  // getTapeError
   static int8_t error_;
-  static int tape_threshold_; // this is not sized because this is how analogRead works
+  static int tape_threshold_;
 
 public:
   inline Qrd(){};

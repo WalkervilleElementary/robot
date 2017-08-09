@@ -10,9 +10,9 @@
 
 #include <stdint.h>
 
-namespace stages{
+namespace stages {
 
-class Pickup : public templates::Sequence{
+class Pickup : public templates::Sequence {
 
 private:
   const hardware::Qrd& qrd_;
@@ -39,7 +39,7 @@ public:
   inline Pickup(const hardware::Qrd& qrd, const hardware::Encoder& encoder,
     sequences::Claw& claw, sequences::Drivetrain& driver):
     qrd_(qrd), encoder_(encoder), claw_(claw), driver_(driver) {};
-  inline ~Pickup(){};
+  inline ~Pickup() {};
 
   bool loop();
   void side(bool left_surface);

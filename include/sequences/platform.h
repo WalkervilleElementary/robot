@@ -1,5 +1,4 @@
 #pragma once
-
 #include "configs.h"
 
 #include "sequences/drivetrain.h"
@@ -7,17 +6,17 @@
 
 #include <stdint.h>
 
-namespace sequences{
+namespace sequences {
 
-class Platform : public templates::Sequence{
+class Platform : public templates::Sequence {
 
 private:
 /**
  * States:
- *  0 = stopped
+ *  0 = do nothing
  *  1 = raising platform
  *  2 = lower slightly so limit switch is no longer active
- *  3 = lower slowly while backing up
+ *  3 = lower fully
  */
   static int8_t state_;
   static bool raised_;

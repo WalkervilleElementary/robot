@@ -7,7 +7,7 @@
 
 #include <stdint.h>
 
-namespace sequences{
+namespace sequences {
   static const int8_t LEFT_CLAW = 0;
   static const int8_t RIGHT_CLAW = 1;
 
@@ -61,8 +61,8 @@ private:
   static void set_arm_position(int8_t side, int8_t position);
 
 public:
-  inline Claw(){};
-  inline ~Claw(){};
+  inline Claw() {};
+  inline ~Claw() {};
 
   static bool raise(int8_t side);
   static bool grab(int8_t side, int8_t offset = 1);
@@ -70,8 +70,6 @@ public:
   static void fold(bool left_surface);
 
   bool loop();
-
-private:
 
 };  // class Claw
 

@@ -11,8 +11,6 @@ class Drivetrain {
 public:
   Drivetrain(hardware::EncoderMotor& leftMotor, hardware::EncoderMotor& rightMotor, hardware::Qrd& lineSensor);
   inline ~Drivetrain() {};
-  //void commandLineFollowDistance();
-  //void commandLineFollowIntersection();
   void commandDriveStraight(float distance, int16_t power = 255);
   void commandTurnLeft(float angle, int16_t power = 255);
   void commandTurnRight(float angle, int16_t power = 255);

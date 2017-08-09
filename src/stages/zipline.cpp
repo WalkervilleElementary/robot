@@ -2,10 +2,10 @@
 
 #include "stages/zipline.h"
 
-namespace stages{
+namespace stages {
 
 int32_t Zipline::checkpoint_ = hardware::Encoder::cmToTicks(ZIPLINE_CHECKPOINT_DISTANCE());
-int16_t Zipline::forward_speed_ = ZIPLINE_FORWARD_SPEED();
+int16_t Zipline::forward_power_ = ZIPLINE_FORWARD_POWER();
 int16_t Zipline::backup_power_ = ZIPLINE_BACKUP_POWER();
 
 bool Zipline::left_surface_ = true;
@@ -18,17 +18,12 @@ int32_t Zipline::encoder_start_ = 0;
 bool Zipline::loop() {
   switch (state_) {
     case 0:  // initialization
-      // LCD.setCursor(0,0); LCD.print("initialize");
       driver_.commandLineFollow(0);
-      // platform_.raise();
       qrd_.isIntersection();  // clear intersection state
       state_++;
     case 1:  // follow tape
-      // LCD.setCursor(0,0); LCD.print("follow tape");
-      // platform_.loop();
       driver_.commandLineFollow(0);
       if (qrd_.isIntersection()) {
-//        driver_.commandDriveStraight(5); // TODO make this configurable
         if (left_surface_) driver_.commandTurnRight(10);
         else driver_.commandTurnLeft(10);
         count_++;
@@ -36,11 +31,10 @@ bool Zipline::loop() {
       }
       break;
     case 2:
-      // platform_.loop();
       if (driver_.readyForCommand()) {
         if (count_ == intersections_) {
           encoder_start_ = encoder_.getPosition();
-          driver_.setPower(forward_speed_, forward_speed_);
+          driver_.setPower(forward_power_, forward_power_);
           platform_.raise();
           state_ = 3;
         } else {
@@ -50,7 +44,7 @@ bool Zipline::loop() {
       break;
     case 3:  // go straight until checkpoint
       if (platform_.loop()) {
-        driver_.setPower(forward_speed_, forward_speed_);
+        driver_.setPower(forward_power_, forward_power_);
         state_++;
       } else if (encoder_.getPosition() - encoder_start_ > checkpoint_) {
         // checkpoint reached but platform not ready, need to pause

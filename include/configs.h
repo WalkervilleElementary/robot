@@ -13,8 +13,8 @@
 #define L_C_FOLD() 180  // folded position
 #define L_C_DROP() 174  // position for dropping agent
 #define L_C_VERTICAL() 75
-#define L_OPEN() 65
-#define L_CLOSE() 175
+#define L_OPEN() 55
+#define L_CLOSE() 180
 #define L_OFFSET() {-3, -15, -16}
 
 #define R_C_EXTEND() 160
@@ -25,12 +25,11 @@
 #define R_CLOSE() 8
 #define R_OFFSET() {-8, 2, 7}
 
-// claw open position is a little too wide when folded, will
-// bump into things; reduce it by this much
+// claw open position is too wide when folded, reduce by this amount to avoid collisions
 #define CLAW_OPEN_OFFSET() 28
 
 // distances (cm)
-#define GATE_WAITING_DISTANCE() 90
+#define GATE_WAITING_DISTANCE() 100
 #define ZIPLINE_CHECKPOINT_DISTANCE() 55.0
 
 // Pickup values
@@ -53,7 +52,7 @@
 #define BEACON_GAIN_I() 0
 #define BEACON_GAIN_D() 0
 #define BEACON_UNCERTAINTY() 70 // 50
-#define BEACON_THRESHOLD() 100  // Beacon is undetected below this value
+#define BEACON_THRESHOLD() 70  // Beacon is undetected below this value
 
 // motor
 #define ACCEL_LIMIT() 50 // This is not the correct value
@@ -63,7 +62,7 @@
 #define PLATFORM_LOWER_SPEED_TOP() 29  // 40
 #define PLATFORM_LOWER_SPEED_BOTTOM() 60
 
-#define ZIPLINE_FORWARD_SPEED() 80
+#define ZIPLINE_FORWARD_POWER() 80
 #define ZIPLINE_BACKUP_POWER() -36
 #define PLATFORM_MAINTAIN_POWER() -60
 
