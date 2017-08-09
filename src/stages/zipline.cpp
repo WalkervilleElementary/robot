@@ -5,6 +5,7 @@
 namespace stages {
 
 int32_t Zipline::checkpoint_ = hardware::Encoder::cmToTicks(ZIPLINE_CHECKPOINT_DISTANCE());
+int32_t Zipline::backup_distance_ = hardware::Encoder::cmToTicks(ZIPLINE_BACKUP_DISTANCE());
 int16_t Zipline::forward_power_ = ZIPLINE_FORWARD_POWER();
 int16_t Zipline::backup_power_ = ZIPLINE_BACKUP_POWER();
 
@@ -66,6 +67,7 @@ bool Zipline::loop() {
       break;
     case 4:  // ram into zipline
       if (!digitalRead(PLATFORM_UPPER_SWITCH())) {
+        encoder_start_ = encoder_.getPosition();
         driver_.stop();
         driver_.setPower(backup_power_, backup_power_);
         platform_.lower();
@@ -74,11 +76,12 @@ bool Zipline::loop() {
         break;
       }
     case 5:  // lower while backing up
-      if (platform_.loop()) {
+      if (platform_.loop() && (abs(encoder_.getPosition() - encoder_start_) > backup_distance_)) {
         driver_.stop();
         return true;
+      } else {
+        break;
       }
-      break;
     default:  // oh noes, we didn't find the zipline
       driver_.stop();
       LCD.home(); LCD.setCursor(0,0); LCD.print("SOMETHING WENT WRONG");

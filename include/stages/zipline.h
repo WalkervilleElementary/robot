@@ -25,6 +25,7 @@ private:
 
   // constants
   static int32_t checkpoint_;
+  static int32_t backup_distance_;
   static int16_t forward_power_;
   static int16_t backup_power_;
 
