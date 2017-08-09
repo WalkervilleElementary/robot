@@ -56,10 +56,7 @@
 #define BEACON_THRESHOLD() 70  // Beacon is undetected below this value
 
 // motor
-#define ACCEL_LIMIT() 50 // This is not the correct value
-#define VELOCITY() 90 // 80 to 100
-
-#define PLATFORM_RAISE_SPEED() -210
+#define PLATFORM_RAISE_SPEED() -220
 #define PLATFORM_LOWER_SPEED_TOP() 29  // 40
 #define PLATFORM_LOWER_SPEED_BOTTOM() 60
 

@@ -17,13 +17,17 @@ int8_t Zipline::count_ = 0;
 int32_t Zipline::encoder_start_ = 0;
 
 bool Zipline::loop() {
-  claw_.loop();
+  LCD.clear(); LCD.home();
+  LCD.setCursor(0,0); LCD.print("intersections");
+  LCD.setCursor(0,1); LCD.print(count_);
+  if (claw_.loop()) platform_.loop();
   switch (state_) {
     case 0:  // initialization
+      platform_.raise();
       driver_.commandLineFollow(0);
+      qrd_.isIntersection();  // clear intersections
       state_++;
     case 1:  // follow tape
-      driver_.commandLineFollow(0);
       if (qrd_.isIntersection()) {
         encoder_start_ = encoder_.getPosition();
         if (left_surface_) driver_.setPower(LINE_FOLLOW_0_SPEED() - LINE_FOLLOW_0_GAIN(), LINE_FOLLOW_0_SPEED());
@@ -32,14 +36,14 @@ bool Zipline::loop() {
         state_++;
       }
       break;
-    case 2:
+    case 2:  // at an intersection
       if (encoder_.getPosition() >= encoder_start_ + hardware::Encoder::cmToTicks(3)) {
-        if (count_ == intersections_ && claw_.loop()) {
+        if (count_ == intersections_) {
           encoder_start_ = encoder_.getPosition();
           driver_.setPower(forward_power_, forward_power_, false);
-          platform_.raise();
           state_ = 3;
         } else {
+          driver_.commandLineFollow(0);
           state_ = 1;
         }
       }
