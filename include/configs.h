@@ -23,7 +23,7 @@
 #define R_C_VERTICAL() 90
 #define R_OPEN() 105
 #define R_CLOSE() 8
-#define R_OFFSET() {-8, 2, 7}
+#define R_OFFSET() {-8, 2, 4}
 
 // claw open position is too wide when folded, reduce by this amount to avoid collisions
 #define CLAW_OPEN_OFFSET() 28
@@ -64,7 +64,7 @@
 
 #define ZIPLINE_FORWARD_POWER() 80
 #define ZIPLINE_BACKUP_POWER() -36
-#define PLATFORM_MAINTAIN_POWER() -60
+#define PLATFORM_MAINTAIN_POWER() -50
 
 // thresholds
 #define TAPE_QRD_STRENGTH_THRESHOLD() 150

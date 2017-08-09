@@ -143,7 +143,7 @@ bool Claw::loop() {
           CLAW_R_RAISE_SERVO().write(constrain(right_claw_extended + right_offset[grabOffset_], 0, 180));
           CLAW_R_GRAB_SERVO().write(right_open);
         }
-        delayUntil_ = millis() + 400;
+        delayUntil_ = millis() + 450;
         state_ += 1;
         //fall through
       case 1:
