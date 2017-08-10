@@ -46,7 +46,7 @@ void setup(){
 
   stages::Gate gate(driver, beacon, (left_surface ? r_encoder : l_encoder));
   stages::Pickup pickup(qrd, (left_surface ? r_encoder : l_encoder), claw, driver);
-  stages::Zipline zipline(driver, platform, (left_surface ? r_encoder : l_encoder), qrd);
+  stages::Zipline zipline(driver, platform, claw, (left_surface ? r_encoder : l_encoder), qrd);
 
   pickup.side(left_surface);
   zipline.side(left_surface);

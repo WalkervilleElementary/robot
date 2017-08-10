@@ -45,7 +45,7 @@ bool Platform::loop() {
       if (!digitalRead(upper_switch_)){
         // every 1 seconds, increment the lowering speed by 1
         if (millis() - lower_time_ > 1000) {
-          lower_speed_modifier_++;
+          lower_speed_modifier_+=2;
           lower_time_ = millis();
         }
         motor.speed(motor_number_, lower_speed_top_ + lower_speed_modifier_);

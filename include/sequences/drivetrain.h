@@ -15,12 +15,12 @@ public:
   void commandTurnLeft(float angle, int16_t power = 255);
   void commandTurnRight(float angle, int16_t power = 255);
   //void commandTurnPivot(int32_t distance, int16_t speed = 255);
-  void commandLineFollow(uint8_t speedSetting);
+  void commandLineFollow(uint8_t speedSetting, bool useRamp = true);
   void commandBeaconFollow();
   
   void stop();
   bool readyForCommand();
-  void setPower(int16_t left, int16_t right);
+  void setPower(int16_t left, int16_t right, bool useRamp = true);
   void setVelocity(int16_t left, int16_t right);
   void tick();
 

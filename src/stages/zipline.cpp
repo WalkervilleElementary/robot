@@ -5,6 +5,7 @@
 namespace stages {
 
 int32_t Zipline::checkpoint_ = hardware::Encoder::cmToTicks(ZIPLINE_CHECKPOINT_DISTANCE());
+int32_t Zipline::backup_distance_ = hardware::Encoder::cmToTicks(ZIPLINE_BACKUP_DISTANCE());
 int16_t Zipline::forward_power_ = ZIPLINE_FORWARD_POWER();
 int16_t Zipline::backup_power_ = ZIPLINE_BACKUP_POWER();
 
@@ -16,27 +17,33 @@ int8_t Zipline::count_ = 0;
 int32_t Zipline::encoder_start_ = 0;
 
 bool Zipline::loop() {
+  LCD.clear(); LCD.home();
+  LCD.setCursor(0,0); LCD.print("intersections");
+  LCD.setCursor(0,1); LCD.print(count_);
+  if (claw_.loop()) platform_.loop();
   switch (state_) {
     case 0:  // initialization
+      platform_.raise();
       driver_.commandLineFollow(0);
+      qrd_.isIntersection();  // clear intersections
       state_++;
     case 1:  // follow tape
-      driver_.commandLineFollow(0);
       if (qrd_.isIntersection()) {
-        if (left_surface_) driver_.commandTurnRight(10);
-        else driver_.commandTurnLeft(10);
+        encoder_start_ = encoder_.getPosition();
+        if (left_surface_) driver_.setPower(LINE_FOLLOW_0_SPEED() - LINE_FOLLOW_0_GAIN(), LINE_FOLLOW_0_SPEED());
+        else driver_.setPower(LINE_FOLLOW_0_SPEED(), LINE_FOLLOW_0_SPEED() - LINE_FOLLOW_0_GAIN());
         count_++;
         state_++;
       }
       break;
-    case 2:
-      if (driver_.readyForCommand()) {
+    case 2:  // at an intersection
+      if (encoder_.getPosition() >= encoder_start_ + hardware::Encoder::cmToTicks(3)) {
         if (count_ == intersections_) {
           encoder_start_ = encoder_.getPosition();
-          driver_.setPower(forward_power_, forward_power_);
-          platform_.raise();
+          driver_.setPower(forward_power_, forward_power_, false);
           state_ = 3;
         } else {
+          driver_.commandLineFollow(0);
           state_ = 1;
         }
       }
@@ -52,6 +59,7 @@ bool Zipline::loop() {
       break;
     case 4:  // ram into zipline
       if (!digitalRead(PLATFORM_UPPER_SWITCH())) {
+        encoder_start_ = encoder_.getPosition();
         driver_.stop();
         driver_.setPower(backup_power_, backup_power_);
         platform_.lower();
@@ -60,11 +68,12 @@ bool Zipline::loop() {
         break;
       }
     case 5:  // lower while backing up
-      if (platform_.loop()) {
+      if (platform_.loop() && (abs(encoder_.getPosition() - encoder_start_) > backup_distance_)) {
         driver_.stop();
         return true;
+      } else {
+        break;
       }
-      break;
     default:  // oh noes, we didn't find the zipline
       driver_.stop();
       LCD.home(); LCD.setCursor(0,0); LCD.print("SOMETHING WENT WRONG");

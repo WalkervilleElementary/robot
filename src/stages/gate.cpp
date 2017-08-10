@@ -7,9 +7,7 @@
 namespace stages {
 
 int8_t Gate::state_ = 0;
-#if CAUTIOUS_GATE_ROUTINE()
-bool Gate::gate_high_ = false;
-#endif  // CAUTIOUS_GATE_ROUTINE()
+bool Gate::gate_10k_ = false;
 
 uint32_t Gate::threshold_ = GATE_IR_STRENGTH_THRESHOLD();
 int32_t Gate::distance_ = hardware::Encoder::cmToTicks(GATE_WAITING_DISTANCE());
@@ -24,7 +22,7 @@ bool Gate::loop() {
     case 1:  // going towards gate
       if (encoder_.getPosition() - encoder_start_ < distance_){
         driver_.commandLineFollow(0);
-      }else{
+      } else {
         driver_.stop();
         ++state_;
       }
@@ -34,19 +32,15 @@ bool Gate::loop() {
       uint32_t left = beacon_.leftIntensity();
       uint32_t right = beacon_.rightIntensity();
       if (left + right < threshold_) {
-#if CAUTIOUS_GATE_ROUTINE()
-        if (!gate_high_) {
+        if (!gate_10k_) {
           driver_.stop();
           return false;
         }
-#endif  // CAUTIOUS_GATE_ROUTINE()
         driver_.commandLineFollow(1);
         return true;
       }else{
         driver_.stop();
-#if CAUTIOUS_GATE_ROUTINE()
-        gate_high_ = true;
-#endif  // CAUTIOUS_GATE_ROUTINE()
+        gate_10k_ = true;
       }
       break;
     }

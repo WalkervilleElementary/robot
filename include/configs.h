@@ -6,7 +6,6 @@
 #define DEBUG() 0
 #define LOOP_DELAY() 10
 #define TUNE_THRESHOLD() 500 //for determining if spinning knob 6 should do anything
-#define CAUTIOUS_GATE_ROUTINE() 1 // only cross on signal rise
 
 // claw servo positions
 #define L_C_EXTEND() 23
@@ -15,7 +14,7 @@
 #define L_C_VERTICAL() 75
 #define L_OPEN() 55
 #define L_CLOSE() 180
-#define L_OFFSET() {-3, -15, -16}
+#define L_OFFSET() {-6, -15, -20}
 
 #define R_C_EXTEND() 160
 #define R_C_FOLD() 2
@@ -30,7 +29,8 @@
 
 // distances (cm)
 #define GATE_WAITING_DISTANCE() 100
-#define ZIPLINE_CHECKPOINT_DISTANCE() 55.0
+#define ZIPLINE_CHECKPOINT_DISTANCE() 50.0
+#define ZIPLINE_BACKUP_DISTANCE() 40.0
 
 // Pickup values
 #define PICKUP_TO_RAMP() 280
@@ -52,19 +52,16 @@
 #define BEACON_GAIN_I() 0
 #define BEACON_GAIN_D() 0
 #define BEACON_UNCERTAINTY() 70 // 50
-#define BEACON_THRESHOLD() 70  // Beacon is undetected below this value
+#define BEACON_THRESHOLD() 100  // Beacon is undetected below this value
 
 // motor
-#define ACCEL_LIMIT() 50 // This is not the correct value
-#define VELOCITY() 90 // 80 to 100
-
-#define PLATFORM_RAISE_SPEED() -210
+#define PLATFORM_RAISE_SPEED() -220
 #define PLATFORM_LOWER_SPEED_TOP() 29  // 40
 #define PLATFORM_LOWER_SPEED_BOTTOM() 60
 
 #define ZIPLINE_FORWARD_POWER() 80
-#define ZIPLINE_BACKUP_POWER() -36
-#define PLATFORM_MAINTAIN_POWER() -50
+#define ZIPLINE_BACKUP_POWER() -40
+#define PLATFORM_MAINTAIN_POWER() -45
 
 // thresholds
 #define TAPE_QRD_STRENGTH_THRESHOLD() 150
