@@ -53,7 +53,7 @@
 #define BEACON_GAIN_I() 0
 #define BEACON_GAIN_D() 0
 #define BEACON_UNCERTAINTY() 70 // 50
-#define BEACON_THRESHOLD() 70  // Beacon is undetected below this value
+#define BEACON_THRESHOLD() 100  // Beacon is undetected below this value
 
 // motor
 #define PLATFORM_RAISE_SPEED() -220
@@ -62,7 +62,7 @@
 
 #define ZIPLINE_FORWARD_POWER() 80
 #define ZIPLINE_BACKUP_POWER() -40
-#define PLATFORM_MAINTAIN_POWER() -50
+#define PLATFORM_MAINTAIN_POWER() -45
 
 // thresholds
 #define TAPE_QRD_STRENGTH_THRESHOLD() 150
