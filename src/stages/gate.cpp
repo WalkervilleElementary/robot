@@ -18,32 +18,19 @@ bool Gate::loop() {
   switch (state_) {
     case 0:
       encoder_start_ = encoder_.getPosition();
+      driver_.commandLineFollow(0);
       ++state_;
     case 1:  // going towards gate
-      if (encoder_.getPosition() - encoder_start_ < distance_){
-        driver_.commandLineFollow(0);
-      } else {
-        driver_.stop();
-        ++state_;
-      }
-      break;
-    case 2:  // waiting at the gate
-    {
-      uint32_t left = beacon_.leftIntensity();
-      uint32_t right = beacon_.rightIntensity();
-      if (left + right < threshold_) {
-        if (!gate_10k_) {
+      if (encoder_.getPosition() - encoder_start_ > distance_){
+        if (beaconWatcher_.safeToProceed()) {
+          driver_.commandLineFollow(0);
+          return true;
+        } 
+        else {
           driver_.stop();
-          return false;
         }
-        driver_.commandLineFollow(1);
-        return true;
-      }else{
-        driver_.stop();
-        gate_10k_ = true;
       }
       break;
-    }
     default:
       // this should never happen
 #if DEBUG()
