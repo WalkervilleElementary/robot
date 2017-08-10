@@ -14,7 +14,7 @@
 #define L_C_VERTICAL() 75
 #define L_OPEN() 55
 #define L_CLOSE() 180
-#define L_OFFSET() {-6, -15, -20}
+#define L_OFFSET() {-8, -15, -20}
 
 #define R_C_EXTEND() 160
 #define R_C_FOLD() 2
