@@ -31,9 +31,7 @@ private:
    */
   static int8_t state_;
 
-#if CAUTIOUS_GATE_ROUTINE()
-  static bool gate_high_;
-#endif  // CAUTIOUS_GATE_ROUTINE()
+  static bool gate_10k_;
 
 public:
   inline Gate(sequences::Drivetrain& driver, hardware::Beacon& beacon, hardware::Encoder& encoder):
