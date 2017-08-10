@@ -159,7 +159,7 @@ bool Claw::loop() {
         } else {
           CLAW_R_GRAB_SERVO().write(right_close);
         }
-        delayUntil_ = millis() + 600;
+        delayUntil_ = millis() + 400;
         state_ += 1;
         //fall through
       case 3:

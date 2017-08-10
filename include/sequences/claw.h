@@ -58,12 +58,12 @@ private:
    *  3 = mostly open
    *  4 = close
    */
-  static void set_arm_position(int8_t side, int8_t position);
 
 public:
   inline Claw() {};
   inline ~Claw() {};
 
+  static void set_arm_position(int8_t side, int8_t position);
   static bool raise(int8_t side);
   static bool grab(int8_t side, int8_t offset = 1);
   static bool release(int8_t side);

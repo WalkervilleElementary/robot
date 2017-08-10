@@ -20,7 +20,11 @@ bool Zipline::loop() {
   LCD.clear(); LCD.home();
   LCD.setCursor(0,0); LCD.print("intersections");
   LCD.setCursor(0,1); LCD.print(count_);
-  if (claw_.loop()) platform_.loop();
+  if (claw_.loop()) {
+    claw_.set_arm_position(sequences::LEFT_CLAW, 4);
+    claw_.set_arm_position(sequences::RIGHT_CLAW, 4);
+    platform_.loop();
+  }
   switch (state_) {
     case 0:  // initialization
       platform_.raise();
