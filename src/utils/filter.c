@@ -60,14 +60,26 @@ uint32_t uint_sqrt(uint32_t n) {
     return res;
 }
 
-void sample_signal(uint8_t pin, size_t num_samples, uint8_t* out) {
+/**
+ * ADC sample rate constants.
+ * F_CPU_N gives a sample rate of the CPU frequency divided by N.
+ */
+const unsigned char SAMPLE_615385_HZ = (1 << ADPS0);
+const unsigned char SAMPLE_307692_HZ = (1 << ADPS1);
+const unsigned char SAMPLE_153846_HZ = (1 << ADPS1) | (1 << ADPS0);
+const unsigned char SAMPLE_76924_HZ = (1 << ADPS2);
+const unsigned char SAMPLE_38462_HZ = (1 << ADPS2) | (1 << ADPS0);
+const unsigned char SAMPLE_19231_HZ = (1 << ADPS2) | (1 << ADPS1);
+const unsigned char SAMPLE_9615_HZ = (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);
+
+void sample_signal(uint8_t pin, size_t num_samples, uint8_t sample_mode, uint8_t* out) {
     //save ADCSRA to restore later
     uint8_t old_ADCSRA = ADCSRA;
 
     //set input pin and use VCC as reference voltage
     ADMUX = (pin & 0x07) | (1<<REFS0) | (1<<ADLAR);
     //enable ADC, start conversion, enable free running, 1/16 clock prescaler
-    ADCSRA = (1<<ADEN) | (1<<ADSC) | (1<<ADFR) | (1<<ADPS2);
+    ADCSRA = (1<<ADEN) | (1<<ADSC) | (1<<ADFR) | (sample_mode && ((1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0)));
 
     for (size_t i = 0; i < num_samples; ++i) { // In general decrements are faster than increments
          //wait for conversion to complete
@@ -108,14 +120,14 @@ uint32_t detect_frequency(uint8_t* samples, size_t num_samples, uint32_t detecti
 uint32_t detect_10khz(uint8_t analog_pin) {
     const size_t num_samples = 77;
     uint8_t samples[num_samples];
-    sample_signal(analog_pin, num_samples, samples);
+    sample_signal(analog_pin, num_samples, SAMPLE_76924_HZ, samples);
     //Multiplied by 2 to keep it at the same scale as the 1 kHz function.
-    return 2 * detect_frequency(samples, num_samples, 10000, 77000);
+    return 2 * detect_frequency(samples, num_samples, 10000, 76924);
 }
 
 uint32_t detect_1khz(uint8_t analog_pin) {
     const size_t num_samples = 154;
     uint8_t samples[num_samples];
-    sample_signal(analog_pin, num_samples, samples);
-    return detect_frequency(samples, num_samples, 1000, 77000);
+    sample_signal(analog_pin, num_samples, SAMPLE_76924_HZ, samples);
+    return detect_frequency(samples, num_samples, 1000, 76924);
 }

@@ -14,7 +14,7 @@ extern "C" {
  * num_samples: number of samples to take
  * out: pointer to memory of at least num_samples bytes
  */
-void sample_signal(uint8_t pin, size_t num_samples, uint8_t* out);
+void sample_signal(uint8_t pin, size_t num_samples, uint8_t sample_mode, uint8_t* out);
 
 /**
  * Analyzes samples and returns the magnitude of a frequency component
