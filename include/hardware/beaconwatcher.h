@@ -14,7 +14,7 @@ public:
   void tick();
 private:
   enum BeaconSignal {SIGNAL_UNKNOWN, SIGNAL_1K, SIGNAL_10K};
-  BeaconSignal treshold(int32_t intensity1, int32_t intensity10);
+  BeaconSignal threshold(int32_t intensity1, int32_t intensity10);
   //BeaconSignal m_leftSignal;
   //BeaconSignal m_rightSignal;
   bool m_leftSide;
@@ -29,7 +29,7 @@ private:
   BeaconSignal m_debouncedSignal;
   unsigned long m_openedTime;
 
-  const int UNKNOWN_TRESHOLD;
+  const int UNKNOWN_THRESHOLD;
   const int GATE_TIME;
 };
 

@@ -34,20 +34,19 @@ void setup(){
   left_surface = digitalRead(LEFT_RIGHT_SWITCH());
 
   hardware::Qrd qrd;
-  hardware::Beacon beacon;
   hardware::Encoder l_encoder(0);
   hardware::Encoder r_encoder(1, true);
 
   hardware::EncoderMotor l_motor(L_MOTOR(), l_encoder, true);
   hardware::EncoderMotor r_motor(R_MOTOR(), r_encoder);
 
-  hardware::BeaconWatcher beaconWatcher(L_BEACON_SENSOR(), R_BEACON_SENSOR());
+  hardware::BeaconWatcher beacon(L_BEACON_SENSOR(), R_BEACON_SENSOR());
 
   sequences::Claw claw;
   sequences::Drivetrain driver(l_motor, r_motor, qrd);
   sequences::Platform platform;
 
-  stages::Gate gate(driver, beaconWatcher, (left_surface ? r_encoder : l_encoder));
+  stages::Gate gate(driver, beacon, (left_surface ? r_encoder : l_encoder));
   stages::Pickup pickup(qrd, (left_surface ? r_encoder : l_encoder), claw, driver);
   stages::Zipline zipline(driver, platform, claw, (left_surface ? r_encoder : l_encoder), qrd);
 
@@ -114,7 +113,7 @@ void setup(){
     r_encoder.tick();
     l_motor.tick();
     r_motor.tick();
-    beaconWatcher.tick();
+    beacon.tick();
   }
 }
 

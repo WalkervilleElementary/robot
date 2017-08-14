@@ -5,7 +5,7 @@
 namespace hardware {
 
 BeaconWatcher::BeaconWatcher(uint8_t leftInput, uint8_t rightInput) :
-  UNKNOWN_TRESHOLD(100), GATE_TIME(3500)
+  UNKNOWN_THRESHOLD(100), GATE_TIME(3500)
 {
   m_leftInput = leftInput;
   m_rightInput = rightInput;
@@ -17,11 +17,11 @@ BeaconWatcher::BeaconWatcher(uint8_t leftInput, uint8_t rightInput) :
   m_right1 = 0;
 }
 
-BeaconWatcher::BeaconSignal BeaconWatcher::treshold(int32_t intensity1, int32_t intensity10) {
-  if  (intensity10 > intensity1 && intensity10 >= UNKNOWN_TRESHOLD) {
+BeaconWatcher::BeaconSignal BeaconWatcher::threshold(int32_t intensity1, int32_t intensity10) {
+  if  (intensity10 > intensity1 && intensity10 >= UNKNOWN_THRESHOLD) {
     return SIGNAL_10K;
   }
-  else if (intensity1 > intensity10 && intensity1 >= UNKNOWN_TRESHOLD) {
+  else if (intensity1 > intensity10 && intensity1 >= UNKNOWN_THRESHOLD) {
     return SIGNAL_1K;
   }
   else {
@@ -30,7 +30,7 @@ BeaconWatcher::BeaconSignal BeaconWatcher::treshold(int32_t intensity1, int32_t 
 }
 
 bool BeaconWatcher::gateOpened() {
-  return m_debouncedSignal = SIGNAL_1K;
+  return m_debouncedSignal == SIGNAL_1K;
 }
 
 unsigned long BeaconWatcher::gateOpenedTime() {
@@ -39,7 +39,7 @@ unsigned long BeaconWatcher::gateOpenedTime() {
 
 bool BeaconWatcher::safeToProceed() {
   return millis() - m_openedTime < GATE_TIME;
-} 
+}
 
 void BeaconWatcher::tick() {
   unsigned long startTime = micros();
@@ -58,14 +58,8 @@ void BeaconWatcher::tick() {
     m_right1 = detect_frequency(samples, 154, 1000, 77000);
     m_leftSide = true;
   }
-  BeaconSignal leftSignal = treshold(m_left1, m_left10);
-  BeaconSignal rightSignal = treshold(m_right1, m_right10);
-  
-  BeaconSignal result = SIGNAL_UNKNOWN;
-  /*if (m_leftSignal == m_rightSignal) result = m_leftSignal;
-  else if (m_leftSignal == SIGNAL_UNKNOWN) result = m_rightSignal;
-  else if (m_rightSignal == SIGNAL_UNKNOWN) result = m_leftSignal;*/
-  result = treshold(m_left1 + m_right1, m_left10 + m_right10);
+
+  BeaconSignal result = threshold(m_left1 + m_right1, m_left10 + m_right10);
   if (result != m_currentSignal) {
     m_debounceCounter = 10;
   }
@@ -79,7 +73,8 @@ void BeaconWatcher::tick() {
     }
     m_debouncedSignal = m_currentSignal;
   }
-  /*Serial.print(micros() - startTime);
+#if DEBUG()
+  Serial.print(micros() - startTime);
   Serial.print(',');
   Serial.print(millis() - m_openedTime) ;
   Serial.print(',');
@@ -90,7 +85,8 @@ void BeaconWatcher::tick() {
   Serial.print(',');
   Serial.print('\t');
   Serial.print(m_rightSignal);
-  Serial.println();*/
+  Serial.println();
+#endif  // DEBUG()
 }
 
 }

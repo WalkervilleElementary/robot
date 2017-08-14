@@ -25,7 +25,7 @@ bool Gate::loop() {
         if (beaconWatcher_.safeToProceed()) {
           driver_.commandLineFollow(0);
           return true;
-        } 
+        }
         else {
           driver_.stop();
         }
