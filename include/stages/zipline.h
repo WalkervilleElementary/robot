@@ -4,7 +4,6 @@
 #include "configs.h"
 
 #include "templates/sequence.h"
-#include "hardware/beacon.h"
 #include "hardware/encoder.h"
 #include "sequences/drivetrain.h"
 #include "sequences/platform.h"

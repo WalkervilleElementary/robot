@@ -4,7 +4,7 @@
 #include "configs.h"
 
 #include "templates/sequence.h"
-#include "hardware/beacon.h"
+#include "hardware/beaconwatcher.h"
 #include "hardware/encoder.h"
 #include "sequences/drivetrain.h"
 
@@ -16,7 +16,7 @@ class Gate : public templates::Sequence {
 
 private:
   sequences::Drivetrain& driver_;
-  hardware::Beacon& beacon_;
+  hardware::BeaconWatcher& beaconWatcher_;
   hardware::Encoder& encoder_;
 
   static int32_t  encoder_start_;
@@ -34,8 +34,8 @@ private:
   static bool gate_10k_;
 
 public:
-  inline Gate(sequences::Drivetrain& driver, hardware::Beacon& beacon, hardware::Encoder& encoder):
-              driver_(driver), beacon_(beacon), encoder_(encoder) {};
+  inline Gate(sequences::Drivetrain& driver, hardware::BeaconWatcher& beaconWatcher, hardware::Encoder& encoder):
+              driver_(driver), beaconWatcher_(beaconWatcher), encoder_(encoder) {};
   inline ~Gate() {};
   bool loop();
 #if USE_UPDATE()

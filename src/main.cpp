@@ -7,7 +7,7 @@
 
 #include "hardware/qrd.h"
 #include "hardware/encoder.h"
-#include "hardware/beacon.h"
+#include "hardware/beaconwatcher.h"
 
 #include "sequences/claw.h"
 #include "sequences/drivetrain.h"
@@ -25,20 +25,22 @@ void setup(){
   portMode(1, OUTPUT);
 
 #if DEBUG()
-  LCD.begin(16,2) ;
-  Serial.begin(115200) ;
+  LCD.begin(16,2);
+  Serial.begin(115200);
 #endif  // DEBUG()
+
 
   // Class Init
   left_surface = digitalRead(LEFT_RIGHT_SWITCH());
 
   hardware::Qrd qrd;
-  hardware::Beacon beacon;
   hardware::Encoder l_encoder(0);
   hardware::Encoder r_encoder(1, true);
 
   hardware::EncoderMotor l_motor(L_MOTOR(), l_encoder, true);
   hardware::EncoderMotor r_motor(R_MOTOR(), r_encoder);
+
+  hardware::BeaconWatcher beacon(L_BEACON_SENSOR(), R_BEACON_SENSOR());
 
   sequences::Claw claw;
   sequences::Drivetrain driver(l_motor, r_motor, qrd);
@@ -111,6 +113,7 @@ void setup(){
     r_encoder.tick();
     l_motor.tick();
     r_motor.tick();
+    beacon.tick();
   }
 }
 
