@@ -6,6 +6,7 @@ Software stack for the Magic School Bot. For more information please visit our [
 
 - [Installation](#installation)
 - [Compile](#compile)
+- [Software Architecture](#software-architecture)
 
 -----
 
@@ -56,6 +57,10 @@ cmake -G "Ninja" ..
 ninja flash
 ```
 
+---
 
+## Software Architecture
+
+![](https://raw.githubusercontent.com/WalkervilleElementary/robot/master/code%20hierarchy.png)
 
 
